@@ -8,14 +8,17 @@ class AuthenticationForApiService {
     
 
     authenticate(username, password) {
-        return axios.post(`${API_URL}/authenticate`, {
-            username,
-            password
-        })
+        const data = {
+            username: username,
+            password: password
+           
+        }
+        return axios.post(`${API_URL}/user/greenninjalogin`, data)
     }
 
     registerSuccessfulLogin(username, token) {
         sessionStorage.setItem(AUTHENTICATED_USER_SESSION, username)
+        sessionStorage.setItem("jwt", token)
         
     }
 

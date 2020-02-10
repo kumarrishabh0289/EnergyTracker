@@ -19,7 +19,7 @@ class EnergyTracker extends Component {
                         <HeaderComponent/>
                         <Switch>
                             <Route path="/" exact component={FrontPage}/>
-                            <Route path="/login" component={LoginComponent}/>
+                            <Route path="/login" component={FrontPage}/>
                             <AuthenticatedRoute path="/welcome/:name" component={WelcomeComponent}/>
                           
                             <AuthenticatedRoute path="/logout" component={LogoutComponent}/>

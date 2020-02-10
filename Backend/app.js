@@ -17,17 +17,13 @@ const submissionRoutes = require('./api/routes/submission');
 const permissionRoutes = require('./api/routes/permission');
 const mailRoutes = require('./api/routes/mail');
 var passport = require("passport");
-var passportJWT = require("passport-jwt");
-
 
 
 require('./api/auth/auth');
 
-
-
 mongoose.connect('mongodb+srv://rishabh53:' +
 process.env.MONGO_PASSWORD+ 
-'@cluster0-dvu2r.mongodb.net/canvas?retryWrites=true',
+'@cluster0-dvu2r.mongodb.net/energytracker?retryWrites=true',
 {
     useNewUrlParser: true
 }
@@ -44,16 +40,9 @@ app.use(passport.initialize());
 
 
 
-var passport = require("passport");
-
-
-
-
-
-
 app.post("/secret", passport.authenticate('jwt', { session : false }), function(req, res){
-
-    console.log("success",req.body.data);
+   
+    console.log("User",req.body.user);
     
     res.json({'message': "Success"});
   });

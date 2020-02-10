@@ -37,7 +37,16 @@ class LoginComponent extends Component {
             .authenticate(this.state.username, this.state.password)
             .then((response) => {
                 AuthenticationForApiService.registerSuccessfulLogin(this.state.username, response.data.token)
-                this.props.history.push(`/welcome/${this.state.username}`)
+                if(response.data.role === "user"){
+                    this.props.history.push(`/welcome/${this.state.username}`)
+                }
+                if(response.data.role === "host"){
+                    this.props.history.push(`/welcome/${this.state.username}`)
+                }
+                else{
+                    this.props.history.push(`/welcome/${this.state.username}`)
+                }
+                
             }).catch(() => {
                 this.setState({ showSuccessMessage: false })
                 this.setState({ hasLoginFailed: true })
@@ -45,9 +54,7 @@ class LoginComponent extends Component {
 
     }
 
-    responseGoogle = (response) => {
-        console.log(response);
-    }
+    
 
     render() {
         return (
