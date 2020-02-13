@@ -76,32 +76,39 @@ class FrontPage extends Component {
                 console.log("Status Code : ", response.status);
                 console.log("response : ", response.data);
                 if (response.status === 200) {
+                    console.log("Here");
 
                     AuthenticationForApiService.registerSuccessfulLogin(res.profileObj.email, response.data.jwt)
+                    let data1 = {
+                        email: response.data.username
+                    }
+                    axios.post(`${API_URL}/user/checkrole`, data1)
+                    .then(response => {
+                        console.log("Here : ",response);
+
+                        if (response.status == 200){
+                            this.props.history.push(`/welcome/RoleExists`)
+                            console.log("Role Exists");
+                        }
+                        else{
+                            this.props.history.push(`/welcome/RoleDoesNotExists`)
+                            console.log("Role doesnot Exists");
+                        }
                     
-                    // if(response.data.role === "user"){
-                    //     this.props.history.push(`/welcomeuser/${response.data.name}`)
-                    // }
-                    // if(response.data.role === "host"){
-                    //     this.props.history.push(`/hostdashboard/${response.data.name}`)
-                    // }
-                    // else{
-                    this.props.history.push(`/welcome/${response.data.username}`)
-                    // }
-                    
+                    })
+              
+                   
 
                 }
                 else {
-                    // sessionStorage.setItem("googleEmail", res.profileObj.email)
-                    // sessionStorage.setItem("googleName", res.profileObj.name)
-                    // this.props.history.push(`/signup/`)
+                    
                 }
             })
             .catch(err => {
-                console.log(err);
-                sessionStorage.setItem("googleEmail", res.profileObj.email)
-                sessionStorage.setItem("googleName", res.profileObj.name)
-                this.props.history.push(`/signup/`)
+                console.log("err",err);
+                // sessionStorage.setItem("googleEmail", res.profileObj.email)
+                // sessionStorage.setItem("googleName", res.profileObj.name)
+                
 
             });
 

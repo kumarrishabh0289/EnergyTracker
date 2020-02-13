@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Profile = require('../models/profile');
+const Role = require('../models/role');
 var multer = require('multer');
 const path = require("path");
 
