@@ -5,7 +5,9 @@ const lectureSchema = mongoose.Schema({
     course_id: String,
     content: String,
     id: Number,
-    url: String,
+    start: Date,
+    end: Date,
+    conservation_start: Date
 
 });
 

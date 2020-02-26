@@ -25,7 +25,8 @@ mongoose.connect('mongodb+srv://rishabh53:' +
 process.env.MONGO_PASSWORD+ 
 '@cluster0-dvu2r.mongodb.net/energytracker?retryWrites=true',
 {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 }
 );
 mongoose.set('useCreateIndex', true)

@@ -1,0 +1,12 @@
+var getDaysArray = function(start, end) {
+    for(var arr=[],dt=start; dt<=end; dt.setDate(dt.getDate()+1)){
+        var m = new Date(dt);
+        console.log(m.toLocaleDateString())
+    }
+    
+};
+
+getDaysArray(new Date("2018-05-01"),new Date("2018-07-01"));
+
+
+ref: https://www.w3schools.com/jsref/jsref_obj_date.asp

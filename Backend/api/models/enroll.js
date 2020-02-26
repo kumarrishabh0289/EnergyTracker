@@ -5,8 +5,8 @@ const enrollSchema = mongoose.Schema({
     course_id: String,
     student: String,
     enroll_id: String,
-    status: String,
-    number:String,
+    
+   
       
    });
 

@@ -25,13 +25,19 @@ router.get('/email', (req, res, next)=>{
     Course.find({ faculty_email: email })
         .exec()
         .then(doc => {
-        console.log("From database",doc);
-        if (doc){
-            res.status(200).json(doc);
+        if(doc){
+            console.log("From database",doc);
+            if (doc.length>0){
+                res.status(200).json(doc);
+            }
+            else {
+                res.status(201).json({message:"not a valid Email ID"});
+            }
         }
-        else {
-            res.status(404).json({message:"not a valid Email ID"});
+        else{
+            res.status(404).json({message:"Something Went Wrong"});
         }
+       
         
     })
     .catch(err => {
@@ -47,15 +53,10 @@ router.post('/', (req, res, next) => {
         _id : new mongoose.Types.ObjectId(),
         course_id: req.body.id,
         name: req.body.name,
-        faculty_email:req.body.faculty,
-        ta_email:req.body.ta,
+        faculty_email:req.body.faculty_email,
         department:req.body.department,
-        room:req.body.room,
-        capacity:req.body.capacity,
-        waiting:req.body.waiting,
         term:req.body.term,
-        current_wait:0,
-        total_enroll:0,
+     
     });
     course
         .save()

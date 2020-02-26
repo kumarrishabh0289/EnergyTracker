@@ -163,11 +163,46 @@ router.post('/checkrole', (req, res, next) => {
         console.log("checkrole", docs);
         if (!docs) {
             res.status(202).json({
-                msg:"No Role attached"
+                role:"No Role attached"
             });
         }
         else{
-            res.status(200).json(docs);
+            res.status(200).json({role:docs.role});
+
+        }
+      
+           
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        })
+
+});
+
+router.post('/updaterole', (req, res, next) => {
+    Role.findOne({ email: req.body.email })
+    .exec()
+    .then(docs => {
+        console.log("update", docs);
+        if (!docs) {
+            const role = new Role({
+                _id: new mongoose.Types.ObjectId(),
+                email: req.body.email,
+                role: req.body.role
+
+            });
+            role
+                .save()
+                .then(result => {
+                    console.log("result", result);
+                    res.status(200).json({role:result.role});
+                })
+        }
+        else{
+            res.status(200).json({role:docs.role});
 
         }
       

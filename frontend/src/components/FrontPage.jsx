@@ -45,15 +45,16 @@ class FrontPage extends Component {
             .authenticate(this.state.username, this.state.password)
             .then((response) => {
                 console.log("response",response)
-                AuthenticationForApiService.registerSuccessfulLogin(this.state.username, response.data.jwt)
-                if(response.data.role === "user"){
-                    this.props.history.push(`/welcome/${this.state.username}`)
+                AuthenticationForApiService.registerSuccessfulLogin(this.state.username, response.data.jwt,response.data.name)
+                sessionStorage.setItem("role", response.data.role)
+                if(response.data.role === "student"){
+                    this.props.history.push(`/studentdashboard`)
                 }
-                if(response.data.role === "host"){
-                    this.props.history.push(`/welcome/${this.state.username}`)
+                if(response.data.role === "teacher"){
+                    this.props.history.push(`/teacherdashboard`)
                 }
                 else{
-                    this.props.history.push(`/welcome/${this.state.username}`)
+                    this.props.history.push(`/welcome/${sessionStorage.role}`)
                 }
                 
             }).catch(() => {
@@ -76,9 +77,7 @@ class FrontPage extends Component {
                 console.log("Status Code : ", response.status);
                 console.log("response : ", response.data);
                 if (response.status === 200) {
-                    console.log("Here");
-
-                    AuthenticationForApiService.registerSuccessfulLogin(res.profileObj.email, response.data.jwt)
+                       AuthenticationForApiService.registerSuccessfulLogin(res.profileObj.email, response.data.jwt, response.data.name)
                     let data1 = {
                         email: response.data.username
                     }
@@ -87,12 +86,26 @@ class FrontPage extends Component {
                         console.log("Here : ",response);
 
                         if (response.status == 200){
-                            this.props.history.push(`/welcome/RoleExists`)
                             console.log("Role Exists");
-                        }
+                            sessionStorage.setItem("role", response.data.role)
+                            if (response.data.role === "student"){
+                                this.props.history.push(`/studentdashboard`)
+                            }
+                            else if (response.data.role === "teacher"){
+                                this.props.history.push(`/teacherdashboard`)
+                            }
+                            else{
+                                this.props.history.push(`/welcome/${sessionStorage.role}`)
+                            }
+
+                            
+                           
+                        }   
                         else{
-                            this.props.history.push(`/welcome/RoleDoesNotExists`)
                             console.log("Role doesnot Exists");
+                            sessionStorage.setItem("role", "")
+                            this.props.history.push(`/signup`)
+                            
                         }
                     
                     })
