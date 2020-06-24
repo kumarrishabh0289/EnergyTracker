@@ -24,7 +24,7 @@ deploy:
   provider: elasticbeanstalk
   region: "us-east-2"
   app: "EnergyTracker"
-  env: "Energytracker-env"
+  env: "Energytracker-env-1"
   bucket_name: "elasticbeanstalk-us-east-2-823931889189"
   bucket_path: "EnergyTracker"
   on:
