@@ -1,0 +1,33 @@
+version: '3'
+services:
+  frontend:
+    stdin_open: true
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+      
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+  backend:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./backend
+    volumes:
+      - /app/node_modules
+      - ./backend:/app 
+    environment:
+      - MONGO_PASSWORD=rishu123.
+
+  
+  
+  nginx:
+    depends_on:
+      - backend
+      - frontend
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '3000:80'
