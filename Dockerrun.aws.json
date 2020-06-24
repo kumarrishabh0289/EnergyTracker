@@ -1,0 +1,30 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "ContainerDefinitions": [
+        {
+            "name":"frontend",
+            "image":"rishu53/energy-frontend",
+            "hostname":"frontend",
+            "essential":false
+        },
+        {
+            "name":"backend",
+            "image":"rishu53/energy-backend",
+            "hostname":"backend",
+            "essential":false
+        },
+        {
+            "name":"nginx",
+            "image":"rishu53/energy-nginx",
+            "hostname":"nginx",
+            "essential":true,
+            "portMappings":[
+                {
+                    "hostPort":80,
+                    "containerPort":80
+                }
+            ],
+            "links":["frontend","backend"]
+        }
+    ]
+}
