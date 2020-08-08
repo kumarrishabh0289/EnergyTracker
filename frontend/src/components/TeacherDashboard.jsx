@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { API_URL } from '../Constants'
 import axios from 'axios';
+import CourseCard from './CourseCard';
 
 class StudentDashboard extends Component {
     constructor(props) {
@@ -108,8 +109,8 @@ class StudentDashboard extends Component {
 
 
                     <div class="body-div">
-                   
-                    <br />
+
+                        <br />
                         <div className="col-sm-5 col-md-5" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
 
                             <h3>Teacher's Dashboard </h3>
@@ -121,42 +122,7 @@ class StudentDashboard extends Component {
                             {
                                 this.state.course.map(course => {
                                     return (
-                                        <div>
-                                            <div class="card bg-info text-white">
-                                                <div class="card-header">
-                                                    {course.name}
-                                                </div>
-                                                <div class="card-body ">
-                                                    <p class="card-text">
-                                                    
-                                                        <div class="table-responsive">
-                                                            <table class="table">
-                                                                <tr>
-                                                                    <th>Department</th>
-                                                                    <td>{course.department}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>Term </th><td>{course.term}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>Add Code</th>
-                                                                    <td>{course._id}</td>
-                                                                </tr>
-
-                                                            </table>
-                                                        </div>
-
-                                                    </p>
-                                                </div>
-                                                <div class="card-footer">
-                                                     <button onClick={() => this.GoToCourse(course)} class="btn btn-danger">Go To Course</button><br />
-                                                        </div>
-
-
-                                            </div>
-                                        </div>
-
-
+                                        <CourseCard course={course} />
                                     )
                                 })
                             }

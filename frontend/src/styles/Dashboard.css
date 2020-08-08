@@ -1,0 +1,21 @@
+.dashboard-wrapper {
+    margin-top: 3rem;
+    padding: 1rem;
+}
+
+.dashboard-wrapper .row-header {    
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    /* border-bottom: solid 1px #ccc; */
+}
+
+.dashboard-wrapper .row-top {    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-wrapper .row-header .btn-success *{    
+    margin-right: 0.5rem;
+}
