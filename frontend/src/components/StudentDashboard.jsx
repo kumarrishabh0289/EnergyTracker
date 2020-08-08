@@ -28,24 +28,28 @@ class StudentDashboard extends Component {
 
     getStudentData = () => {
 
-        axios.get(`/getStudentCourses/${sessionStorage.authenticatedUser}`).then(data => {
+        axios.get(`${API_URL}/class/getRegisteredClasses/${sessionStorage.authenticatedUser}`).then(response => {
             this.setState({
-                courses: data
+                courses: response.data
             })
         })
 
     };
 
     registerCourse = () => {
-
-        axios.post(`/registerCourse`, {
+        this.hideAddModal();
+        axios.post(`${API_URL}/class/registerCourse`, {
             student: sessionStorage.authenticatedUser,
             course: this.state.addCode
         }).then(data => {
             this.setState({
                 courses: data
             })
-        })
+        }).catch(error => {
+            if (error.response)
+                alert(error.response.data.error);
+        });
+
     }
 
     hideAddModal = () => {
@@ -80,7 +84,7 @@ class StudentDashboard extends Component {
                             <Button variant="secondary" onClick={this.hideAddModal}>
                                 Close
                             </Button>
-                            <Button variant="primary" onClick={this.hideAddModal}>
+                            <Button variant="primary" onClick={this.registerCourse}>
                                 Submit
                             </Button>
                         </Modal.Footer>
@@ -99,7 +103,10 @@ class StudentDashboard extends Component {
 
                                 <div className="row-body col-sm-12">
                                     {
-                                        this.state.courses.length ? "Courses Available" :
+                                        this.state.courses.length ?
+                                            this.state.courses.map(course => {
+                                                return <div>{course.name}</div>;
+                                            }) :
                                             "Not Registered in any course"
                                     }
                                 </div>
