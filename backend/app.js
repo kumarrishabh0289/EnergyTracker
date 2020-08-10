@@ -9,6 +9,7 @@ const userRoutes = require('./api/routes/user');
 const profileRoutes = require('./api/routes/profile');
 const courseRoutes = require('./api/routes/course');
 const enrollRoutes = require('./api/routes/enroll');
+const classRoutes = require('./api/routes/class');
 
 
 const lectureRoutes = require('./api/routes/lecture');
@@ -50,6 +51,7 @@ app.post("/secret", passport.authenticate('jwt', { session : false }), function(
 app.use('/product', productRoutes);
 app.use('/user', userRoutes);
 
+app.use('/class',  classRoutes);
 app.use('/profile',  profileRoutes);
 app.use('/course',  courseRoutes);
 app.use('/enroll',  enrollRoutes);

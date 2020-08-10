@@ -1,186 +1,157 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { API_URL } from '../Constants'
 import axios from 'axios';
+import '../styles/Dashboard.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faSignInAlt, faPlus
+} from "@fortawesome/free-solid-svg-icons";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import CourseCard from './CourseCard';
 
 class StudentDashboard extends Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
-            welcomeMessage: 'Hey You Are Authorized',
-            machine: [],
-        }
-        this.ChangeStatus = this.ChangeStatus.bind(this);
+            courses: [],
+            projects: [],
+            courseModal: false
+        };
     }
 
     componentDidMount() {
-     //this.loadMachine();
+        this.getStudentData();
     }
 
-    loadMachine(){
-        let edgeStationId = sessionStorage.edgeStation;
-        axios.get(API_URL + '/machine/edgeStationId', { params: { edgeStationId } })
-            .then((response) => {
-                console.log(response.data);
-                this.setState({
-                    machine: response.data
-                });
-            });
-    }
-    ProgressButton = (machine) => {
-        sessionStorage.setItem('machine', machine.machineId);
-        sessionStorage.setItem('machineowner', machine.email);
-        this.props.history.push(`/sensor`)
-    }
-    ChangeStatus = (machine, p2) => e => {
-        console.log("hittt")
-        e.preventDefault();
-        if (p2 == 0)
-        {
-            p2 = 1
-        }
-        else
-        {
-            p2 = 0
-        }
-        console.log(p2)
-        const data = {
-            machineId: machine,
-            machineStatus: p2
-        }
-        console.log("passing", data)
-        axios.defaults.withCredentials = true;
-        //make a post request with the user data
-        axios.patch(API_URL + '/machine/update', data)
-            .then((response) => {
-                if (response.status === 200) {
+    getStudentData = () => {
 
-                    console.log(response.data);
-                    this.setState({
+        axios.get(`${API_URL}/class/getRegisteredClasses/${sessionStorage.authenticatedUser}`).then(response => {
+            this.setState({
+                courses: response.data
+            })
+        })
 
-                        signup_status: response.data.message,
-                        showSuccessMessage: true
-                    })
-                    
-                    this.loadMachine();
-                } else {
-                    console.log(response.data.error);
-                    this.setState({
-                        
-                        signup_status: response.data.error,
-                        hasFailed: true
-                    })
-                }
-            });
-    
+    };
+
+    registerCourse = () => {
+        this.hideAddModal();
+        axios.post(`${API_URL}/class/registerCourse`, {
+            student: sessionStorage.authenticatedUser,
+            course: this.state.addCode
+        }).then(data => {
+            this.setState({
+                courses: data
+            })
+        }).catch(error => {
+            if (error.response)
+                alert(error.response.data.error);
+        });
+
     }
 
-    
-       
-
-    Sensor = (machine) => {
-        sessionStorage.setItem('machine', machine.machineId);
-
-        this.props.history.push(`/sensordata`)
+    hideAddModal = () => {
+        this.setState({ courseModal: false });
     }
 
-    
-    Service = (machine) => {
-        sessionStorage.setItem('machine', machine.machineId);
+    showAddModal = () => {
+        this.setState({ courseModal: true });
+    }
 
-        this.props.history.push(`/servicerequest`)
+    handleChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     render() {
-       
-      
-        if (sessionStorage.role === 'student') {
+
+
+        if (sessionStorage.role === 'Student') {
             return (
-                <div class="container">
-                    
+                <Fragment>
+                    <Modal show={this.state.courseModal} onHide={this.hideAddModal} centered>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Enter the required class add code here</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form.Group controlId="code">
+                                <Form.Label>Add Code:</Form.Label>
+                                <Form.Control type="text" placeholder="Add code" onChange={this.handleChange} name="addCode" />
+                            </Form.Group>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={this.hideAddModal}>
+                                Close
+                            </Button>
+                            <Button variant="primary" onClick={this.registerCourse}>
+                                Submit
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
 
-                    <div class="body-div">
-                        <br />
-                        <h2>Student's Dashboard </h2><br />
-                        <h5>Welcome, {sessionStorage.name}</h5>
-                        <p>Student ID: {sessionStorage.authenticatedUser}</p>
-                        <div class="card-columns">
-                            {
-                                this.state.machine.map(machine => {
+                    <div className="container dashboard-wrapper card">
+                        <div className="body-div">
+                            <h2>Student Dashboard </h2>
+                            <h5>Welcome, {sessionStorage.name}</h5>
+                            <p>Student ID: {sessionStorage.authenticatedUser}</p>
+                            <div className="row-header col-sm-12">
+                                <div className="row-top">
+                                    <h5 className="m-0">Your Classes: </h5>
+                                    <div className="btn btn-success" onClick={this.showAddModal}><FontAwesomeIcon icon={faPlus} />Enroll in a class</div>
+                                </div>
 
-                                    return (
+                                <div className="row-body col-sm-12 row">
+                                    {
+                                        this.state.courses.length ?
+                                            this.state.courses.map(course => {
+                                                return <CourseCard course={course} />;
+                                            }) :
+                                            "Not Registered in any course"
+                                    }
+                                </div>
 
-                                       
-                                            <div>
+                            </div>
 
-                                                <div class="card bg-info text-white">
-                                                    <div class="card-header">
-                                                        {machine.name}
-                                                    </div>
-                                                    <div class="card-body ">
-                                                        <p class="card-text">
-                                                        <img src={machine.image}/>
-                                                        <div class="table-responsive">
-                                                            <table class="table">
-                                                          
-                                                                <tr>
-                                                                    <th>machine ID</th><td>{machine.machineId}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>Machine Type</th>
-                                                                    <td>{machine.machineType}</td>
-                                                                </tr>
+                            <div className="row-header col-sm-12">
+                                <h5 className="m-0">Your Projects: </h5>
+                                <div className="row-body col-sm-12">
+                                    {
+                                        this.state.projects.length ? "Projects Available" :
+                                            "Not Registered in any project"
+                                    }
+                                </div>
+                            </div>
 
+                            <div className="row-header col-sm-12">
+                                <h5 className="m-0">Enter (Edit) Your Energy Data: </h5>
+                                <div className="row-body col-sm-12">
+                                    {
+                                        this.state.courses.length ? "Courses Available" :
+                                            "Not Registered in any course"
+                                    }
+                                </div>
+                            </div>
 
-                                                                <tr>
-                                                                    <th>Description</th><td>{machine.desc}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>provider</th> <td>{machine.provider}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th> Status</th> <td>{machine.machineStatus == 0 ? "Idle" :  "Active" } 
-                                                                    &nbsp;
-                                                                    {sessionStorage.role === 'Farmer' && (<button class="btn btn-default" type="button" onClick={this.ChangeStatus(machine.machineId, machine.machineStatus)} >Change Status</button> )}
-                                                                      </td>
-                                                                </tr>
-                                                                                                                             
-
-                                                            </table>
-                                                            </div>
-
-                                                        </p>
-                                                    </div>
-                                                    <div class="card-footer">
-                                                    <button onClick={() => this.ProgressButton(machine)} class="btn btn-primary">Sensor Dashboard</button><br/> 
-                                                    <br/> <button onClick={() => this.Sensor(machine)} class="btn btn-danger">Display Machine's Sensor Data</button> <br/> 
-                                                    <br/>  <button onClick={() => this.Service(machine)} class="btn btn-primary">Service Dashboard</button><br/> <br/> 
-
-                                                    
-                                                    </div>
-                                               
-
-                                                </div>
-                                            </div>
-                                        
-
-                                    )
-                                })
-                            }
-
-
+                            <div className="row-header col-sm-12">
+                                <h5 className="m-0">View Usage: </h5>
+                                <div className="row-body col-sm-12">
+                                    {
+                                        this.state.courses.length ? "Courses Available" :
+                                            "Not Registered in any course"
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    {sessionStorage.role === 'Farmer' && (<Link to="/machineadd"><button class="btn btn-success">Create new Machine</button></Link>)}
-                </div>
+                </Fragment>
             )
         }
         else {
             return (
-                <div class="container">
-                    <div class="body-div">
+                <div className="container">
+                    <div className="body-div">
                         <h3>Looks like you are not authorized to view this page.</h3>
                     </div>
                 </div>
