@@ -10,6 +10,7 @@ import {
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import CourseCard from './CourseCard';
 
 class StudentDashboard extends Component {
     constructor(props) {
@@ -101,11 +102,11 @@ class StudentDashboard extends Component {
                                     <div className="btn btn-success" onClick={this.showAddModal}><FontAwesomeIcon icon={faPlus} />Enroll in a class</div>
                                 </div>
 
-                                <div className="row-body col-sm-12">
+                                <div className="row-body col-sm-12 row">
                                     {
                                         this.state.courses.length ?
                                             this.state.courses.map(course => {
-                                                return <div>{course.name}</div>;
+                                                return <CourseCard course={course} />;
                                             }) :
                                             "Not Registered in any course"
                                     }

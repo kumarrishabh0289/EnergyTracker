@@ -4,7 +4,7 @@ class CourseCard extends Component {
     state = {}
 
     render() {
-        return (<div>
+        return (<div className=" col-sm-4">
             <div class="card bg-info text-white">
                 <div class="card-header">
                     {this.props.course.name}
