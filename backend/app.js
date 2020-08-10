@@ -10,6 +10,7 @@ const profileRoutes = require('./api/routes/profile');
 const courseRoutes = require('./api/routes/course');
 const enrollRoutes = require('./api/routes/enroll');
 const classRoutes = require('./api/routes/class');
+const projectRoutes = require('./api/routes/project');
 
 
 const lectureRoutes = require('./api/routes/lecture');
@@ -58,6 +59,7 @@ app.use('/enroll',  enrollRoutes);
 app.use('/lecture',  lectureRoutes);
 app.use('/permission',  permissionRoutes);
 app.use('/mail',  mailRoutes);
+app.use('/project',  projectRoutes);
 
 
 app.use((req, res, next) => {

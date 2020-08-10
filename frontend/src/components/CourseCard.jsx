@@ -10,26 +10,28 @@ class CourseCard extends Component {
                     {this.props.course.name}
                 </div>
                 <div class="card-body ">
-                    <p class="card-text">
+                    <div class="card-text">
 
                         <div class="table-responsive">
                             <table class="table">
-                                <tr>
-                                    <th>Department</th>
-                                    <td>{this.props.course.department}</td>
-                                </tr>
-                                <tr>
-                                    <th>Term </th><td>{this.props.course.term}</td>
-                                </tr>
-                                <tr>
-                                    <th>Add Code</th>
-                                    <td>{this.props.course._id}</td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <th>Department</th>
+                                        <td>{this.props.course.department}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Term </th><td>{this.props.course.term}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Add Code</th>
+                                        <td>{this.props.course._id}</td>
+                                    </tr>
+                                </tbody>
 
                             </table>
                         </div>
 
-                    </p>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button onClick={() => this.GoToCourse(this.props.course)} class="btn btn-danger">Go To Course</button><br />

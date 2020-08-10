@@ -31,7 +31,8 @@ class StudentDashboard extends Component {
 
         axios.get(`${API_URL}/class/getRegisteredClasses/${sessionStorage.authenticatedUser}`).then(response => {
             this.setState({
-                courses: response.data
+                courses: response.data.courses,
+                projects: response.data.projects
             })
         })
 
@@ -115,32 +116,32 @@ class StudentDashboard extends Component {
                             </div>
 
                             <div className="row-header col-sm-12">
-                                <h5 className="m-0">Your Projects: </h5>
-                                <div className="row-body col-sm-12">
-                                    {
-                                        this.state.projects.length ? "Projects Available" :
-                                            "Not Registered in any project"
-                                    }
-                                </div>
-                            </div>
+                                <h3 className="">Your Projects: </h3>
 
-                            <div className="row-header col-sm-12">
-                                <h5 className="m-0">Enter (Edit) Your Energy Data: </h5>
-                                <div className="row-body col-sm-12">
-                                    {
-                                        this.state.courses.length ? "Courses Available" :
-                                            "Not Registered in any course"
-                                    }
+                                <div className="row-header col-sm-12">
+                                    <h5 className="m-0">Enter (Edit) Your Energy Data: </h5>
+                                    <div className="row-body col-sm-12">
+                                        {
+                                            this.state.projects.length ?
+                                                this.state.projects.map(project => {
+                                                    return <div>{project.name}</div>;
+                                                }) :
+                                                "Not Registered in any project"
+                                        }
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="row-header col-sm-12">
-                                <h5 className="m-0">View Usage: </h5>
-                                <div className="row-body col-sm-12">
-                                    {
-                                        this.state.courses.length ? "Courses Available" :
-                                            "Not Registered in any course"
-                                    }
+                                <div className="row-header col-sm-12">
+                                    <h5 className="m-0">View Usage: </h5>
+                                    <div className="row-body col-sm-12">
+                                        {
+                                            this.state.projects.length ?
+                                                this.state.projects.map(project => {
+                                                    return <div>{project.name}</div>;
+                                                }) :
+                                                "Not Registered in any project"
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>

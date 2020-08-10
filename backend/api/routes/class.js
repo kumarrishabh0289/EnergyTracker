@@ -7,15 +7,20 @@ const Class = require('../models/class');
 router.post('/addClass', async (req,res) => {
 
     const newClass = new Class({
-        name: req.body.name
+        name: req.body.name,
+        faculty_email: req.body.faculty_email,
+        department: req.body.department,
+        term: req.body.term,
     });
 
     try {
         let result = await newClass.save();
+        console.log('result', result)
     
         res.send(result);
         
     } catch (error) {        
+        console.log('error', error)
         res.status(400).send(error);
     }
 
@@ -23,14 +28,20 @@ router.post('/addClass', async (req,res) => {
 
 
 router.get('/getRegisteredClasses/:name', async (req, res) => {
-    console.log('req', req.params.name)
+    console.log('req', req.params.name);
+    let projects = [];
 
     try {
-        let result = await Class.find({'students': req.params.name});
+        let results = await Class.find({'students': req.params.name}).populate('projects');
+
+        for (let result of results) {
+            projects = [...projects, ...result.projects];
+        }
     
-        res.send(result);
+        res.send({courses: results, projects: projects});
         
     } catch (error) {        
+        console.log('error', error)
         res.status(400).send(error);
     }   
 

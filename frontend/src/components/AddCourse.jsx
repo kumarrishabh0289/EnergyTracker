@@ -36,7 +36,7 @@ class AddCourse extends Component {
 
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post(API_URL + '/course', data)
+        axios.post(API_URL + '/class/addClass', data)
             .then((response) => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 201) {
@@ -45,7 +45,7 @@ class AddCourse extends Component {
                     this.setState({ showSuccessMessage: true, status: response.data.message })
                 } else {
                     console.log(response.data.error);
-                    this.setState({ showSuccessMessage: true, status: response.data.message})
+                    this.setState({ showSuccessMessage: true, status: response.data.message })
                 }
             }).catch(() => {
                 this.setState({ showSuccessMessage: false })
@@ -139,7 +139,7 @@ class AddCourse extends Component {
                                     </div>
                                     <br />
                                     <Link to="/teacherdashboard"><button class="btn btn-success">Go to Dashboard</button></Link>
-                                            
+
                                     &nbsp;&nbsp;
 
 

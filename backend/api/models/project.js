@@ -10,7 +10,8 @@ const projectSchema = new Schema({
         name: { type: String, required: true },
         electricity: [{ type: Number }],
         gas: [{ type: Number }]
-    }]
+    }],
+    course: { type: Schema.Types.ObjectId, ref: 'Class', required: true }
 });
 
 module.exports = mongoose.model('Project', projectSchema);
