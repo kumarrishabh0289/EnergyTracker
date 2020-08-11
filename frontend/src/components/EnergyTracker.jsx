@@ -14,6 +14,8 @@ import TeacherDashboard from './TeacherDashboard'
 import AddCourse from './AddCourse'
 import CourseDetail from './CourseDetail'
 import EditUsage from './EditUsage.jsx'
+import CreateProject from './CreateProject'
+import ProjectDetail from './ProjectDetail'
 
 
 class EnergyTracker extends Component {
@@ -34,6 +36,8 @@ class EnergyTracker extends Component {
                             <AuthenticatedRoute path="/addcourse" component={AddCourse} />
                             <AuthenticatedRoute path="/coursedetail" component={CourseDetail} />
                             <AuthenticatedRoute path="/editUsage/:projectId" component={EditUsage} />
+                            <AuthenticatedRoute path="/createproject" component={CreateProject}/>
+                            <AuthenticatedRoute path="/projectdetail" component={ProjectDetail}/>
                             <Route component={ErrorComponent} />
                         </Switch>
 

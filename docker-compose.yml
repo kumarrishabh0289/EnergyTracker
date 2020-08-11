@@ -9,6 +9,7 @@ services:
     volumes:
       - /app/node_modules
       - ./frontend:/app
+    
   backend:
     build:
       dockerfile: Dockerfile.dev
