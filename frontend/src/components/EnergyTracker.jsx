@@ -13,6 +13,8 @@ import StudentDashboard from './StudentDashboard'
 import TeacherDashboard from './TeacherDashboard'
 import AddCourse from './AddCourse'
 import CourseDetail from './CourseDetail'
+import CreateProject from './CreateProject'
+import ProjectDetail from './ProjectDetail'
 
 
 class EnergyTracker extends Component {
@@ -32,6 +34,8 @@ class EnergyTracker extends Component {
                             <AuthenticatedRoute path="/teacherdashboard" component={TeacherDashboard}/>
                             <AuthenticatedRoute path="/addcourse" component={AddCourse}/>
                             <AuthenticatedRoute path="/coursedetail" component={CourseDetail}/>
+                            <AuthenticatedRoute path="/createproject" component={CreateProject}/>
+                            <AuthenticatedRoute path="/projectdetail" component={ProjectDetail}/>
                             <Route component={ErrorComponent}/>
                         </Switch>
                        
