@@ -152,11 +152,10 @@ router.post('/', async (req, res) => {
     try {
         const currEnrollment = await Enroll.findOne({ course_id: req.body.course_id, student: req.body.student });
 
-        if (course) {
+        if (currEnrollment) {
             res.status(201).json({ message: "Student Already Enrolled" });
         }
         else {
-
             const newEnroll = new Enroll({
                 course_id: req.body.course_id,
                 student: req.body.student
@@ -164,127 +163,16 @@ router.post('/', async (req, res) => {
 
             const result = await newEnroll.save();
 
-            res.send(result);
+            res.send(await Enroll.populate(newEnroll, "course_id"));
 
         }
 
     } catch (error) {
-        console.log(err);
+        console.log(error);
         res.status(500).json({
-            error: err
+            error: error
         });
     }
-
-});
-
-
-//Student Enroll for a Course  with Permission Number
-router.post('/permission', (req, res, next) => {
-    Enroll.findOne({ course_id: req.body.course_id, student: req.body.student, })
-        .exec()
-        .then(course => {
-            if (course) {
-                res.status(201).json({ message: "Student Already Enrolled" });
-            }
-            else {
-                Course.findOne({ course_id: req.body.course_id })
-                    .exec()
-                    .then(course => {
-                        console.log("From database", course);
-                        if (course) {
-                            Permission.find({ permission_id: req.body.permission, used: "no", course_id: req.body.course_id })
-                                .exec()
-                                .then(doc => {
-                                    console.log("From database", doc);
-                                    if (doc.length >= 1) {
-
-                                        var total_enroll = course.total_enroll;
-                                        total_enroll = total_enroll + 1;
-
-                                        console.log("Avalable for Enroll, Current Status:", total_enroll);
-                                        Enroll.findOne().sort({ enroll_id: 'desc', _id: -1 }).limit(1)
-                                            .exec()
-                                            .then(docs => {
-                                                console.log(docs);
-                                                var enroll_id = Number(docs.enroll_id) + 1;
-                                                const enroll = new Enroll({
-                                                    _id: new mongoose.Types.ObjectId(),
-                                                    permission: req.body.permission,
-                                                    course_id: req.body.course_id,
-                                                    student: req.body.student,
-                                                    status: "enrolled",
-                                                    enroll_id: enroll_id,
-                                                    number: total_enroll,
-                                                });
-                                                enroll
-                                                    .save()
-                                                    .then(result => {
-
-                                                        console.log(result);
-
-                                                        Course.update({ course_id: req.body.course_id }, { $set: { total_enroll: total_enroll } })
-                                                            .exec()
-                                                            .then(result => {
-                                                                Permission.update({ permission_id: req.body.permission }, { $set: { used: "yes" } })
-                                                                    .exec()
-                                                                    .then(result => {
-
-                                                                        console.log(result);
-
-                                                                    })
-
-                                                            })
-                                                            .catch(err => {
-                                                                console.log(err);
-                                                                res.status(500).json({
-                                                                    error: err
-                                                                });
-                                                            });
-                                                    })
-                                                    .catch(err => console.log(err));
-                                                res.status(201).json({
-                                                    message: "Enrollment Done with Permission Number",
-                                                    total_enroll: total_enroll,
-
-                                                });
-
-                                            }).catch(err => {
-                                                console.log(err);
-                                                res.status(500).json({
-                                                    error: err
-                                                })
-                                            })
-
-
-                                    }
-                                    else {
-                                        res.status(201).json({ message: "not a Valid Permission ID" });
-                                    }
-
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                    res.status(500).json({ error: err });
-                                })
-
-                        }
-                        else {
-                            res.status(404).json({ message: "Not a valid Course" });
-                        }
-
-                    })
-            }
-        })
-
-
-
-
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
 
 });
 

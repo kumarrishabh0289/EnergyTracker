@@ -26,7 +26,7 @@ class TeacherDashboard extends Component {
 
     loadCourse() {
         let email = sessionStorage.authenticatedUser;
-        console.log("API_URL",API_URL)
+        console.log("API_URL", API_URL)
         axios.get(API_URL + '/course/email', { params: { email } })
             .then((response) => {
                 console.log(response.data);
@@ -119,7 +119,7 @@ class TeacherDashboard extends Component {
                             <p>Teacher ID: {sessionStorage.authenticatedUser}</p>
                             <p>{this.state.status}</p>
                         </div>
-                        <div class="card-columns">
+                        <div class="card-columns row">
                             {
                                 this.state.course.map(course => {
                                     return (

@@ -30,6 +30,7 @@ class StudentDashboard extends Component {
     getStudentData = () => {
 
         axios.get(`${API_URL}/enroll/getEnrolledCourses/${sessionStorage.authenticatedUser}`).then(response => {
+            console.log('response', response)
             // this.setState({
             //     courses: response.data.courses,
             //     projects: response.data.projects
@@ -42,10 +43,10 @@ class StudentDashboard extends Component {
         this.hideAddModal();
         axios.post(`${API_URL}/enroll`, {
             student: sessionStorage.authenticatedUser,
-            course: this.state.addCode
+            course_id: this.state.addCode
         }).then(data => {
             this.setState({
-                courses: data
+                courses: [...this.state.courses, data.data.course_id]
             })
         }).catch(error => {
             if (error.response)
