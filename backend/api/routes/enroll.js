@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Enroll = require('../models/enroll');
 const Course = require('../models/course');
 const Permission = require('../models/permission');
+const Project = require('../models/project');
 
 
 router.get('/', (req, res, next) => {
@@ -43,15 +44,22 @@ router.get('/status', (req, res, next) => {
 router.get('/getEnrolledCourses/:name', async (req, res) => {
 
     const student = req.params.name;
-    console.log("student", student);
+    let projects = [];
 
     try {
         let results = await Enroll.find({ student: student }, 'course_id').populate('course_id');
 
-        res.send(results);
+        for (let result of results) {
+            let courseProjects = await Project.find({ course_id: result.course_id._id });
+
+            projects = [...projects, ...courseProjects];
+        }
+
+        res.send({ courses: results, projects: projects });
+
     } catch (error) {
-        console.log(err);
-        res.status(500).json({ error: err });
+        console.log(error);
+        res.status(500).json({ error: error });
     }
 
 });
@@ -163,7 +171,17 @@ router.post('/', async (req, res) => {
 
             const result = await newEnroll.save();
 
-            res.send(await Enroll.populate(newEnroll, "course_id"));
+            const course = await Enroll.populate(newEnroll, "course_id");
+
+            const courseProjects = Project.find({ projectname: course.name });
+
+            for (let project of courseProjects) {
+
+
+
+            }
+
+            res.send(course);
 
         }
 

@@ -32,7 +32,8 @@ class StudentDashboard extends Component {
         axios.get(`${API_URL}/enroll/getEnrolledCourses/${sessionStorage.authenticatedUser}`).then(response => {
             console.log('response', response)
             this.setState({
-                courses: response.data
+                courses: response.data.courses,
+                projects: response.data.projects
             })
         })
 
