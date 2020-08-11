@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import AuthenticatedRoute from './AuthenticatedRoute.jsx'
 import LoginComponent from './LoginComponent.jsx'
 import ErrorComponent from './ErrorComponent.jsx'
@@ -13,6 +13,7 @@ import StudentDashboard from './StudentDashboard'
 import TeacherDashboard from './TeacherDashboard'
 import AddCourse from './AddCourse'
 import CourseDetail from './CourseDetail'
+import EditUsage from './EditUsage.jsx'
 
 
 class EnergyTracker extends Component {
@@ -21,23 +22,24 @@ class EnergyTracker extends Component {
             <div className="AgCloudApp">
                 <Router>
                     <>
-                        <HeaderComponent/>
+                        <HeaderComponent />
                         <Switch>
-                            <Route path="/" exact component={FrontPage}/>
-                            <Route path="/login" component={FrontPage}/>
-                            <AuthenticatedRoute path="/welcome/:name" component={WelcomeComponent}/>
-                            <Route path="/signup" component={SignUp}/>
-                            <AuthenticatedRoute path="/logout" component={LogoutComponent}/>
-                            <AuthenticatedRoute path="/studentdashboard" component={StudentDashboard}/>
-                            <AuthenticatedRoute path="/teacherdashboard" component={TeacherDashboard}/>
-                            <AuthenticatedRoute path="/addcourse" component={AddCourse}/>
-                            <AuthenticatedRoute path="/coursedetail" component={CourseDetail}/>
-                            <Route component={ErrorComponent}/>
+                            <Route path="/" exact component={FrontPage} />
+                            <Route path="/login" component={FrontPage} />
+                            <AuthenticatedRoute path="/welcome/:name" component={WelcomeComponent} />
+                            <Route path="/signup" component={SignUp} />
+                            <AuthenticatedRoute path="/logout" component={LogoutComponent} />
+                            <AuthenticatedRoute path="/studentdashboard" component={StudentDashboard} />
+                            <AuthenticatedRoute path="/teacherdashboard" component={TeacherDashboard} />
+                            <AuthenticatedRoute path="/addcourse" component={AddCourse} />
+                            <AuthenticatedRoute path="/coursedetail" component={CourseDetail} />
+                            <AuthenticatedRoute path="/editUsage/:projectId" component={EditUsage} />
+                            <Route component={ErrorComponent} />
                         </Switch>
-                       
+
                     </>
                 </Router>
-               
+
             </div>
         )
     }
