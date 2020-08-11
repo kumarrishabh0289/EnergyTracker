@@ -5,6 +5,7 @@ const Enroll = require('../models/enroll');
 const Course = require('../models/course');
 const Permission = require('../models/permission');
 const Project = require('../models/project');
+const Usage = require('../models/usage');
 
 
 router.get('/', (req, res, next) => {
@@ -173,11 +174,13 @@ router.post('/', async (req, res) => {
 
             const course = await Enroll.populate(newEnroll, "course_id");
 
-            const courseProjects = Project.find({ projectname: course.name });
+            let courseProjects = await Project.find({ course_id: course.course_id._id });
 
             for (let project of courseProjects) {
 
+                const entries = getDaysArray(new Date(project.StartDate), new Date(project.EndDate), project._id, course.course_id._id, req.body.student);;
 
+                const usageRecords = await Usage.insertMany(entries);
 
             }
 
@@ -193,5 +196,22 @@ router.post('/', async (req, res) => {
     }
 
 });
+
+
+var getDaysArray = function (start, end, project_id, course_id, student) {
+    let returnArr = [];
+
+    for (var arr = [], dt = start; dt <= end; dt.setDate(dt.getDate() + 1)) {
+        var m = new Date(dt);
+        returnArr.push({
+            project_id: project_id,
+            course_id: course_id,
+            date: m,
+            user_id: student
+        });
+    }
+
+    return returnArr;
+};
 
 module.exports = router;
