@@ -40,26 +40,19 @@ router.get('/status', (req, res, next) => {
 
 });
 
-router.get('/email', (req, res, next) => {
-    console.log("reached here");
-    const student = req.query.email;
-    console.log("student", student);
-    Enroll.find({ student: student })
-        .exec()
-        .then(doc => {
-            console.log("From database", doc);
-            if (doc) {
-                res.status(200).json(doc);
-            }
-            else {
-                res.status(404).json({ message: "not a valid Email ID" });
-            }
+router.get('/getEnrolledCourses/:name', async (req, res) => {
 
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ error: err });
-        })
+    const student = req.params.name;
+    console.log("student", student);
+
+    try {
+        let results = await Enroll.find({ student: student }).populate('course_id');
+
+        res.send(results);
+    } catch (error) {        
+        console.log(err);
+        res.status(500).json({ error: err });
+    }
 
 });
 
