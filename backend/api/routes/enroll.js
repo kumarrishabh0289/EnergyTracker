@@ -49,7 +49,7 @@ router.get('/getEnrolledCourses/:name', async (req, res) => {
         let results = await Enroll.find({ student: student }).populate('course_id');
 
         res.send(results);
-    } catch (error) {        
+    } catch (error) {
         console.log(err);
         res.status(500).json({ error: err });
     }
@@ -146,156 +146,28 @@ router.patch("/", (req, res, next) => {
 
 
 //Student Enroll for a Course 
-router.post('/', (req, res, next) => {
-    Enroll.findOne({ course_id: req.body.course_id, student: req.body.student, })
-        .exec()
-        .then(course => {
-            if (course) {
-                res.status(201).json({ message: "Student Already Enrolled" });
-            }
-            else {
-                Course.findOne({ course_id: req.body.course_id })
-                    .exec()
-                    .then(course => {
-                        console.log("From database", course);
-                        if (course) {
+router.post('/', async (req, res) => {
+    console.log("ENROLL!");
 
-                            var capacity = course.capacity;
-                            var waiting = course.waiting;
-                            var current_wait = course.current_wait;
-                            current_wait = current_wait + 1;
-                            var total_enroll = course.total_enroll;
-                            total_enroll = total_enroll + 1;
-                            if (total_enroll >= capacity) {
-                                console.log("Class is Full");
-                                if (current_wait >= waiting) {
-                                    console.log("Exceeded Max wait limit for this class");
-                                    res.status(201).json({
-                                        message: "Exceeded Max wait limit for this class"
+    try {
+        const currEnrollment = await Enroll.findOne({ course_id: req.body.course_id, student: req.body.student });
 
-                                    });
-
-
-                                }
-                                else {
-                                    console.log("available for waitlist, Current Waitlist", current_wait);
-                                    Enroll.findOne().sort({ enroll_id: 'desc', _id: -1 }).limit(1)
-                                        .exec()
-                                        .then(docs => {
-                                            console.log(docs);
-                                            var enroll_id = Number(docs.enroll_id) + 1;
-                                            const enroll = new Enroll({
-                                                _id: new mongoose.Types.ObjectId(),
-                                                permission: req.body.permission,
-                                                course_id: req.body.course_id,
-                                                student: req.body.student,
-                                                status: "waitlist",
-                                                enroll_id: enroll_id,
-                                                number: current_wait,
-                                            });
-                                            enroll
-                                                .save()
-                                                .then(result => {
-
-                                                    console.log(result);
-
-                                                    Course.update({ course_id: req.body.course_id }, { $set: { current_wait: current_wait } })
-                                                        .exec()
-                                                        .then(result => {
-                                                            console.log(result);
-
-                                                        })
-                                                        .catch(err => {
-                                                            console.log(err);
-                                                            res.status(500).json({
-                                                                error: err
-                                                            });
-                                                        });
-                                                })
-                                                .catch(err => console.log(err));
-                                            res.status(201).json({
-                                                message: "Enrollment Done With Wait-List",
-                                                current_wait: current_wait,
-
-                                            });
-
-                                        }).catch(err => {
-                                            console.log(err);
-                                            res.status(500).json({
-                                                error: err
-                                            })
-                                        })
-                                }
-                            }
-                            else {
-                                console.log("Avalable for Enroll, Current Status:", total_enroll);
-                                Enroll.findOne().sort({ enroll_id: 'desc', _id: -1 }).limit(1)
-                                    .exec()
-                                    .then(docs => {
-                                        console.log(docs);
-                                        var enroll_id = Number(docs.enroll_id) + 1;
-                                        const enroll = new Enroll({
-                                            _id: new mongoose.Types.ObjectId(),
-                                            permission: req.body.permission,
-                                            course_id: req.body.course_id,
-                                            student: req.body.student,
-                                            status: "enrolled",
-                                            enroll_id: enroll_id,
-                                            number: total_enroll,
-                                        });
-                                        enroll
-                                            .save()
-                                            .then(result => {
-
-                                                console.log(result);
-
-                                                Course.update({ course_id: req.body.course_id }, { $set: { total_enroll: total_enroll } })
-                                                    .exec()
-                                                    .then(result => {
-                                                        console.log(result);
-
-                                                    })
-                                                    .catch(err => {
-                                                        console.log(err);
-                                                        res.status(500).json({
-                                                            error: err
-                                                        });
-                                                    });
-                                            })
-                                            .catch(err => console.log(err));
-                                        res.status(201).json({
-                                            message: "Enrollment Done",
-                                            total_enroll: total_enroll,
-
-                                        });
-
-                                    }).catch(err => {
-                                        console.log(err);
-                                        res.status(500).json({
-                                            error: err
-                                        })
-                                    })
-                            }
-
-
-                        }
-                        else {
-                            res.status(404).json({ message: "not a valid Course" });
-                        }
-
-                    })
-            }
-        })
+        if (course) {
+            res.status(201).json({ message: "Student Already Enrolled" });
+        }
+        else {
 
 
 
 
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            })
-        })
+        }
+
+    } catch (error) {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    }
 
 });
 
@@ -314,12 +186,12 @@ router.post('/permission', (req, res, next) => {
                     .then(course => {
                         console.log("From database", course);
                         if (course) {
-                            Permission.find({permission_id: req.body.permission, used:"no", course_id: req.body.course_id })
+                            Permission.find({ permission_id: req.body.permission, used: "no", course_id: req.body.course_id })
                                 .exec()
                                 .then(doc => {
                                     console.log("From database", doc);
-                                    if (doc.length>=1) {
-                                      
+                                    if (doc.length >= 1) {
+
                                         var total_enroll = course.total_enroll;
                                         total_enroll = total_enroll + 1;
 
@@ -348,12 +220,12 @@ router.post('/permission', (req, res, next) => {
                                                             .exec()
                                                             .then(result => {
                                                                 Permission.update({ permission_id: req.body.permission }, { $set: { used: "yes" } })
-                                                                .exec()
-                                                                .then(result => {
-                                                                    
-                                                                    console.log(result);
-    
-                                                                })
+                                                                    .exec()
+                                                                    .then(result => {
+
+                                                                        console.log(result);
+
+                                                                    })
 
                                                             })
                                                             .catch(err => {
@@ -364,7 +236,7 @@ router.post('/permission', (req, res, next) => {
                                                             });
                                                     })
                                                     .catch(err => console.log(err));
-                                                    res.status(201).json({
+                                                res.status(201).json({
                                                     message: "Enrollment Done with Permission Number",
                                                     total_enroll: total_enroll,
 

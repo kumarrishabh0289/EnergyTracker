@@ -40,7 +40,7 @@ class StudentDashboard extends Component {
 
     registerCourse = () => {
         this.hideAddModal();
-        axios.post(`${API_URL}/class/registerCourse`, {
+        axios.post(`${API_URL}/enroll`, {
             student: sessionStorage.authenticatedUser,
             course: this.state.addCode
         }).then(data => {
