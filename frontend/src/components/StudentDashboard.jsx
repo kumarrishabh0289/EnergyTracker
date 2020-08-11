@@ -31,10 +31,9 @@ class StudentDashboard extends Component {
 
         axios.get(`${API_URL}/enroll/getEnrolledCourses/${sessionStorage.authenticatedUser}`).then(response => {
             console.log('response', response)
-            // this.setState({
-            //     courses: response.data.courses,
-            //     projects: response.data.projects
-            // })
+            this.setState({
+                courses: response.data
+            })
         })
 
     };
@@ -46,7 +45,7 @@ class StudentDashboard extends Component {
             course_id: this.state.addCode
         }).then(data => {
             this.setState({
-                courses: [...this.state.courses, data.data.course_id]
+                courses: [...this.state.courses, data.data]
             })
         }).catch(error => {
             if (error.response)
@@ -108,7 +107,7 @@ class StudentDashboard extends Component {
                                     {
                                         this.state.courses.length ?
                                             this.state.courses.map(course => {
-                                                return <CourseCard course={course} />;
+                                                return <CourseCard course={course.course_id} />;
                                             }) :
                                             "Not Registered in any course"
                                     }

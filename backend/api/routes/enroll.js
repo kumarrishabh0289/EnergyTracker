@@ -46,7 +46,7 @@ router.get('/getEnrolledCourses/:name', async (req, res) => {
     console.log("student", student);
 
     try {
-        let results = await Enroll.find({ student: student }).populate('course_id');
+        let results = await Enroll.find({ student: student }, 'course_id').populate('course_id');
 
         res.send(results);
     } catch (error) {
