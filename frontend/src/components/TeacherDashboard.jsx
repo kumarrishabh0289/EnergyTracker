@@ -89,18 +89,6 @@ class TeacherDashboard extends Component {
 
     }
 
-
-
-
-    GoToCourse = (course) => {
-        sessionStorage.setItem('courseid', course._id);
-        sessionStorage.setItem('coursename', course.name);
-        this.props.history.push(`/coursedetail`)
-    }
-
-
-
-
     render() {
         console.log("this.state.course", this.state.course)
 
