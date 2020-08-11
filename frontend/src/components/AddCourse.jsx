@@ -36,7 +36,7 @@ class AddCourse extends Component {
 
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post(API_URL + '/class/addClass', data)
+        axios.post(API_URL + '/course', data)
             .then((response) => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 201) {

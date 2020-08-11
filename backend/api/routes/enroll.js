@@ -157,8 +157,14 @@ router.post('/', async (req, res) => {
         }
         else {
 
+            const newEnroll = new Enroll({
+                course_id: req.body.course_id,
+                student: req.body.student
+            });
 
+            const result = await newEnroll.save();
 
+            res.send(result);
 
         }
 
