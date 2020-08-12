@@ -204,8 +204,8 @@ var getDaysArray = function (start, end, project_id, course_id, student) {
     for (var arr = [], dt = start; dt <= end; dt.setDate(dt.getDate() + 1)) {
         var m = new Date(dt);
         returnArr.push({
-            project_id: project_id,
-            course_id: course_id,
+            project: project_id,
+            course: course_id,
             date: m,
             user_id: student
         });

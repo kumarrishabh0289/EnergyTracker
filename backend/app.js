@@ -9,6 +9,7 @@ const userRoutes = require('./api/routes/user');
 const profileRoutes = require('./api/routes/profile');
 const courseRoutes = require('./api/routes/course');
 const enrollRoutes = require('./api/routes/enroll');
+const usageRoutes = require('./api/routes/usage');
 
 
 const lectureRoutes = require('./api/routes/lecture');
@@ -56,6 +57,7 @@ app.use('/enroll',  enrollRoutes);
 app.use('/lecture',  lectureRoutes);
 app.use('/permission',  permissionRoutes);
 app.use('/mail',  mailRoutes);
+app.use('/usage',  usageRoutes);
 
 
 
