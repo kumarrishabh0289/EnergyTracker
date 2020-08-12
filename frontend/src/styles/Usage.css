@@ -5,3 +5,7 @@
 .table-container td {
     text-align: center;
 }
+
+.table-container input {
+    width: 60px;
+}

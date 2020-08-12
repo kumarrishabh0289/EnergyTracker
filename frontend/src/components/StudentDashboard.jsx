@@ -108,7 +108,7 @@ class StudentDashboard extends Component {
                                     {
                                         this.state.courses.length ?
                                             this.state.courses.map(course => {
-                                                return <CourseCard course={course.course_id} />;
+                                                return <CourseCard key={course.course_id._id} course={course.course_id} />;
                                             }) :
                                             "Not Registered in any course"
                                     }
@@ -125,7 +125,7 @@ class StudentDashboard extends Component {
                                         {
                                             this.state.projects.length ?
                                                 this.state.projects.map(project => {
-                                                    return <Link to={"/editUsage/" + project._id}>{project.name}</Link>;
+                                                    return <Link to={"/editUsage/" + project._id} key={project._id}>{project.name}</Link>;
                                                 }) :
                                                 "Not Registered in any project"
                                         }
@@ -138,7 +138,7 @@ class StudentDashboard extends Component {
                                         {
                                             this.state.projects.length ?
                                                 this.state.projects.map(project => {
-                                                    return <div>{project.name}</div>;
+                                                    return <div key={project._id}>{project.name}</div>;
                                                 }) :
                                                 "Not Registered in any project"
                                         }

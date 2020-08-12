@@ -12,22 +12,23 @@ class CourseCard extends Component {
 
     render() {
         return (<div className=" col-sm-4">
-            <div class="card bg-info text-white">
-                <div class="card-header">
+            <div className="card bg-info text-white">
+                <div className="card-header">
                     {this.props.course.name}
                 </div>
-                <div class="card-body ">
-                    <div class="card-text">
+                <div className="card-body ">
+                    <div className="card-text">
 
-                        <div class="table-responsive">
-                            <table class="table">
+                        <div className="table-responsive">
+                            <table className="table">
                                 <tbody>
                                     <tr>
                                         <th>Department</th>
                                         <td>{this.props.course.department}</td>
                                     </tr>
                                     <tr>
-                                        <th>Term </th><td>{this.props.course.term}</td>
+                                        <th>Term </th>
+                                        <td>{this.props.course.term}</td>
                                     </tr>
                                     {
                                         sessionStorage.getItem('role') == "Student" ? "" :
@@ -45,8 +46,8 @@ class CourseCard extends Component {
                 </div>
                 {
                     sessionStorage.getItem('role') == "Student" ? "" :
-                        <div class="card-footer">
-                            <button onClick={() => this.GoToCourse(this.props.course)} class="btn btn-danger">Go To Course</button><br />
+                        <div className="card-footer">
+                            <button onClick={() => this.GoToCourse(this.props.course)} className="btn btn-danger">Go To Course</button><br />
                         </div>
                 }
 
