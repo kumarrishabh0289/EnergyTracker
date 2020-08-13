@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Course = require('../models/course');
 const Project = require('../models/project');
+const Enroll = require('../models/enroll');
+const Usage = require('../models/usage');
 
 
 router.get('/', (req, res, next) => {
@@ -72,7 +74,7 @@ router.post('/', (req, res, next) => {
 });
 
 
-router.post('/createproject', (req, res, next) => {
+router.post('/createproject', async (req, res) => {
     const project = new Project({
         _id : new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -84,17 +86,48 @@ router.post('/createproject', (req, res, next) => {
         projectname:req.body.projectname
      
     });
-    project
-        .save()
-        .then(result => {
-            console.log(result);
-        })
-        .catch(err => console.log(err));
-    res.status(201).json({
-        message: "New project Created",
+
+
+    try {
+        const savedProject = await project.save();
+        console.log(savedProject);
+
+        const enrolledStudents = await Enroll.find({ course_id: req.body.course_id });
+
+        for (const enroll of enrolledStudents) {
+
+            const entries = getDaysArray(new Date(savedProject.StartDate), new Date(savedProject.EndDate), savedProject._id, req.body.course_id, enroll.student);
+
+            const usageRecords = await Usage.insertMany(entries);
+
+        }
+
+        res.status(201).json({
+            message: "New project Created",                
+        });
         
-    });
+    } catch (error) {
+        console.log(err);
+        res.status(500).json({error:err});        
+    }
 });
+
+
+var getDaysArray = function (start, end, project_id, course_id, student) {
+    let returnArr = [];
+
+    for (var arr = [], dt = start; dt <= end; dt.setDate(dt.getDate() + 1)) {
+        var m = new Date(dt);
+        returnArr.push({
+            project: project_id,
+            course: course_id,
+            date: m,
+            user_id: student
+        });
+    }
+
+    return returnArr;
+};
 
 router.get('/project', (req, res, next)=>{
     const course_id = req.query.course_id;
