@@ -20,3 +20,7 @@
     background-color: #ffffcc;
     font-weight: 500;
 }
+
+.table-container .bordered-name {
+    padding: 5px;
+}

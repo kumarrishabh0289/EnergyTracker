@@ -1,0 +1,184 @@
+import React, { Component, Fragment } from 'react';
+import Axios from 'axios';
+import { API_URL } from '../Constants';
+import "../styles/Usage.css";
+import Alert from 'react-bootstrap/Alert';
+
+class ViewUsage extends Component {
+    state = {
+        usageData: [],
+        labelData: ["Date", "Electricity (kWh)", "Gas (therms)"]
+    };
+
+    componentDidMount = () => {
+
+        Axios.get(`${API_URL}/usage/getAllUsage/${this.props.match.params.projectId}?user=${sessionStorage.authenticatedUser}`).then(response => {
+            console.log(response);
+            this.setState({ usageData: response.data });
+        });
+
+    };
+
+    render() {
+        const selfData = this.state.usageData[sessionStorage.getItem("authenticatedUser")];
+
+        const dateDifference = selfData && (new Date(selfData[0].project.ConservationStartDate) - new Date(selfData[0].project.StartDate)) / (1000 * 3600 * 24);
+
+        const totalDays = selfData && ((new Date(selfData[0].project.EndDate) - new Date(selfData[0].project.StartDate)) / (1000 * 3600 * 24));
+        const remainingDays = totalDays - dateDifference;
+
+        return (
+            <div className="edit-wrapper card mt-4 col-sm-11 mx-auto p-3">
+                <h2 className="mb-4">Usage Details </h2>
+
+                <h4 className="mb-5">Project: {selfData && selfData[0].project.name}</h4>
+
+                <div className="table-container mb-4">
+                    <Alert className="m-0" variant="success">Your Usage </Alert>
+                    <table className="usage-table table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th colSpan={dateDifference ? dateDifference : 1}>Baseline Period</th>
+
+                                <th colSpan={remainingDays ? remainingDays + 1 : 1}>Conservation Period</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                ["date", "electricity", "gas"].map((data, index) => {
+
+                                    return <tr key={data}>
+                                        <th>{this.state.labelData[index]}</th>
+                                        {
+                                            selfData && selfData.map((usage, index2) => {
+                                                let text;
+
+                                                if (index == 0) {
+                                                    let date = new Date(usage["date"]);
+                                                    text = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate();
+                                                } else {
+                                                    // text = <input type="number" value={usage[data]} onChange={e => this.onChange(e, data, index2)} />;
+                                                    text = <div>{usage[data]}</div>;
+                                                }
+
+                                                return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={usage._id}>{text}</td>
+                                            })
+                                        }
+                                    </tr>;
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="table-container mb-4">
+                    <Alert className="m-0" variant="success">Class Usage Details</Alert>
+                    <table className="usage-table table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th colSpan={dateDifference}>Baseline Period</th>
+
+                                <th colSpan={remainingDays + 1}>Conservation Period</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                ["date"].map((data, index) => {
+
+                                    return <tr key={data}>
+                                        <th>{this.state.labelData[index]}</th>
+                                        {
+                                            this.getHeaderData(index, data, dateDifference)
+
+                                            // this.getData(index, data, dateDifference)
+                                        }
+                                    </tr>;
+                                })
+                            }
+
+                            {
+                                Object.keys(this.state.usageData).map(data => {
+                                    return (
+                                        <Fragment>
+                                            <div className="bordered-name mt-4"><div>{data}</div></div>
+                                            <tr>
+                                                <th>{this.state.labelData[1]}</th>
+                                                {
+                                                    this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
+                                                        let text;
+                                                        text = <div>{currUsage["electricity"]}</div>;
+
+
+                                                        return <td key={currUsage._id}>{text}</td>
+
+                                                    })
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <th>{this.state.labelData[2]}</th>
+                                                {
+                                                    this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
+                                                        let text;
+                                                        text = <div>{currUsage["gas"]}</div>;
+
+
+                                                        return <td key={currUsage._id}>{text}</td>
+
+                                                    })
+                                                }
+                                            </tr>
+                                        </Fragment>
+                                    );
+                                })
+                                // this.getData()
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div >
+        );
+    }
+
+    getHeaderData = (index, data, dateDifference) => {
+
+        return this.state.usageData[sessionStorage.getItem("authenticatedUser")] && this.state.usageData[sessionStorage.getItem("authenticatedUser")].map((currUsage, index2) => {
+            let text;
+
+            if (index == 0) {
+                let date = new Date(currUsage["date"]);
+                text = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate();
+            }
+
+            return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={currUsage._id}>{text}</td>
+
+        });
+
+    }
+
+    getData = (index, data, dateDifference) => {
+        let userData = [];
+
+        // .forEach((usage) => {
+        //     let x = this.state.usageData[usage].map((currUsage, index2) => {
+        //         let text;
+        //         text = <div>{currUsage[data]}</div>;
+
+
+        //         return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={currUsage._id}>{text}</td>
+
+        //     });
+
+        //     userData.push(x);
+        // });
+
+        return userData;
+
+    }
+}
+
+export default ViewUsage;

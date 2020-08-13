@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const Usage = require('../models/usage');
+const e = require('express');
 
 
 router.get('/:project_id', async (req, res) => {
@@ -11,6 +13,33 @@ router.get('/:project_id', async (req, res) => {
         const usage = await Usage.find({ project: req.params.project_id, user_id: req.query.user }).populate('project').sort({ date: 1 });
 
         res.send(usage);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+
+});
+
+
+router.get('/getAllUsage/:project_id', async (req, res) => {
+
+    try {
+        let response = {};
+
+        const usages = await Usage.find({ project: req.params.project_id }).populate('project').sort({ user_id: 1 });
+
+        for (let usage of usages) {
+
+            if (!response[usage.user_id]) {
+                response[usage.user_id] = [];
+            }
+
+            response[usage.user_id].push(usage);
+            
+        }            
+
+        res.send(response);
 
     } catch (error) {
         console.log(error);

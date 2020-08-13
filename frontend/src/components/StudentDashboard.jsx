@@ -138,7 +138,7 @@ class StudentDashboard extends Component {
                                         {
                                             this.state.projects.length ?
                                                 this.state.projects.map(project => {
-                                                    return <div key={project._id}>{project.name}</div>;
+                                                    return <Link to={"/viewUsage/" + project._id} key={project._id}>{project.name}</Link>;
                                                 }) :
                                                 "Not Registered in any project"
                                         }

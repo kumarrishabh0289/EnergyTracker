@@ -58,10 +58,12 @@ class EditUsage extends Component {
                 <div className="table-container">
                     <table className="usage-table table table-bordered">
                         <thead>
-                            <th></th>
-                            <th colSpan={dateDifference}>Baseline Period</th>
+                            <tr>
+                                <th></th>
+                                <th colSpan={dateDifference}>Baseline Period</th>
 
-                            <th colSpan={remainingDays + 1}>Conservation Period</th>
+                                <th colSpan={remainingDays + 1}>Conservation Period</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {
@@ -80,7 +82,7 @@ class EditUsage extends Component {
                                                     text = <input type="number" value={usage[data]} onChange={e => this.onChange(e, data, index2)} />
                                                 }
 
-                                                return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green")} key={usage._id}>{text}</td>
+                                                return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={usage._id}>{text}</td>
                                             })
                                         }
                                     </tr>;
