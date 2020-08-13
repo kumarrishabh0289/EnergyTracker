@@ -11,3 +11,5 @@ Change the API_URL of frontend->src->constant folder as: http://localhost:3000/a
 Goto frontend -> npm i -> npm start
 Goto backend -> npm i -> npm run dev
 Application will start on localhost:3000
+
+# Things to DO:
