@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import { API_URL } from '../Constants';
 import "../styles/Usage.css";
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 
 class EditUsage extends Component {
     state = {
