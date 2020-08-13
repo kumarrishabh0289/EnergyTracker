@@ -12,7 +12,7 @@ class HeaderComponent extends Component {
             if (sessionStorage.role == "teacher") {
                 teacher = true
             }
-            if (sessionStorage.role == "student") {
+            if (sessionStorage.role == "Student") {
                 student = true
             }
         }

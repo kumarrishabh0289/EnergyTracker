@@ -45,6 +45,10 @@ class EditUsage extends Component {
     };
 
     render() {
+        const dateDifference = this.state.usageData[0] && (new Date(this.state.usageData[0].project.ConservationStartDate) - new Date(this.state.usageData[0].project.StartDate)) / (1000 * 3600 * 24);
+
+        const remainingDays = this.state.usageData[0] && ((new Date(this.state.usageData[0].project.EndDate) - new Date(this.state.usageData[0].project.StartDate)) / (1000 * 3600 * 24)) - dateDifference;
+
         return (
             <div className="edit-wrapper card mt-4 col-sm-11 mx-auto p-3">
                 <h2 className="mb-4">Usage Details </h2>
@@ -53,11 +57,17 @@ class EditUsage extends Component {
 
                 <div className="table-container">
                     <table className="usage-table table table-bordered">
+                        <thead>
+                            <th></th>
+                            <th colSpan={dateDifference}>Baseline Period</th>
+
+                            <th colSpan={remainingDays + 1}>Conservation Period</th>
+                        </thead>
                         <tbody>
                             {
                                 ["date", "electricity", "gas"].map((data, index) => {
 
-                                    return <tr>
+                                    return <tr key={data}>
                                         <th>{this.state.labelData[index]}</th>
                                         {
                                             this.state.usageData.map((usage, index2) => {
@@ -70,7 +80,7 @@ class EditUsage extends Component {
                                                     text = <input type="number" value={usage[data]} onChange={e => this.onChange(e, data, index2)} />
                                                 }
 
-                                                return <td>{text}</td>
+                                                return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green")} key={usage._id}>{text}</td>
                                             })
                                         }
                                     </tr>;
@@ -83,7 +93,7 @@ class EditUsage extends Component {
                 <div className="col-sm-1">
                     <Button variant="success" className="w-100" onClick={this.submitData}>Submit</Button>
                 </div>
-            </div>
+            </div >
         );
     }
 }

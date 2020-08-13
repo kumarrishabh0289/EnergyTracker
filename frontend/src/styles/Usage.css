@@ -2,10 +2,21 @@
     overflow: auto;
 }
 
-.table-container td {
+.table-container td,
+.table-container thead th {
     text-align: center;
 }
 
 .table-container input {
     width: 60px;
+}
+
+.table-container .row-green {
+    background-color: #A6D785;
+    font-weight: 500;
+}
+
+.table-container .row-yellow {
+    background-color: #ffffcc;
+    font-weight: 500;
 }
