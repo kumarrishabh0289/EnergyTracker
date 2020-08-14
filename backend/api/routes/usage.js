@@ -27,7 +27,9 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
     try {
         let response = {};
 
-        const usages = await Usage.find({ project: req.params.project_id }).populate('project').sort({ user_id: 1 });
+        const selfUsage = await Usage.find({ project: req.params.project_id, user_id: req.query.user }).populate('project');
+
+        const usages = await Usage.find({ project: req.params.project_id, user_id: { $ne: req.query.user } }).populate('project').sort({ user_id: 1 });
 
         for (let usage of usages) {
 
@@ -36,10 +38,12 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
             }
 
             response[usage.user_id].push(usage);
-            
-        }            
 
-        res.send(response);
+        }
+
+        response = Object.values(response);
+
+        res.send({ selfUsage: selfUsage, data: response });
 
     } catch (error) {
         console.log(error);

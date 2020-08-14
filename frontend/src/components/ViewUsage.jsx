@@ -6,12 +6,12 @@ import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import Navbar from 'react-bootstrap/Navbar';
 import Charts from './Charts';
 
 class ViewUsage extends Component {
     state = {
         usageData: [],
+        selfData: [],
         labelData: ["Date", "Electricity (kWh)", "Gas (therms)"],
         showNames: false
     };
@@ -20,26 +20,26 @@ class ViewUsage extends Component {
 
         Axios.get(`${API_URL}/usage/getAllUsage/${this.props.match.params.projectId}?user=${sessionStorage.authenticatedUser}`).then(response => {
             console.log(response);
-            this.setState({ usageData: response.data });
+            this.setState({ usageData: response.data.data, selfData: response.data.selfUsage });
         });
 
     };
 
     render() {
-        const selfData = this.state.usageData[sessionStorage.getItem("authenticatedUser")];
+        const selfData = this.state.selfData;
 
-        const dateDifference = selfData && (new Date(selfData[0].project.ConservationStartDate) - new Date(selfData[0].project.StartDate)) / (1000 * 3600 * 24);
+        const dateDifference = selfData.length && (new Date(selfData[0].project.ConservationStartDate) - new Date(selfData[0].project.StartDate)) / (1000 * 3600 * 24);
 
-        const totalDays = selfData && ((new Date(selfData[0].project.EndDate) - new Date(selfData[0].project.StartDate)) / (1000 * 3600 * 24));
+        const totalDays = selfData.length && ((new Date(selfData[0].project.EndDate) - new Date(selfData[0].project.StartDate)) / (1000 * 3600 * 24));
         const remainingDays = totalDays - dateDifference;
 
         return (
             <div className="edit-wrapper card mt-4 col-sm-11 mx-auto p-3">
                 <h2 className="mb-4">Usage Details </h2>
 
-                <h4 className="mb-5">Project: {selfData && selfData[0].project.name}</h4>
+                <h4 className="mb-5">Project: {selfData.length && selfData[0].project.name}</h4>
 
-                <Tabs defaultActiveKey="charts" id="uncontrolled-tab-example">
+                <Tabs defaultActiveKey="usage" id="uncontrolled-tab-example">
                     <Tab eventKey="usage" title="Usage">
                         {
                             sessionStorage.getItem("role") == "Student" ? "" : <Form.Group controlId="formBasicCheckbox">
@@ -177,7 +177,7 @@ class ViewUsage extends Component {
 
     getHeaderData = (index, data, dateDifference) => {
 
-        return this.state.usageData[sessionStorage.getItem("authenticatedUser")] && this.state.usageData[sessionStorage.getItem("authenticatedUser")].map((currUsage, index2) => {
+        return this.state.selfData && this.state.selfData.map((currUsage, index2) => {
             let text;
 
             if (index == 0) {
@@ -188,26 +188,6 @@ class ViewUsage extends Component {
             return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={currUsage._id}>{text}</td>
 
         });
-
-    }
-
-    getData = (index, data, dateDifference) => {
-        let userData = [];
-
-        // .forEach((usage) => {
-        //     let x = this.state.usageData[usage].map((currUsage, index2) => {
-        //         let text;
-        //         text = <div>{currUsage[data]}</div>;
-
-
-        //         return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={currUsage._id}>{text}</td>
-
-        //     });
-
-        //     userData.push(x);
-        // });
-
-        return userData;
 
     }
 }
