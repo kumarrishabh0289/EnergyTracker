@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { API_URL } from '../Constants'
 import axios from 'axios';
 
@@ -25,7 +25,7 @@ class ProjectDetail extends Component {
 
     loadCourse() {
         let course_id = sessionStorage.courseid;
-        console.log("API_URL",API_URL)
+        console.log("API_URL", API_URL)
         axios.get(API_URL + '/course/project', { params: { course_id } })
             .then((response) => {
                 console.log(response.data);
@@ -109,13 +109,13 @@ class ProjectDetail extends Component {
 
 
                     <div class="body-div">
-                   
-                    <br />
+
+                        <br />
                         <div className="col-sm-5 col-md-5" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
 
                             <h3>Project Detail</h3>
-                            
-                            
+
+
                             <p>{this.state.status}</p>
                         </div>
                         <div class="card-columns">
@@ -135,7 +135,7 @@ class ProjectDetail extends Component {
                                                 </div>
                                                 <div class="card-body ">
                                                     <p class="card-text">
-                                                    
+
                                                         <div class="table-responsive">
                                                             <table class="table">
                                                                 <tr>
@@ -157,8 +157,8 @@ class ProjectDetail extends Component {
                                                     </p>
                                                 </div>
                                                 <div class="card-footer">
-                                                     <button onClick={() => this.GoToCourse(project)} class="btn btn-danger">Go To Course</button><br />
-                                                        </div>
+                                                    <button onClick={() => this.GoToCourse(project)} class="btn btn-danger">Go To Course</button><br />
+                                                </div>
 
 
                                             </div>
@@ -193,4 +193,4 @@ class ProjectDetail extends Component {
 }
 
 
-export default ProjectDetail
+export default withRouter(ProjectDetail) 

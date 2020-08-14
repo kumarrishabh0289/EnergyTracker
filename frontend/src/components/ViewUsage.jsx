@@ -3,11 +3,13 @@ import Axios from 'axios';
 import { API_URL } from '../Constants';
 import "../styles/Usage.css";
 import Alert from 'react-bootstrap/Alert';
+import Form from 'react-bootstrap/Form';
 
 class ViewUsage extends Component {
     state = {
         usageData: [],
-        labelData: ["Date", "Electricity (kWh)", "Gas (therms)"]
+        labelData: ["Date", "Electricity (kWh)", "Gas (therms)"],
+        showNames: false
     };
 
     componentDidMount = () => {
@@ -32,6 +34,14 @@ class ViewUsage extends Component {
                 <h2 className="mb-4">Usage Details </h2>
 
                 <h4 className="mb-5">Project: {selfData && selfData[0].project.name}</h4>
+                {
+                    sessionStorage.getItem("role") == "Student" ? "" : <Form.Group controlId="formBasicCheckbox">
+                        <Form.Check type="checkbox" label="Show Student Names" onChange={e => {
+
+                            this.setState({ showNames: !this.state.showNames })
+                        }} />
+                    </Form.Group>
+                }
 
                 <div className="table-container mb-4">
                     <Alert className="m-0" variant="success">Your Usage </Alert>
@@ -99,10 +109,12 @@ class ViewUsage extends Component {
                             }
 
                             {
-                                Object.keys(this.state.usageData).map(data => {
-                                    return (
+                                Object.keys(this.state.usageData).map((data, index) => {
+
+                                    if (data == sessionStorage.getItem("authenticatedUser")) return "";
+                                    else return (
                                         <Fragment>
-                                            <div className="bordered-name mt-4"><div>{data}</div></div>
+                                            <div className="bordered-name mt-4"><div>{this.state.hideNames ? data : `Student ${index + 1}`}</div></div>
                                             <tr>
                                                 <th>{this.state.labelData[1]}</th>
                                                 {
