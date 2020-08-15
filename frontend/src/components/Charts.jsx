@@ -4,8 +4,52 @@ import ReactHighcharts from 'react-highcharts';
 class Charts extends Component {
     state = {};
 
+    generateData = () => {
+        const { selfData, usageData } = this.props.data;
+        const { param } = this.props;
+        let userData = [];
+
+        userData.push({
+            "name": "Your Usage",
+            "color": "red",
+            "data":
+                selfData.map(data => {
+                    return [new Date(data.date).getTime() - 86400000, data[param]];
+                })
+            ,
+            "type": "line",
+            "zIndex": 10,
+            "lineWidth": 2.5
+        });
+
+        let map = usageData.map((user, index) => {
+            let obj = {
+                "name": "Class Usage",
+                "color": "black",
+                "data":
+                    user.map(data => {
+                        return [new Date(data.date).getTime() - 86400000, data[param]];
+                    })
+                ,
+                "type": "line",
+                "zIndex": 10,
+                "lineWidth": 2.5
+            };
+
+            if (index) obj["linkedTo"] = ':previous';
+
+            return obj;
+        });
+
+        return [...userData, ...map];
+
+    };
+
     render() {
-        const { data } = this.props;
+        const { selfData, usageData } = this.props.data;
+
+        let userData = this.generateData();
+
         let chartData = {
             "chart": {
                 "renderTo": "myDiv",
@@ -25,8 +69,8 @@ class Charts extends Component {
                 },
                 "plotBands": [
                     {
-                        "to": 1596499200000,
-                        "from": 1601769600000,
+                        "to": selfData.length && new Date(selfData[0].project.ConservationStartDate).getTime() - 86400000,
+                        "from": selfData.length && new Date(selfData[0].project.StartDate).getTime() - 86400000,
                         "color": "#ffffcc",
                         "label": {
                             "text": "Baseline Period",
@@ -37,8 +81,8 @@ class Charts extends Component {
                         }
                     },
                     {
-                        "to": 1604448000000,
-                        "from": 1601769600000,
+                        "to": selfData.length && new Date(selfData[0].project.EndDate).getTime() - 86400000,
+                        "from": selfData.length && new Date(selfData[0].project.ConservationStartDate).getTime() - 86400000,
                         "color": "#cbffcb",
                         "label": {
                             "text": "Conservation Period",
@@ -71,135 +115,21 @@ class Charts extends Component {
                 }
             },
             "legend": {
-                "enabled": false
+                "enabled": true
             },
             "tooltip": {
-                // "formatter": function () {
-                //     return '' + 'Day: ' + ReactHighcharts.dateFormat('%B %e %Y', this.x) + '<br>' + 'Usage: ' + this.y + ' kWh';
-                // }
+                "formatter": function () {
+                    let date = new Date(this.x);
+                    let text = date.toLocaleString('default', { month: 'short' }) + " " + (date.getDate() + 1);
+
+                    return '' + 'Day: ' + text + '<br>' + 'Usage: ' + this.y + ' kWh';
+                }
             },
-            "series": [
-                {
-                    "name": "Your Usage",
-                    "color": "red",
-                    "data": [
-                        [
-                            1596499200000,
-                            2
-                        ],
-                        [
-                            1596585600000,
-                            8
-                        ],
-                        [
-                            1596672000000,
-                            3
-                        ],
-                        [
-                            1596758400000,
-                            7
-                        ],
-                        [
-                            1596844800000,
-                            5
-                        ],
-                        [
-                            1601769600000,
-                            3
-                        ],
-                        [
-                            1601856000000,
-                            4
-                        ],
-                        [
-                            1601942400000,
-                            5
-                        ],
-                        [
-                            1602028800000,
-                            6
-                        ],
-                        [
-                            1602115200000,
-                            5
-                        ]
-                    ],
-                    "type": "line",
-                    "zIndex": 10,
-                    "lineWidth": 2.5
-                },
-                {
-                    "name": "Distribution",
-                    "color": "grey",
-                    "visible": false,
-                    "zIndex": 3,
-                    "data": [
-                        [
-                            1596499200000,
-                            2
-                        ],
-                        [
-                            1596499200000,
-                            2
-                        ],
-                        [
-                            1596585600000,
-                            8
-                        ],
-                        [
-                            1596585600000,
-                            3
-                        ],
-                        [
-                            1596672000000,
-                            3
-                        ],
-                        [
-                            1596672000000,
-                            4
-                        ],
-                        [
-                            1596758400000,
-                            7
-                        ],
-                        [
-                            1596758400000,
-                            5
-                        ],
-                        [
-                            1596844800000,
-                            5
-                        ],
-                        [
-                            1596844800000,
-                            5
-                        ],
-                        [
-                            1601769600000,
-                            3
-                        ],
-                        [
-                            1601856000000,
-                            4
-                        ],
-                        [
-                            1601942400000,
-                            5
-                        ],
-                        [
-                            1602028800000,
-                            6
-                        ],
-                        [
-                            1602115200000,
-                            5
-                        ]
-                    ]
-                }]
-        }
+            "series": userData
+        };
 
         return (
-            <div className="charts-wrapper" >
+            <div className="charts-wrapper p-3" >
                 <ReactHighcharts config={chartData} />
             </div>
         );

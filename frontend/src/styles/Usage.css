@@ -24,3 +24,12 @@
 .table-container .bordered-name {
     padding: 5px;
 }
+
+.charts-component-wrapper {
+    padding: 30px 0;
+}
+
+.charts-component-wrapper .nav-tabs > a {
+    width: 33.33%;
+    text-align: center;
+}

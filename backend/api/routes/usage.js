@@ -27,17 +27,21 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
     try {
         let response = {};
 
-        const selfUsage = await Usage.find({ project: req.params.project_id, user_id: req.query.user }).populate('project');
+        const selfUsage = await Usage.find({ project: req.params.project_id, user_id: req.query.user }).populate('project').lean();
 
-        const usages = await Usage.find({ project: req.params.project_id, user_id: { $ne: req.query.user } }).populate('project').sort({ user_id: 1 });
+        for (let use of selfUsage)
+            use["carbon"] = use.electricity * 0.524 + use.gas * 13.446;
+
+        const usages = await Usage.find({ project: req.params.project_id, user_id: { $ne: req.query.user } }).populate('project').sort({ user_id: 1 }).lean();
 
         for (let usage of usages) {
+
+            const carbon = usage.electricity * 0.524 + usage.gas * 13.446;
 
             if (!response[usage.user_id]) {
                 response[usage.user_id] = [];
             }
-
-            response[usage.user_id].push(usage);
+            response[usage.user_id].push({ ...usage, carbon });
 
         }
 

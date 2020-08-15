@@ -6,7 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import Charts from './Charts';
+import ChartsWrapper from './ChartsWrapper';
 
 class ViewUsage extends Component {
     state = {
@@ -39,7 +39,7 @@ class ViewUsage extends Component {
 
                 <h4 className="mb-5">Project: {selfData.length && selfData[0].project.name}</h4>
 
-                <Tabs defaultActiveKey="usage" id="uncontrolled-tab-example">
+                <Tabs defaultActiveKey="charts" id="uncontrolled-tab-example">
                     <Tab eventKey="usage" title="Usage">
                         {
                             sessionStorage.getItem("role") == "Student" ? "" : <Form.Group controlId="formBasicCheckbox">
@@ -160,7 +160,7 @@ class ViewUsage extends Component {
 
                     </Tab>
                     <Tab eventKey="charts" title="Charts">
-                        <Charts data={this.state.usageData} />
+                        <ChartsWrapper data={this.state} />
                     </Tab>
                     <Tab eventKey="emissions" title="Carbon Emissions">
                         <div>zxc</div>
