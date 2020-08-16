@@ -53,9 +53,19 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
             "carbon": calculateAverage("carbon", selfUsage, response)
         };
 
-        console.log('averages', averageObj)
+        let weeklyAverage = {
+            "electricity": calcWeeklyAverage(averageObj["electricity"]),
+            "gas": calcWeeklyAverage(averageObj["gas"]),
+            "carbon": calcWeeklyAverage(averageObj["carbon"])
+        };
 
-        res.send({ selfUsage: selfUsage, data: response, average: averageObj });
+        let selfWeekly = {
+            "electricity": calcSelfWeekly("electricity", selfUsage),
+            "gas": calcSelfWeekly("gas", selfUsage),
+            "carbon": calcSelfWeekly("carbon", selfUsage)
+        }
+
+        res.send({ selfUsage: selfUsage, data: response, average: averageObj, weeklyAverage: weeklyAverage, selfWeekly });
 
     } catch (error) {
         console.log(error);
@@ -75,7 +85,40 @@ let calculateAverage = (param, selfUsage, response) => {
         return (r[i] || 0) + +b[param] + +selfUsage[i][param];
     }), []);
 
-    return count.map((val, index) => {return { date: selfUsage[index].date, val: sum[index] / val}});
+    return count.map((val, index) => { return { date: selfUsage[index].date, val: sum[index] / val } });
+
+}
+
+let calcWeeklyAverage = (averages) => {
+    let returnArr = [];
+    let sum = 0;
+
+    averages.forEach((average, index, averages) => {
+        sum += average.val ? average.val : 0;
+
+        if ((index + 1) % 7 == 0 || (index + 1 == averages.length)) {
+            returnArr.push(+(sum / 7).toFixed(2));
+            sum = 0;
+        }
+    });
+
+    return returnArr;
+}
+
+let calcSelfWeekly = (param, selfAverage) => {
+    let returnArr = [];
+    let sum = 0;
+
+    selfAverage.forEach((average, index, selfAverage) => {
+        sum += average[param] ? +average[param] : 0;
+
+        if ((index + 1) % 7 == 0 || (index + 1 == selfAverage.length)) {
+            returnArr.push(+(sum / 7).toFixed(2));
+            sum = 0;
+        }
+    });
+
+    return returnArr;
 
 }
 

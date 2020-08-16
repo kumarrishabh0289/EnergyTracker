@@ -115,7 +115,7 @@ class Charts extends Component {
                 },
                 "line": {
                     "marker": {
-                        "enabled": false
+                        "enabled": true
                     }
                 }
             },

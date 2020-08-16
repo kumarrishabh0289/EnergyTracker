@@ -14,6 +14,8 @@ class ViewUsage extends Component {
         usageData: [],
         selfData: [],
         average: {},
+        weeklyAverage: [],
+        selfWeekly: [],
         labelData: ["Date", "Electricity (kWh)", "Gas (therms)"],
         showNames: false
     };
@@ -22,7 +24,13 @@ class ViewUsage extends Component {
 
         Axios.get(`${API_URL}/usage/getAllUsage/${this.props.match.params.projectId}?user=${sessionStorage.authenticatedUser}`).then(response => {
             console.log(response);
-            this.setState({ usageData: response.data.data, selfData: response.data.selfUsage, average: response.data.average });
+            this.setState({
+                usageData: response.data.data,
+                selfData: response.data.selfUsage,
+                average: response.data.average,
+                weeklyAverage: response.data.weeklyAverage,
+                selfWeekly: response.data.selfWeekly
+            });
         });
 
     };
