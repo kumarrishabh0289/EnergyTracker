@@ -13,6 +13,7 @@ class ViewUsage extends Component {
     state = {
         usageData: [],
         selfData: [],
+        average: {},
         labelData: ["Date", "Electricity (kWh)", "Gas (therms)"],
         showNames: false
     };
@@ -21,7 +22,7 @@ class ViewUsage extends Component {
 
         Axios.get(`${API_URL}/usage/getAllUsage/${this.props.match.params.projectId}?user=${sessionStorage.authenticatedUser}`).then(response => {
             console.log(response);
-            this.setState({ usageData: response.data.data, selfData: response.data.selfUsage });
+            this.setState({ usageData: response.data.data, selfData: response.data.selfUsage, average: response.data.average });
         });
 
     };

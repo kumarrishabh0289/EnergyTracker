@@ -47,7 +47,15 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
 
         response = Object.values(response);
 
-        res.send({ selfUsage: selfUsage, data: response });
+        let averageObj = {
+            "electricity": calculateAverage("electricity", selfUsage, response),
+            "gas": calculateAverage("gas", selfUsage, response),
+            "carbon": calculateAverage("carbon", selfUsage, response)
+        };
+
+        console.log('averages', averageObj)
+
+        res.send({ selfUsage: selfUsage, data: response, average: averageObj });
 
     } catch (error) {
         console.log(error);
@@ -55,6 +63,21 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
     }
 
 });
+
+
+let calculateAverage = (param, selfUsage, response) => {
+
+    let count = Array(selfUsage.length).fill(0);
+
+    let sum = response.reduce((r, a) => a.map((b, i) => {
+        if (b[param] != "") count[i]++;
+
+        return (r[i] || 0) + +b[param]
+    }), []);
+
+    return count.map((val, index) => {return { date: selfUsage[index].date, val: sum[index] / val}});
+
+}
 
 
 router.post('/updateUsage', async (req, res) => {

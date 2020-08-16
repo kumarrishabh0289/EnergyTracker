@@ -5,7 +5,7 @@ class Charts extends Component {
     state = {};
 
     generateData = () => {
-        const { selfData, usageData } = this.props.data;
+        const { selfData, usageData, average } = this.props.data;
         const { param } = this.props;
         let userData = [];
 
@@ -39,6 +39,19 @@ class Charts extends Component {
             if (index) obj["linkedTo"] = ':previous';
 
             return obj;
+        });
+
+        userData.push({
+            "name": "Average Class Usage",
+            "color": "green",
+            "data":
+                average[param] && average[param].filter(data => data.val != null).map((data, index) => {
+                    return [new Date(data.date).getTime() - 86400000, +data.val];
+                })
+            ,
+            "type": "line",
+            "zIndex": 10,
+            "lineWidth": 2.5
         });
 
         return [...userData, ...map];
