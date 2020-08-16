@@ -63,9 +63,20 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
             "electricity": calcSelfWeekly("electricity", selfUsage),
             "gas": calcSelfWeekly("gas", selfUsage),
             "carbon": calcSelfWeekly("carbon", selfUsage)
-        }
+        };
 
-        res.send({ selfUsage: selfUsage, data: response, average: averageObj, weeklyAverage: weeklyAverage, selfWeekly });
+        let statistics = {
+            selfSection: {
+                "electricity": calcSelfSection("electricity", selfUsage),
+                "gas": calcSelfSection("gas", selfUsage),
+                "carbon": calcSelfSection("carbon", selfUsage)
+            },
+
+            classSection: calcClassSection(response, selfUsage) 
+        }
+        console.log('statistics', statistics)
+
+        res.send({ selfUsage, data: response, average: averageObj, weeklyAverage, selfWeekly });
 
     } catch (error) {
         console.log(error);
@@ -88,6 +99,67 @@ let calculateAverage = (param, selfUsage, response) => {
     return count.map((val, index) => { return { date: selfUsage[index].date, val: sum[index] / val } });
 
 }
+
+let calcClassSection = (classUsage, selfUsage) => {
+    if (!classUsage.length || !classUsage[0].length) return {};
+
+    const firstUsage = classUsage[0][0];
+    const baseDays = (new Date(firstUsage.project.ConservationStartDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24);
+    const totalDays = ((new Date(firstUsage.project.EndDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24));
+    const conservationDays = totalDays - baseDays;
+
+    let electricity = [0, 0],
+        gas = [0, 0],
+        carbon = [0, 0];
+
+    classUsage.forEach(student => {
+
+        student.forEach((usage, index) => {
+            if (index < baseDays) {
+                electricity[0] += +usage["electricity"];
+                gas[0] += +usage["gas"];
+                carbon[0] += +usage["carbon"];
+            }
+            else {
+                electricity[1] += +usage["electricity"];
+                gas[1] += +usage["gas"];
+                carbon[1] += +usage["carbon"];
+            }
+        });
+    });
+    
+    selfUsage.forEach((usage, index) => {
+        if (index < baseDays) {
+            electricity[0] += +usage["electricity"];
+            gas[0] += +usage["gas"];
+            carbon[0] += +usage["carbon"];
+        }
+        else {
+            electricity[1] += +usage["electricity"];
+            gas[1] += +usage["gas"];
+            carbon[1] += +usage["carbon"];
+        }
+    });
+
+    return {
+        "electricity": {
+            baseAvg: +(electricity[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
+            conserveAvg: +(electricity[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
+            percentChange: +((electricity[1] / (conservationDays * (classUsage.length + 1)) - electricity[0] / (baseDays * (classUsage.length + 1))) * 100 / (electricity[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+        },
+        "gas": {
+            baseAvg: +(gas[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
+            conserveAvg: +(gas[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
+            percentChange: +((gas[1] / (conservationDays * (classUsage.length + 1)) - gas[0] / (baseDays * (classUsage.length + 1))) * 100 / (gas[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+        },
+        "carbon": {
+            baseAvg: +(carbon[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
+            conserveAvg: +(carbon[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
+            percentChange: +((carbon[1] / (conservationDays * (classUsage.length + 1)) - carbon[0] / (baseDays * (classUsage.length + 1))) * 100 / (carbon[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+        }
+    }
+
+};
 
 let calcWeeklyAverage = (averages) => {
     let returnArr = [];
@@ -119,8 +191,31 @@ let calcSelfWeekly = (param, selfAverage) => {
     });
 
     return returnArr;
-
 }
+
+let calcSelfSection = (param, selfUsage) => {
+    const baseDays = selfUsage.length && (new Date(selfUsage[0].project.ConservationStartDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24);
+    const totalDays = selfUsage.length && ((new Date(selfUsage[0].project.EndDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24));
+    const conservationDays = totalDays - baseDays;
+
+    let baseSum = 0, conservationSum = 0;
+
+    selfUsage.forEach((usage, index) => {
+
+        if (index < baseDays)
+            baseSum += +usage[param];
+        else
+            conservationSum += +usage[param];
+
+    });
+    
+    return {
+        baseAvg: +(baseSum / baseDays).toFixed(2),
+        conserveAvg: +(conservationSum / conservationDays).toFixed(2),
+        percentChange: +((conservationSum / conservationDays - baseSum / baseDays) * 100 / (baseSum / baseDays)).toFixed(2)
+    }
+
+};
 
 
 router.post('/updateUsage', async (req, res) => {
