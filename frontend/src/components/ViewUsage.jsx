@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import ChartsWrapper from './ChartsWrapper';
+import CarbonEmission from './CarbonEmission';
 
 class ViewUsage extends Component {
     state = {
@@ -163,7 +164,7 @@ class ViewUsage extends Component {
                         <ChartsWrapper data={this.state} />
                     </Tab>
                     <Tab eventKey="emissions" title="Carbon Emissions">
-                        <div>zxc</div>
+                        <CarbonEmission data={this.state} />
                     </Tab>
                     <Tab eventKey="statistics" title="Statistics">
                         <div>zxc</div>

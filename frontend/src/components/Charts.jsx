@@ -13,8 +13,8 @@ class Charts extends Component {
             "name": "Your Usage",
             "color": "red",
             "data":
-                selfData.map(data => {
-                    return [new Date(data.date).getTime() - 86400000, data[param]];
+                selfData.filter(data => data[param] != "").map(data => {
+                    return [new Date(data.date).getTime() - 86400000, +data[param]];
                 })
             ,
             "type": "line",
@@ -27,8 +27,8 @@ class Charts extends Component {
                 "name": "Class Usage",
                 "color": "black",
                 "data":
-                    user.map(data => {
-                        return [new Date(data.date).getTime() - 86400000, data[param]];
+                    user.filter(data => data[param] != "").map(data => {
+                        return [new Date(data.date).getTime() - 86400000, +data[param]];
                     })
                 ,
                 "type": "line",
