@@ -70,9 +70,9 @@ let calculateAverage = (param, selfUsage, response) => {
     let count = Array(selfUsage.length).fill(0);
 
     let sum = response.reduce((r, a) => a.map((b, i) => {
-        if (b[param] != "") count[i]++;
+        if (b[param] != "" || selfUsage[i][param] != "") count[i]++;
 
-        return (r[i] || 0) + +b[param]
+        return (r[i] || 0) + +b[param] + +selfUsage[i][param];
     }), []);
 
     return count.map((val, index) => {return { date: selfUsage[index].date, val: sum[index] / val}});
