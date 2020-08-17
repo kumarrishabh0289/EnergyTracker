@@ -6,7 +6,8 @@ import ReactHighcharts from 'react-highcharts';
 class Statistics extends Component {
     state = {}
     render() {
-        const { selfSection, classSection } = this.props.data.statistics;
+        const { selfSection, classSection, classPercent } = this.props.data.statistics;
+        console.log('perc', classPercent)
         const { weeklyAverage } = this.props.data;
 
         if (!selfSection && !classSection)
@@ -51,6 +52,51 @@ class Statistics extends Component {
             }, {
                 name: "Conservation Class Average",
                 data: [classSection["carbon"].conserveAvg]
+            }]
+        };
+
+        let percChartData = {
+            "chart": {
+                "renderTo": "myDiv",
+                "type": "column",
+                "marginRight": "25",
+                "shadow": "false",
+                "animation": "false",
+                "showCheckBox": "true"
+            },
+            "xAxis": {
+                labels: {
+                    enabled: false
+                }
+            },
+            "plotOptions": {
+            },
+            "title": {
+                "text": "How many people made an impact?"
+            },
+            "yAxis": {
+                "title": {
+                    "text": " % Students"
+                }
+            },
+            "legend": {
+                "enabled": true
+            },
+            "tooltip": {
+                "formatter": function () {
+
+                    return this.series.name + ': ' + this.y + '%';
+                }
+            },
+            "series": [{
+                name: "% of students who reduced energy consumption by 5%",
+                data: [classPercent[0]]
+            }, {
+                name: "% of students who reduced energy consumption by 10%",
+                data: [classPercent[1]]
+            }, {
+                name: "% of students who reduced energy consumption by 20%",
+                data: [classPercent[2]]
             }]
         };
 
@@ -279,7 +325,12 @@ class Statistics extends Component {
                     </div>
                 </div>
 
-                <div className="average-chart col-sm-12">
+
+                <div className="perc-chart col-sm-12 my-4">
+                    <ReactHighcharts config={percChartData} />
+                </div>
+
+                <div className="average-chart col-sm-12 my-4">
                     <ReactHighcharts config={chartData} />
                 </div>
 
