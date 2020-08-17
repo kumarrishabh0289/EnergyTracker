@@ -5,7 +5,7 @@ class Charts extends Component {
     state = {};
 
     generateData = () => {
-        const { selfData, usageData } = this.props.data;
+        const { selfData, usageData, average } = this.props.data;
         const { param } = this.props;
         let userData = [];
 
@@ -13,8 +13,8 @@ class Charts extends Component {
             "name": "Your Usage",
             "color": "red",
             "data":
-                selfData.map(data => {
-                    return [new Date(data.date).getTime() - 86400000, data[param]];
+                selfData.filter(data => data[param] != "").map(data => {
+                    return [new Date(data.date).getTime() - 86400000, +data[param]];
                 })
             ,
             "type": "line",
@@ -27,8 +27,8 @@ class Charts extends Component {
                 "name": "Class Usage",
                 "color": "black",
                 "data":
-                    user.map(data => {
-                        return [new Date(data.date).getTime() - 86400000, data[param]];
+                    user.filter(data => data[param] != "").map(data => {
+                        return [new Date(data.date).getTime() - 86400000, +data[param]];
                     })
                 ,
                 "type": "line",
@@ -39,6 +39,19 @@ class Charts extends Component {
             if (index) obj["linkedTo"] = ':previous';
 
             return obj;
+        });
+
+        userData.push({
+            "name": "Average Class Usage",
+            "color": "green",
+            "data":
+                average[param] && average[param].filter(data => data.val != null).map((data, index) => {
+                    return [new Date(data.date).getTime() - 86400000, +data.val];
+                })
+            ,
+            "type": "line",
+            "zIndex": 10,
+            "lineWidth": 2.5
         });
 
         return [...userData, ...map];
@@ -102,7 +115,7 @@ class Charts extends Component {
                 },
                 "line": {
                     "marker": {
-                        "enabled": false
+                        "enabled": true
                     }
                 }
             },

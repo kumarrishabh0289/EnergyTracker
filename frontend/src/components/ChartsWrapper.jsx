@@ -3,6 +3,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Charts from './Charts';
 import "../styles/Usage.css";
+import WeeklyChart from './WeeklyChart';
 
 class ChartsWrapper extends Component {
     state = {}
@@ -18,7 +19,7 @@ class ChartsWrapper extends Component {
                         <Charts data={this.props.data} param="gas" />
                     </Tab>
                     <Tab eventKey="average" title="Weekly Average">
-                        <div>zxc</div>
+                        <WeeklyChart data={this.props.data} />
                     </Tab>
                 </Tabs>
             </div>

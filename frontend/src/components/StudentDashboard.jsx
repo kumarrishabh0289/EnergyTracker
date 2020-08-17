@@ -44,7 +44,8 @@ class StudentDashboard extends Component {
             course_id: this.state.addCode
         }).then(data => {
             this.setState({
-                courses: [...this.state.courses, data.data]
+                courses: [...this.state.courses, data.data.course],
+                projects: [...this.state.projects, ...data.data.courseProjects]
             })
         }).catch(error => {
             if (error.response)

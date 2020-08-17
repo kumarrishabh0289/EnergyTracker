@@ -47,7 +47,40 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
 
         response = Object.values(response);
 
-        res.send({ selfUsage: selfUsage, data: response });
+        let averageObj = {
+            "electricity": calculateAverage("electricity", selfUsage, response),
+            "gas": calculateAverage("gas", selfUsage, response),
+            "carbon": calculateAverage("carbon", selfUsage, response)
+        };
+
+        let weeklyAverage = {
+            "electricity": calcWeeklyAverage(averageObj["electricity"]),
+            "gas": calcWeeklyAverage(averageObj["gas"]),
+            "carbon": calcWeeklyAverage(averageObj["carbon"])
+        };
+
+        let selfWeekly = {
+            "electricity": calcSelfWeekly("electricity", selfUsage),
+            "gas": calcSelfWeekly("gas", selfUsage),
+            "carbon": calcSelfWeekly("carbon", selfUsage)
+        };
+
+        let classStats = calcClassSection(response, selfUsage);
+
+        let statistics = {
+            selfSection: {
+                "electricity": calcSelfSection("electricity", selfUsage),
+                "gas": calcSelfSection("gas", selfUsage),
+                "carbon": calcSelfSection("carbon", selfUsage)
+            },
+
+            classSection: classStats.class,
+
+            classPercent: classStats.perc.map(val => val * 100 / response.length),
+            
+            percentChange: calcPercentChange(response)
+        }
+        res.send({ selfUsage, data: response, average: averageObj, weeklyAverage, selfWeekly, statistics });
 
     } catch (error) {
         console.log(error);
@@ -55,6 +88,173 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
     }
 
 });
+
+
+let calculateAverage = (param, selfUsage, response) => {
+
+    let count = Array(selfUsage.length).fill(0);
+
+    let sum = response.reduce((r, a) => a.map((b, i) => {
+        if (b[param] != "" || selfUsage[i][param] != "") count[i]++;
+
+        return (r[i] || 0) + +b[param] + +selfUsage[i][param];
+    }), []);
+
+    return count.map((val, index) => { return { date: selfUsage[index].date, val: sum[index] / val } });
+
+}
+
+let calcClassSection = (classUsage, selfUsage) => {
+    if (!classUsage.length || !classUsage[0].length) return {};
+
+    const firstUsage = classUsage[0][0];
+    const baseDays = (new Date(firstUsage.project.ConservationStartDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24);
+    const totalDays = ((new Date(firstUsage.project.EndDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24));
+    const conservationDays = totalDays - baseDays;
+
+    let electricity = [0, 0],
+        gas = [0, 0],
+        carbon = [0, 0],
+        studentPercent = [0,0,0];
+
+    classUsage.forEach(student => {
+        let studentBase = 0, studentConserve = 0, perc;
+
+        student.forEach((usage, index) => {
+            if (index < baseDays) {
+                electricity[0] += +usage["electricity"];
+                gas[0] += +usage["gas"];
+                carbon[0] += +usage["carbon"];
+                studentBase += +usage["carbon"];
+            }
+            else {
+                electricity[1] += +usage["electricity"];
+                gas[1] += +usage["gas"];
+                carbon[1] += +usage["carbon"];
+                studentConserve += +usage["carbon"];
+            }
+        });
+
+        perc = ((studentConserve - studentBase) * 100) / studentBase;
+
+        if (Math.abs(perc) >= 20) studentPercent[2]++;
+        else if (Math.abs(perc) >= 10) studentPercent[1]++;
+        else if (Math.abs(perc) >= 5) studentPercent[0]++;
+    });
+    
+    selfUsage.forEach((usage, index) => {
+        if (index < baseDays) {
+            electricity[0] += +usage["electricity"];
+            gas[0] += +usage["gas"];
+            carbon[0] += +usage["carbon"];
+        }
+        else {
+            electricity[1] += +usage["electricity"];
+            gas[1] += +usage["gas"];
+            carbon[1] += +usage["carbon"];
+        }
+    });
+
+    return {
+        class: {
+            "electricity": {
+                baseAvg: +(electricity[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
+                conserveAvg: +(electricity[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
+                percentChange: +((electricity[1] / (conservationDays * (classUsage.length + 1)) - electricity[0] / (baseDays * (classUsage.length + 1))) * 100 / (electricity[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+            },
+            "gas": {
+                baseAvg: +(gas[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
+                conserveAvg: +(gas[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
+                percentChange: +((gas[1] / (conservationDays * (classUsage.length + 1)) - gas[0] / (baseDays * (classUsage.length + 1))) * 100 / (gas[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+            },
+            "carbon": {
+                baseAvg: +(carbon[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
+                conserveAvg: +(carbon[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
+                percentChange: +((carbon[1] / (conservationDays * (classUsage.length + 1)) - carbon[0] / (baseDays * (classUsage.length + 1))) * 100 / (carbon[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+            }
+        },
+        perc: studentPercent
+    }
+
+};
+
+let calcWeeklyAverage = (averages) => {
+    let returnArr = [];
+    let sum = 0, max = 0, min = 9999999;
+
+    averages.forEach((average, index, averages) => {
+        let value = average.val ? average.val : 0
+        sum += value;
+        min = Math.min(min, value);
+        max = Math.max(max, value);
+
+        if ((index + 1) % 7 == 0 || (index + 1 == averages.length)) {
+            returnArr.push({average: +(sum / 7).toFixed(2), min, max});
+            sum = 0;
+
+            if (!(index + 1 == averages.length)) {
+                max = 0;
+                min = 999999;
+            }
+        }
+    });
+
+    return returnArr;
+}
+
+let calcSelfWeekly = (param, selfAverage) => {
+    let returnArr = [];
+    let sum = 0;
+
+    selfAverage.forEach((average, index, selfAverage) => {
+        sum += average[param] ? +average[param] : 0;
+
+        if ((index + 1) % 7 == 0 || (index + 1 == selfAverage.length)) {
+            returnArr.push(+(sum / 7).toFixed(2));
+            sum = 0;
+        }
+    });
+
+    return returnArr;
+}
+
+let calcSelfSection = (param, selfUsage) => {
+    const baseDays = selfUsage.length && (new Date(selfUsage[0].project.ConservationStartDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24);
+    const totalDays = selfUsage.length && ((new Date(selfUsage[0].project.EndDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24));
+    const conservationDays = totalDays - baseDays;
+
+    let baseSum = 0, conservationSum = 0;
+
+    selfUsage.forEach((usage, index) => {
+
+        if (index < baseDays)
+            baseSum += +usage[param];
+        else
+            conservationSum += +usage[param];
+
+    });
+    
+    return {
+        baseAvg: +(baseSum / baseDays).toFixed(2),
+        conserveAvg: +(conservationSum / conservationDays).toFixed(2),
+        percentChange: +((conservationSum / conservationDays - baseSum / baseDays) * 100 / (baseSum / baseDays)).toFixed(2)
+    }
+
+};
+
+let calcPercentChange = (classUsage) => {
+
+    const totalStudents = classUsage.length;
+
+    let result = [0, 0, 0];
+    
+    classUsage.forEach(usage => {
+
+
+
+    });
+
+}
 
 
 router.post('/updateUsage', async (req, res) => {

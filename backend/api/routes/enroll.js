@@ -184,7 +184,7 @@ router.post('/', async (req, res) => {
 
             }
 
-            res.send(course);
+            res.send({courseProjects, course});
 
         }
 

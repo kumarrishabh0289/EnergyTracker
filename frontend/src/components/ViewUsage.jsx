@@ -7,11 +7,17 @@ import Form from 'react-bootstrap/Form';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import ChartsWrapper from './ChartsWrapper';
+import CarbonEmission from './CarbonEmission';
+import Statistics from './Statistics';
 
 class ViewUsage extends Component {
     state = {
         usageData: [],
         selfData: [],
+        average: {},
+        weeklyAverage: [],
+        selfWeekly: [],
+        statistics: {},
         labelData: ["Date", "Electricity (kWh)", "Gas (therms)"],
         showNames: false
     };
@@ -20,7 +26,14 @@ class ViewUsage extends Component {
 
         Axios.get(`${API_URL}/usage/getAllUsage/${this.props.match.params.projectId}?user=${sessionStorage.authenticatedUser}`).then(response => {
             console.log(response);
-            this.setState({ usageData: response.data.data, selfData: response.data.selfUsage });
+            this.setState({
+                usageData: response.data.data,
+                selfData: response.data.selfUsage,
+                average: response.data.average,
+                weeklyAverage: response.data.weeklyAverage,
+                selfWeekly: response.data.selfWeekly,
+                statistics: response.data.statistics
+            });
         });
 
     };
@@ -39,136 +52,139 @@ class ViewUsage extends Component {
 
                 <h4 className="mb-5">Project: {selfData.length && selfData[0].project.name}</h4>
 
-                <Tabs defaultActiveKey="charts" id="uncontrolled-tab-example">
-                    <Tab eventKey="usage" title="Usage">
-                        {
-                            sessionStorage.getItem("role") == "Student" ? "" : <Form.Group controlId="formBasicCheckbox">
-                                <Form.Check type="checkbox" label="Show Student Names" onChange={e => {
+                <div className="tab-container p-3">
+                    <Tabs defaultActiveKey="statistics" id="uncontrolled-tab-example">
+                        <Tab eventKey="usage" title="Usage">
+                            {
+                                sessionStorage.getItem("role") == "Student" ? "" : <Form.Group controlId="formBasicCheckbox">
+                                    <Form.Check type="checkbox" label="Show Student Names" onChange={e => {
 
-                                    this.setState({ showNames: !this.state.showNames })
-                                }} />
-                            </Form.Group>
-                        }
+                                        this.setState({ showNames: !this.state.showNames })
+                                    }} />
+                                </Form.Group>
+                            }
 
-                        <div className="table-container mb-4">
-                            <Alert className="m-0" variant="success">Your Usage </Alert>
-                            <table className="usage-table table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th colSpan={dateDifference ? dateDifference : 1}>Baseline Period</th>
+                            <div className="table-container mb-4">
+                                <Alert className="m-0" variant="success">Your Usage </Alert>
+                                <table className="usage-table table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th colSpan={dateDifference ? dateDifference : 1}>Baseline Period</th>
 
-                                        <th colSpan={remainingDays ? remainingDays + 1 : 1}>Conservation Period</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        ["date", "electricity", "gas"].map((data, index) => {
+                                            <th colSpan={remainingDays ? remainingDays + 1 : 1}>Conservation Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            ["date", "electricity", "gas"].map((data, index) => {
 
-                                            return <tr key={data}>
-                                                <th>{this.state.labelData[index]}</th>
-                                                {
-                                                    selfData && selfData.map((usage, index2) => {
-                                                        let text;
+                                                return <tr key={data}>
+                                                    <th>{this.state.labelData[index]}</th>
+                                                    {
+                                                        selfData && selfData.map((usage, index2) => {
+                                                            let text;
 
-                                                        if (index == 0) {
-                                                            let date = new Date(usage["date"]);
-                                                            text = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate();
-                                                        } else {
-                                                            // text = <input type="number" value={usage[data]} onChange={e => this.onChange(e, data, index2)} />;
-                                                            text = <div>{usage[data]}</div>;
-                                                        }
+                                                            if (index == 0) {
+                                                                let date = new Date(usage["date"]);
+                                                                text = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate();
+                                                            } else {
+                                                                // text = <input type="number" value={usage[data]} onChange={e => this.onChange(e, data, index2)} />;
+                                                                text = <div>{usage[data]}</div>;
+                                                            }
 
-                                                        return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={usage._id}>{text}</td>
-                                                    })
-                                                }
-                                            </tr>;
-                                        })
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                                                            return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={usage._id}>{text}</td>
+                                                        })
+                                                    }
+                                                </tr>;
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
 
-                        <div className="table-container mb-4">
-                            <Alert className="m-0" variant="success">Class Usage Details</Alert>
-                            <table className="usage-table table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th colSpan={dateDifference}>Baseline Period</th>
+                            <div className="table-container mb-4">
+                                <Alert className="m-0" variant="success">Class Usage Details</Alert>
+                                <table className="usage-table table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th colSpan={dateDifference}>Baseline Period</th>
 
-                                        <th colSpan={remainingDays + 1}>Conservation Period</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        ["date"].map((data, index) => {
+                                            <th colSpan={remainingDays + 1}>Conservation Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            ["date"].map((data, index) => {
 
-                                            return <tr key={data}>
-                                                <th>{this.state.labelData[index]}</th>
-                                                {
-                                                    this.getHeaderData(index, data, dateDifference)
+                                                return <tr key={data}>
+                                                    <th>{this.state.labelData[index]}</th>
+                                                    {
+                                                        this.getHeaderData(index, data, dateDifference)
 
-                                                    // this.getData(index, data, dateDifference)
-                                                }
-                                            </tr>;
-                                        })
-                                    }
+                                                        // this.getData(index, data, dateDifference)
+                                                    }
+                                                </tr>;
+                                            })
+                                        }
 
-                                    {
-                                        Object.keys(this.state.usageData).map((data, index) => {
+                                        {
+                                            Object.keys(this.state.usageData).map((data, index) => {
 
-                                            if (data == sessionStorage.getItem("authenticatedUser")) return "";
-                                            else return (
-                                                <Fragment>
-                                                    <div className="bordered-name mt-4"><div>{this.state.hideNames ? data : `Student ${index + 1}`}</div></div>
-                                                    <tr>
-                                                        <th>{this.state.labelData[1]}</th>
-                                                        {
-                                                            this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
-                                                                let text;
-                                                                text = <div>{currUsage["electricity"]}</div>;
-
-
-                                                                return <td key={currUsage._id}>{text}</td>
-
-                                                            })
-                                                        }
-                                                    </tr>
-                                                    <tr>
-                                                        <th>{this.state.labelData[2]}</th>
-                                                        {
-                                                            this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
-                                                                let text;
-                                                                text = <div>{currUsage["gas"]}</div>;
+                                                if (data == sessionStorage.getItem("authenticatedUser")) return "";
+                                                else return (
+                                                    <Fragment>
+                                                        <div className="bordered-name mt-4"><div>{this.state.hideNames ? data : `Student ${index + 1}`}</div></div>
+                                                        <tr>
+                                                            <th>{this.state.labelData[1]}</th>
+                                                            {
+                                                                this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
+                                                                    let text;
+                                                                    text = <div>{currUsage["electricity"]}</div>;
 
 
-                                                                return <td key={currUsage._id}>{text}</td>
+                                                                    return <td key={currUsage._id}>{text}</td>
 
-                                                            })
-                                                        }
-                                                    </tr>
-                                                </Fragment>
-                                            );
-                                        })
-                                        // this.getData()
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                                                                })
+                                                            }
+                                                        </tr>
+                                                        <tr>
+                                                            <th>{this.state.labelData[2]}</th>
+                                                            {
+                                                                this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
+                                                                    let text;
+                                                                    text = <div>{currUsage["gas"]}</div>;
 
 
-                    </Tab>
-                    <Tab eventKey="charts" title="Charts">
-                        <ChartsWrapper data={this.state} />
-                    </Tab>
-                    <Tab eventKey="emissions" title="Carbon Emissions">
-                        <div>zxc</div>
-                    </Tab>
-                    <Tab eventKey="statistics" title="Statistics">
-                        <div>zxc</div>
-                    </Tab>
-                </Tabs>
+                                                                    return <td key={currUsage._id}>{text}</td>
+
+                                                                })
+                                                            }
+                                                        </tr>
+                                                    </Fragment>
+                                                );
+                                            })
+                                            // this.getData()
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </Tab>
+                        <Tab eventKey="charts" title="Charts">
+                            <ChartsWrapper data={this.state} />
+                        </Tab>
+                        <Tab eventKey="emissions" title="Carbon Emissions">
+                            <CarbonEmission data={this.state} />
+                        </Tab>
+                        <Tab eventKey="statistics" title="Statistics">
+                            <Statistics data={this.state} />
+                        </Tab>
+                    </Tabs>
+
+                </div>
 
 
             </div >
