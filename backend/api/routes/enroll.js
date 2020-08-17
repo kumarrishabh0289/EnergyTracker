@@ -24,6 +24,32 @@ router.get('/', (req, res, next) => {
 
 });
 
+router.get('/getStudentList', (req, res) => {
+    const course_id = req.query.course_id;
+
+    
+    console.log("course_id",course_id)
+    
+
+    Enroll.find({ course_id: course_id })
+        .exec()
+        .then(doc => {
+        console.log("From database",doc);
+        if (doc.length>0){
+            res.status(200).json(doc);
+        }
+        else {
+            res.status(201).json({message:"not a valid course_id"});
+        }
+        
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error:err});
+    })
+
+});
+
 router.get('/status', (req, res, next) => {
     const status = req.query.status;
     const course = req.query.course;

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import TeacherDashboard from './TeacherDashboard'
 import CreateProject from './CreateProject'
 import ProjectDetail from './ProjectDetail'
+import EnrolledStudents from './EnrolledStudents'
 
 
 
@@ -67,7 +68,7 @@ class CourseDetail extends Component {
                 <div style={{ backgroundColor: "lightblue", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
 
                     {this.state.showResultsDelete ? <TeacherDashboard /> : null}
-                    {this.state.showResultsAdd ? <TeacherDashboard /> : null}
+                    {this.state.showResultsAdd ? <EnrolledStudents /> : null}
                     {this.state.showResultsUpdate ? <CreateProject /> : null}
                     {this.state.showResultsManage ? <ProjectDetail /> : null}
 

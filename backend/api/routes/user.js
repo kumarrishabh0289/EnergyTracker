@@ -8,6 +8,7 @@ var crypto = require('crypto');
 var bcrypt = require("bcrypt-nodejs");
 var mysql = require("../../config/db.js");
 const Role = require('../models/role');
+const Enroll = require('../models/enroll');
 
 router.post('/login', (req, res, next) => {
 
@@ -154,6 +155,8 @@ router.get('/', (req, res, next) => {
         })
 
 });
+
+
 
 
 router.post('/checkrole', (req, res, next) => {
@@ -334,7 +337,7 @@ router.get('/:userId', (req, res, next) => {
                 res.status(200).json(doc);
             }
             else {
-                res.status(404).json({ message: "not a valid ID" });
+                res.status(404).json({ message: "not a valid userId" });
             }
 
         })
