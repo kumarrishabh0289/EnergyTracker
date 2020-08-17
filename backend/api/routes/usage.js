@@ -202,7 +202,7 @@ let calcWeeklyAverage = (averages) => {
 
     averages.forEach((average, index, averages) => {
         let value = average.val != 'NaN' ? +average.val : 0;
-        console.log('value', value)
+        
         sum += value;
         min = Math.min(min, value);
         max = Math.max(max, value);
