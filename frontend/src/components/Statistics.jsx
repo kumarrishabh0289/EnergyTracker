@@ -7,7 +7,6 @@ class Statistics extends Component {
     state = {}
     render() {
         const { selfSection, classSection, classPercent } = this.props.data.statistics;
-        console.log('perc', classPercent)
         const { weeklyAverage } = this.props.data;
 
         if (!selfSection && !classSection)
