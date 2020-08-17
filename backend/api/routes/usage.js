@@ -201,7 +201,8 @@ let calcWeeklyAverage = (averages) => {
     let sum = 0, max = 0, min = 9999999;
 
     averages.forEach((average, index, averages) => {
-        let value = average.val ? average.val : 0
+        let value = average.val != 'NaN' ? +average.val : 0;
+        console.log('value', value)
         sum += value;
         min = Math.min(min, value);
         max = Math.max(max, value);
@@ -216,8 +217,8 @@ let calcWeeklyAverage = (averages) => {
             }
         }
     });
-
     return returnArr;
+    
 }
 
 let calcSelfWeekly = (param, selfAverage) => {
