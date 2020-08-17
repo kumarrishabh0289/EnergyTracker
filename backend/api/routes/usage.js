@@ -30,13 +30,13 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
         const selfUsage = await Usage.find({ project: req.params.project_id, user_id: req.query.user }).populate('project').lean();
 
         for (let use of selfUsage)
-            use["carbon"] = use.electricity * 0.524 + use.gas * 13.446;
+            use["carbon"] = use.electricity == '' && use.gas == '' ? '' : use.electricity * 0.524 + use.gas * 13.446;
 
         const usages = await Usage.find({ project: req.params.project_id, user_id: { $ne: req.query.user } }).populate('project').sort({ user_id: 1 }).lean();
 
         for (let usage of usages) {
 
-            const carbon = usage.electricity * 0.524 + usage.gas * 13.446;
+            const carbon = usage.electricity == '' && usage.gas == '' ? '' : usage.electricity * 0.524 + usage.gas * 13.446;
 
             if (!response[usage.user_id]) {
                 response[usage.user_id] = [];
@@ -93,12 +93,13 @@ let calculateAverage = (param, selfUsage, response) => {
     let count = Array(selfUsage.length).fill(0);
 
     let sum = response.reduce((r, a) => a.map((b, i) => {
-        if (b[param] != "" || selfUsage[i][param] != "") count[i]++;
+        if (b[param] != "" ) count[i]++;
+        if (selfUsage[i][param] != "") count[i]++;
 
         return (r[i] || 0) + +b[param] + +selfUsage[i][param];
     }), []);
 
-    return count.map((val, index) => { return { date: selfUsage[index].date, val: sum[index] / val } });
+    return count.map((val, index) => { return { date: selfUsage[index].date, val: (sum[index] / val).toFixed(2) } });
 
 }
 
