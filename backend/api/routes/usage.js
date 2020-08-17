@@ -76,9 +76,7 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
 
             classSection: classStats.class,
 
-            classPercent: classStats.perc.map(val => val * 100 / response.length),
-            
-            percentChange: calcPercentChange(response)
+            classPercent: classStats.perc && classStats.perc.map(val => val * 100 / response.length)
         }
         res.send({ selfUsage, data: response, average: averageObj, weeklyAverage, selfWeekly, statistics });
 
@@ -105,7 +103,26 @@ let calculateAverage = (param, selfUsage, response) => {
 }
 
 let calcClassSection = (classUsage, selfUsage) => {
-    if (!classUsage.length || !classUsage[0].length) return {};
+    if (!classUsage.length || !classUsage[0].length) return {
+        class: {
+            "electricity": {
+                baseAvg: 0,
+                conserveAvg: 0,
+                percentChange: 0
+            },
+            "gas": {
+                baseAvg: 0,
+                conserveAvg: 0,
+                percentChange: 0
+            },
+            "carbon": {
+                baseAvg: 0,
+                conserveAvg: 0,
+                percentChange: 0
+            }
+        },
+        perc: [0,0,0]
+    };
 
     const firstUsage = classUsage[0][0];
     const baseDays = (new Date(firstUsage.project.ConservationStartDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24);
@@ -237,24 +254,10 @@ let calcSelfSection = (param, selfUsage) => {
     return {
         baseAvg: +(baseSum / baseDays).toFixed(2),
         conserveAvg: +(conservationSum / conservationDays).toFixed(2),
-        percentChange: +((conservationSum / conservationDays - baseSum / baseDays) * 100 / (baseSum / baseDays)).toFixed(2)
+        percentChange: +((conservationSum / conservationDays - baseSum / baseDays) * 100 / (baseSum / baseDays)).toFixed(2) || 0
     }
 
 };
-
-let calcPercentChange = (classUsage) => {
-
-    const totalStudents = classUsage.length;
-
-    let result = [0, 0, 0];
-    
-    classUsage.forEach(usage => {
-
-
-
-    });
-
-}
 
 
 router.post('/updateUsage', async (req, res) => {

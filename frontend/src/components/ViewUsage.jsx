@@ -53,7 +53,7 @@ class ViewUsage extends Component {
                 <h4 className="mb-5">Project: {selfData.length && selfData[0].project.name}</h4>
 
                 <div className="tab-container p-3">
-                    <Tabs defaultActiveKey="statistics" id="uncontrolled-tab-example">
+                    <Tabs defaultActiveKey="usage" id="uncontrolled-tab-example">
                         <Tab eventKey="usage" title="Usage">
                             {
                                 sessionStorage.getItem("role") == "Student" ? "" : <Form.Group controlId="formBasicCheckbox">
@@ -105,70 +105,77 @@ class ViewUsage extends Component {
 
                             <div className="table-container mb-4">
                                 <Alert className="m-0" variant="success">Class Usage Details</Alert>
-                                <table className="usage-table table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th colSpan={dateDifference}>Baseline Period</th>
 
-                                            <th colSpan={remainingDays + 1}>Conservation Period</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            ["date"].map((data, index) => {
+                                {
+                                    !this.state.usageData.length ?
+                                        <h5 className="my-2">No data available</h5>
+                                        :
+                                        <table className="usage-table table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th colSpan={dateDifference}>Baseline Period</th>
 
-                                                return <tr key={data}>
-                                                    <th>{this.state.labelData[index]}</th>
-                                                    {
-                                                        this.getHeaderData(index, data, dateDifference)
+                                                    <th colSpan={remainingDays + 1}>Conservation Period</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    ["date"].map((data, index) => {
 
-                                                        // this.getData(index, data, dateDifference)
-                                                    }
-                                                </tr>;
-                                            })
-                                        }
-
-                                        {
-                                            Object.keys(this.state.usageData).map((data, index) => {
-
-                                                if (data == sessionStorage.getItem("authenticatedUser")) return "";
-                                                else return (
-                                                    <Fragment>
-                                                        <div className="bordered-name mt-4"><div>{this.state.hideNames ? data : `Student ${index + 1}`}</div></div>
-                                                        <tr>
-                                                            <th>{this.state.labelData[1]}</th>
+                                                        return <tr key={data}>
+                                                            <th>{this.state.labelData[index]}</th>
                                                             {
-                                                                this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
-                                                                    let text;
-                                                                    text = <div>{currUsage["electricity"]}</div>;
+                                                                this.getHeaderData(index, data, dateDifference)
 
-
-                                                                    return <td key={currUsage._id}>{text}</td>
-
-                                                                })
+                                                                // this.getData(index, data, dateDifference)
                                                             }
-                                                        </tr>
-                                                        <tr>
-                                                            <th>{this.state.labelData[2]}</th>
-                                                            {
-                                                                this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
-                                                                    let text;
-                                                                    text = <div>{currUsage["gas"]}</div>;
+                                                        </tr>;
+                                                    })
+                                                }
+
+                                                {
+                                                    Object.keys(this.state.usageData).map((data, index) => {
+
+                                                        if (data == sessionStorage.getItem("authenticatedUser")) return "";
+                                                        else return (
+                                                            <Fragment>
+                                                                <div className="bordered-name mt-4"><div>{this.state.hideNames ? data : `Student ${index + 1}`}</div></div>
+                                                                <tr>
+                                                                    <th>{this.state.labelData[1]}</th>
+                                                                    {
+                                                                        this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
+                                                                            let text;
+                                                                            text = <div>{currUsage["electricity"]}</div>;
 
 
-                                                                    return <td key={currUsage._id}>{text}</td>
+                                                                            return <td key={currUsage._id}>{text}</td>
 
-                                                                })
-                                                            }
-                                                        </tr>
-                                                    </Fragment>
-                                                );
-                                            })
-                                            // this.getData()
-                                        }
-                                    </tbody>
-                                </table>
+                                                                        })
+                                                                    }
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>{this.state.labelData[2]}</th>
+                                                                    {
+                                                                        this.state.usageData[data] && this.state.usageData[data].map((currUsage, index2) => {
+                                                                            let text;
+                                                                            text = <div>{currUsage["gas"]}</div>;
+
+
+                                                                            return <td key={currUsage._id}>{text}</td>
+
+                                                                        })
+                                                                    }
+                                                                </tr>
+                                                            </Fragment>
+                                                        );
+                                                    })
+                                                    // this.getData()
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                }
                             </div>
 
 

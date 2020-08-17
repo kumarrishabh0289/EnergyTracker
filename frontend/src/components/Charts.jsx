@@ -2,7 +2,25 @@ import React, { Component } from 'react';
 import ReactHighcharts from 'react-highcharts';
 
 class Charts extends Component {
-    state = {};
+    state = {
+        labels: {
+            "electricity": {
+                "title": "Electricity",
+                "yAxis": "Usage Values (kWh)",
+                "units": "kWh"
+            },
+            "gas": {
+                "title": "Natural Gas",
+                "yAxis": "Usage Values (therms)",
+                "units": "therms"
+            },
+            "carbon": {
+                "title": "Carbon Footprint",
+                "yAxis": "Carbon Emission (lbs)",
+                "units": "lbs"
+            },
+        }
+    };
 
     generateData = () => {
         const { selfData, usageData, average } = this.props.data;
@@ -60,6 +78,7 @@ class Charts extends Component {
 
     render() {
         const { selfData, usageData } = this.props.data;
+        const { param } = this.props;
 
         let userData = this.generateData();
 
@@ -120,11 +139,11 @@ class Charts extends Component {
                 }
             },
             "title": {
-                "text": "Electricity"
+                "text": this.state.labels[param].title
             },
             "yAxis": {
                 "title": {
-                    "text": "Usage Values (kWh)"
+                    "text": this.state.labels[param].yAxis
                 }
             },
             "legend": {

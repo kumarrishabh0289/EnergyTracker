@@ -135,7 +135,7 @@ class StudentDashboard extends Component {
 
                                 <div className="row-header col-sm-12">
                                     <h5 className="m-0">View Usage: </h5>
-                                    <div className="row-body col-sm-12">
+                                    <div className="row-body col-sm-12 d-flex flex-column">
                                         {
                                             this.state.projects.length ?
                                                 this.state.projects.map(project => {
