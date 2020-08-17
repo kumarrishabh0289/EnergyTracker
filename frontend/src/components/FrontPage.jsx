@@ -187,7 +187,7 @@ class FrontPage extends Component {
                                         <div class="form-group">
 
                                             <GoogleLogin
-                                                clientId="1098648163742-3mnff4tqjumqnqssoi29pmfcfnqb0k56.apps.googleusercontent.com"
+                                                clientId="1098648163742-0vqng25hq6mi6ql1qgdkjg00prhpi7os.apps.googleusercontent.com"
                                                 buttonText="Login"
                                                 onSuccess={this.responseGoogle}
                                                 onFailure={this.responseGoogle}
