@@ -13,7 +13,7 @@ class WeeklyChart extends Component {
         userData.push({
             "name": "Weekly Class Usage",
             "color": "black",
-            "data": weeklyAverage["electricity"] || [],
+            "data": (weeklyAverage["electricity"] && weeklyAverage["electricity"].map(val => val.average)) || [],
             "type": "line",
             "zIndex": 10,
             "lineWidth": 2.5

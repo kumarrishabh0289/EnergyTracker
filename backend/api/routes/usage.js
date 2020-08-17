@@ -161,14 +161,25 @@ let calcClassSection = (classUsage, selfUsage) => {
 
 let calcWeeklyAverage = (averages) => {
     let returnArr = [];
-    let sum = 0;
+    let sum = 0, max = 0, min = 9999999;
+    console.log('max initial', +max)
+    
+    console.log('min initial', +min)
 
     averages.forEach((average, index, averages) => {
-        sum += average.val ? average.val : 0;
+        let value = average.val ? average.val : 0
+        sum += value;
+        min = Math.min(min, value);
+        max = Math.max(max, value);
 
         if ((index + 1) % 7 == 0 || (index + 1 == averages.length)) {
-            returnArr.push(+(sum / 7).toFixed(2));
+            returnArr.push({average: +(sum / 7).toFixed(2), min, max});
             sum = 0;
+
+            if (!(index + 1 == averages.length)) {
+                max = 0;
+                min = 999999;
+            }
         }
     });
 
