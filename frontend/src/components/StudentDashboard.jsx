@@ -1,10 +1,13 @@
+  
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { API_URL } from '../Constants'
 import axios from 'axios';
 import '../styles/Dashboard.css';
-import { FontAwesomeIcon } from "react-fontawesome";
-import { faSignInAlt, faPlus } from "react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faSignInAlt, faPlus
+} from "@fortawesome/free-solid-svg-icons";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';

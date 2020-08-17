@@ -92,9 +92,7 @@ class ProjectDetail extends Component {
 
 
     GoToCourse = (course) => {
-        sessionStorage.setItem('courseid', course._id);
-        sessionStorage.setItem('coursename', course.name);
-        this.props.history.push(`/coursedetail`)
+       
     }
 
 
@@ -157,7 +155,7 @@ class ProjectDetail extends Component {
                                                     </p>
                                                 </div>
                                                 <div class="card-footer">
-                                                    <button onClick={() => this.GoToCourse(project)} class="btn btn-danger">Go To Course</button><br />
+                                                    <button onClick={() => this.GoToCourse(project)} class="btn btn-danger">Go To Project</button><br />
                                                 </div>
 
 
@@ -173,8 +171,7 @@ class ProjectDetail extends Component {
                         </div>
                     </div>
 
-                    {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success">Create new Course</button></Link>)}
-                </div>
+                         </div>
             )
         }
         else {
