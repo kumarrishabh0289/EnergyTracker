@@ -79,6 +79,7 @@ class Charts extends Component {
     render() {
         const { selfData, usageData } = this.props.data;
         const { param } = this.props;
+        const self = this;
 
         let userData = this.generateData();
 
@@ -154,7 +155,7 @@ class Charts extends Component {
                     let date = new Date(this.x);
                     let text = date.toLocaleString('default', { month: 'short' }) + " " + (date.getDate() + 1);
 
-                    return '' + 'Day: ' + text + '<br>' + 'Usage: ' + this.y + ' kWh';
+                    return `Day:  ${text} <br /> Usage:  ${this.y} ${self.state.labels[param].units}`;
                 }
             },
             "series": userData
