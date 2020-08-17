@@ -74,9 +74,7 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
 
             classSection: calcClassSection(response, selfUsage) 
         }
-        console.log('statistics', statistics)
-
-        res.send({ selfUsage, data: response, average: averageObj, weeklyAverage, selfWeekly });
+        res.send({ selfUsage, data: response, average: averageObj, weeklyAverage, selfWeekly, statistics });
 
     } catch (error) {
         console.log(error);

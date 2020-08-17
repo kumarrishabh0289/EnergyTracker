@@ -17,6 +17,7 @@ class ViewUsage extends Component {
         average: {},
         weeklyAverage: [],
         selfWeekly: [],
+        statistics: {},
         labelData: ["Date", "Electricity (kWh)", "Gas (therms)"],
         showNames: false
     };
@@ -30,7 +31,8 @@ class ViewUsage extends Component {
                 selfData: response.data.selfUsage,
                 average: response.data.average,
                 weeklyAverage: response.data.weeklyAverage,
-                selfWeekly: response.data.selfWeekly
+                selfWeekly: response.data.selfWeekly,
+                statistics: response.data.statistics
             });
         });
 
