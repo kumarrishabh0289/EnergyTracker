@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { API_URL } from '../Constants'
 import axios from 'axios';
-import Button from 'react-bootstrap/esm/Button';
 
 class ProjectDetail extends Component {
     constructor(props) {
