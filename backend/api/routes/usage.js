@@ -178,17 +178,17 @@ let calcClassSection = (classUsage, selfUsage) => {
             "electricity": {
                 baseAvg: +(electricity[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
                 conserveAvg: +(electricity[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
-                percentChange: +((electricity[1] / (conservationDays * (classUsage.length + 1)) - electricity[0] / (baseDays * (classUsage.length + 1))) * 100 / (electricity[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+                percentChange: +((electricity[1] / (conservationDays * (classUsage.length + 1)) - electricity[0] / (baseDays * (classUsage.length + 1))) * 100 / (electricity[0] / (baseDays * (classUsage.length + 1)))).toFixed(2) || 0
             },
             "gas": {
                 baseAvg: +(gas[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
                 conserveAvg: +(gas[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
-                percentChange: +((gas[1] / (conservationDays * (classUsage.length + 1)) - gas[0] / (baseDays * (classUsage.length + 1))) * 100 / (gas[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+                percentChange: +((gas[1] / (conservationDays * (classUsage.length + 1)) - gas[0] / (baseDays * (classUsage.length + 1))) * 100 / (gas[0] / (baseDays * (classUsage.length + 1)))).toFixed(2) || 0
             },
             "carbon": {
                 baseAvg: +(carbon[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
                 conserveAvg: +(carbon[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
-                percentChange: +((carbon[1] / (conservationDays * (classUsage.length + 1)) - carbon[0] / (baseDays * (classUsage.length + 1))) * 100 / (carbon[0] / (baseDays * (classUsage.length + 1)))).toFixed(2)
+                percentChange: +((carbon[1] / (conservationDays * (classUsage.length + 1)) - carbon[0] / (baseDays * (classUsage.length + 1))) * 100 / (carbon[0] / (baseDays * (classUsage.length + 1)))).toFixed(2) || 0
             }
         },
         perc: studentPercent

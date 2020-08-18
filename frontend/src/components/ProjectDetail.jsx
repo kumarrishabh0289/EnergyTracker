@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { API_URL } from '../Constants'
 import axios from 'axios';
+import Button from 'react-bootstrap/esm/Button';
 
 class ProjectDetail extends Component {
     constructor(props) {
@@ -92,7 +93,7 @@ class ProjectDetail extends Component {
 
 
     GoToCourse = (course) => {
-       
+        this.props.history.push(`/viewUsage/${course._id}`)
     }
 
 
@@ -171,7 +172,7 @@ class ProjectDetail extends Component {
                         </div>
                     </div>
 
-                         </div>
+                </div>
             )
         }
         else {

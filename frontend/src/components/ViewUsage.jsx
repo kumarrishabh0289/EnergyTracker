@@ -140,7 +140,7 @@ class ViewUsage extends Component {
                                                         if (data == sessionStorage.getItem("authenticatedUser")) return "";
                                                         else return (
                                                             <Fragment>
-                                                                <div className="bordered-name mt-4"><div>{this.state.hideNames ? data : `Student ${index + 1}`}</div></div>
+                                                                <div className="bordered-name mt-4"><div>{this.state.showNames ? this.state.usageData[data][0].user_id : `Student ${index + 1}`}</div></div>
                                                                 <tr>
                                                                     <th>{this.state.labelData[1]}</th>
                                                                     {

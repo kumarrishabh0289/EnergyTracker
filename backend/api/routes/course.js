@@ -99,16 +99,19 @@ router.post('/createproject', async (req, res) => {
             const entries = getDaysArray(new Date(savedProject.StartDate), new Date(savedProject.EndDate), savedProject._id, req.body.course_id, enroll.student);
 
             const usageRecords = await Usage.insertMany(entries);
-
         }
+
+        const selfEntries = getDaysArray(new Date(savedProject.StartDate), new Date(savedProject.EndDate), savedProject._id, req.body.course_id, req.body.faculty_email);
+
+        const selfRecords = await Usage.insertMany(selfEntries);
 
         res.status(201).json({
             message: "New project Created",                
         });
         
     } catch (error) {
-        console.log(err);
-        res.status(500).json({error:err});        
+        console.log(error);
+        res.status(500).json({error:error});        
     }
 });
 
