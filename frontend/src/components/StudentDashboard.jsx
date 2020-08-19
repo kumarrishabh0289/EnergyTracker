@@ -1,4 +1,4 @@
-  
+
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { API_URL } from '../Constants'
@@ -36,7 +36,7 @@ class StudentDashboard extends Component {
                 courses: response.data.courses,
                 projects: response.data.projects
             })
-        })
+        }).catch(error => console.log(error))
 
     };
 

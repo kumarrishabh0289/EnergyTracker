@@ -21,7 +21,7 @@ var passport = require("passport");
 
 require('./api/auth/auth');
 
-mongoose.connect(`mongodb://energytracker:${process.env.MONGO_PASSWORD}@energy-tracker.cluster-cwaes4yvw6x4.us-east-2.docdb.amazonaws.com:27017/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`,
+mongoose.connect(`mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0-lwt0l.mongodb.net/test?retryWrites=true&w=majority`,
 {
     useNewUrlParser: true,
     useUnifiedTopology: true

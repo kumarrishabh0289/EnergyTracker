@@ -155,7 +155,7 @@ class Charts extends Component {
                     let date = new Date(this.x);
                     let text = date.toLocaleString('default', { month: 'short' }) + " " + (date.getDate() + 1);
 
-                    return `Day:  ${text} <br /> Usage:  ${this.y} ${self.state.labels[param].units}`;
+                    return `Day:  ${text} <br /> ${param == 'carbon' ? "Emissions due to usage" : "Usage"}:  ${this.y} ${self.state.labels[param].units}`;
                 }
             },
             "series": userData
