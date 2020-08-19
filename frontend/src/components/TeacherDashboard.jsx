@@ -94,12 +94,11 @@ class TeacherDashboard extends Component {
 
         if (sessionStorage.role === 'teacher') {
             return (
-                <div class="container">
+                <div class="container pt-4">
 
 
-                    <div class="body-div">
+                    <div class="body-div card p-4 opacity-2">
 
-                        <br />
                         <div className="col-sm-5 col-md-5" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
 
                             <h3>Teacher's Dashboard </h3>
@@ -118,9 +117,10 @@ class TeacherDashboard extends Component {
 
 
                         </div>
+
+                        {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success">Create new Course</button></Link>)}
                     </div>
 
-                    {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success">Create new Course</button></Link>)}
                 </div>
             )
         }

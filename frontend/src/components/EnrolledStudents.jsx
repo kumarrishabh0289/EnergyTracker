@@ -14,7 +14,7 @@ class EnrolledStudents extends Component {
 
       status: "",
     };
-  
+
   }
 
   componentDidMount() {
@@ -46,11 +46,10 @@ class EnrolledStudents extends Component {
 
     if (sessionStorage.role === "teacher") {
       return (
-        <div class="container">
+        <div class="container p-3">
           <div class="body-div">
-            <br />
             <div
-              className="col-sm-5 col-md-5"
+              className="col-sm-12 p-3"
               style={{
                 backgroundColor: "white",
                 opacity: 0.9,
@@ -61,22 +60,22 @@ class EnrolledStudents extends Component {
               <h3>Enrolled Students</h3>
 
               <p>{this.state.status}</p>
-            
-            <table className='table'>
-              <tbody>
-              {this.state.student.map((student) => {
-                return (
-                <tr>
-                    <td>{student.student}</td>
-                 </tr>
-                );
-              })}
-            </tbody>
-            </table>
-          </div>
 
-        
-        </div>
+              <table className='table'>
+                <tbody>
+                  {this.state.student.map((student) => {
+                    return (
+                      <tr>
+                        <td>{student.student}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+
+          </div>
         </div>
       );
     } else {

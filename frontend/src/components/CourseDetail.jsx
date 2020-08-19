@@ -47,11 +47,9 @@ class CourseDetail extends Component {
     render() {
 
         return (
-            <div className="container">
-                <br />
-                <div style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
-                <br />
-                <h3>&nbsp;&nbsp; Course: {sessionStorage.coursename}</h3>
+            <div className="container pt-4">
+                <div className="p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
+                    <h3>&nbsp;&nbsp; Course: {sessionStorage.coursename}</h3>
                     <div className="container">
                         <br />
                         &nbsp;&nbsp;
@@ -61,17 +59,16 @@ class CourseDetail extends Component {
                         &nbsp;&nbsp;
                 <button class="btn btn-primary" type="button" onClick={this.onClickManage} >Project Detail</button>
                         &nbsp;&nbsp;
-        
-                </div>
-                </div>
-                <br />
-                <div style={{ backgroundColor: "lightblue", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
 
-                    {this.state.showResultsDelete ? <TeacherDashboard /> : null}
-                    {this.state.showResultsAdd ? <EnrolledStudents /> : null}
-                    {this.state.showResultsUpdate ? <CreateProject /> : null}
-                    {this.state.showResultsManage ? <ProjectDetail /> : null}
+                </div>
+                    <div className="mt-4 " style={{ backgroundColor: "lightblue", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
 
+                        {this.state.showResultsDelete ? <TeacherDashboard /> : null}
+                        {this.state.showResultsAdd ? <EnrolledStudents /> : null}
+                        {this.state.showResultsUpdate ? <CreateProject /> : null}
+                        {this.state.showResultsManage ? <ProjectDetail /> : null}
+
+                    </div>
                 </div>
 
 

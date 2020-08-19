@@ -20,7 +20,7 @@ class CreateProject extends Component {
             StartDate: "",
             ConservationStartDate: "",
             EndDate: "",
-            projectname:""
+            projectname: ""
         }
         this.submitSignUp = this.submitSignUp.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -32,12 +32,12 @@ class CreateProject extends Component {
         e.preventDefault();
         const data = {
             name: this.state.projectname,
-            course_id:sessionStorage.courseid,
+            course_id: sessionStorage.courseid,
             faculty_email: sessionStorage.authenticatedUser,
             StartDate: this.state.StartDate,
             ConservationStartDate: this.state.ConservationStartDate,
             EndDate: this.state.EndDate,
-            projectname:this.state.projectname
+            projectname: this.state.projectname
         }
         console.log("data is", data)
 
@@ -52,7 +52,7 @@ class CreateProject extends Component {
                     this.setState({ showSuccessMessage: true, status: response.data.message })
                 } else {
                     console.log(response.data.error);
-                    this.setState({ showSuccessMessage: true, status: response.data.message})
+                    this.setState({ showSuccessMessage: true, status: response.data.message })
                 }
             }).catch(() => {
                 this.setState({ showSuccessMessage: false })
@@ -69,11 +69,9 @@ class CreateProject extends Component {
 
     render() {
         return (
-            <div className="container" >
-                <br />
+            <div className="container p-3" >
                 <div class="" style={{ "padding-left": "30px", backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
-                    <div>
-                        <br />
+                    <div className="py-4">
                         <h4>Add Project</h4>
                         <form onSubmit={this.submitSignUp}>
                             <div className="row" >
@@ -143,27 +141,22 @@ class CreateProject extends Component {
                             </div>
                             <div className="row" >
 
+                                <div className="col-sm-12 col-md-12">
+                                    <div className="form-group d-flex justify-content-around row">
 
-                                <div className="row" >
-
-                                    <div className="col-sm-12 col-md-12">
-                                        <div className="form-group">
-
-                                            <br />
+                                        <div className="col-sm-3">
                                             <input type="submit" className="form-control btn btn-danger" />
-                                            <br />
+
+                                        </div>
+                                        <div className="col-sm-3">
+                                            <Link to="/teacherdashboard"><button class="btn btn-success">Go to Dashboard</button></Link>
+
                                         </div>
                                     </div>
-                                    <br />
-                                    <Link to="/teacherdashboard"><button class="btn btn-success">Go to Dashboard</button></Link>
-
-                                    &nbsp;&nbsp;
-
-
-                                    {this.state.showSuccessMessage && <div className="alert alert-warning">{this.state.status}</div>}
-                                    <br />
-
                                 </div>
+
+
+                                {this.state.showSuccessMessage && <div className="alert alert-warning">{this.state.status}</div>}
 
                             </div>
                         </form>

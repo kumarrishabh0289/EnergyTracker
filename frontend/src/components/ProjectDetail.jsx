@@ -106,70 +106,69 @@ class ProjectDetail extends Component {
                 <div class="container">
 
 
-                    <div class="body-div">
+                    <div class="body-div py-3">
 
-                        <br />
-                        <div className="col-sm-5 col-md-5" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
+                        <div className="col-sm-12 p-3" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
 
                             <h3>Project Detail</h3>
 
 
                             <p>{this.state.status}</p>
-                        </div>
-                        <div class="card-columns">
-                            {
-                                this.state.project.map(project => {
-                                    var StartDate = new Date(project.StartDate)
-                                    StartDate = StartDate.toLocaleDateString()
-                                    var ConservationStartDate = new Date(project.ConservationStartDate)
-                                    ConservationStartDate = ConservationStartDate.toLocaleDateString()
-                                    var EndDate = new Date(project.EndDate)
-                                    EndDate = EndDate.toLocaleDateString()
-                                    return (
-                                        <div>
-                                            <div class="card bg-info text-white">
-                                                <div class="card-header">
-                                                    {project.name}
+                            <div class="card-columns col-sm-12 row">
+                                {
+                                    this.state.project.map(project => {
+                                        var StartDate = new Date(project.StartDate)
+                                        StartDate = StartDate.toLocaleDateString()
+                                        var ConservationStartDate = new Date(project.ConservationStartDate)
+                                        ConservationStartDate = ConservationStartDate.toLocaleDateString()
+                                        var EndDate = new Date(project.EndDate)
+                                        EndDate = EndDate.toLocaleDateString()
+                                        return (
+                                            <div>
+                                                <div class="card bg-info text-white">
+                                                    <div class="card-header">
+                                                        {project.name}
+                                                    </div>
+                                                    <div class="card-body ">
+                                                        <p class="card-text">
+
+                                                            <div class="table-responsive">
+                                                                <table class="table">
+                                                                    <tr>
+                                                                        <th>Start Date</th>
+                                                                        <td>{StartDate}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Conservation Start Date </th>
+                                                                        <td>{ConservationStartDate}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>End Date</th>
+                                                                        <td>{EndDate}</td>
+                                                                    </tr>
+
+                                                                </table>
+                                                            </div>
+
+                                                        </p>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <button onClick={() => this.GoToCourse(project)} class="btn btn-danger">Go To Project</button><br />
+                                                    </div>
+
+
                                                 </div>
-                                                <div class="card-body ">
-                                                    <p class="card-text">
-
-                                                        <div class="table-responsive">
-                                                            <table class="table">
-                                                                <tr>
-                                                                    <th>Start Date</th>
-                                                                    <td>{StartDate}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>Conservation Start Date </th>
-                                                                    <td>{ConservationStartDate}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>End Date</th>
-                                                                    <td>{EndDate}</td>
-                                                                </tr>
-
-                                                            </table>
-                                                        </div>
-
-                                                    </p>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <button onClick={() => this.GoToCourse(project)} class="btn btn-danger">Go To Project</button><br />
-                                                </div>
-
-
                                             </div>
-                                        </div>
 
 
-                                    )
-                                })
-                            }
+                                        )
+                                    })
+                                }
 
 
-                        </div>
-                    </div>
+                            </div>
+
+                        </div></div>
 
                 </div>
             )
