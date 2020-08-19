@@ -21,7 +21,9 @@ var passport = require("passport");
 
 require('./api/auth/auth');
 
-mongoose.connect(`mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0-lwt0l.mongodb.net/test?retryWrites=true&w=majority`,
+mongoose.connect('mongodb+srv://rishabh53:' +
+process.env.MONGO_PASSWORD+ 
+'@cluster0-dvu2r.mongodb.net/energytracker?retryWrites=true',
 {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -33,12 +35,10 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json());
 //use cors to allow cross origin resource sharing
-app.use(cors())
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 
 
 app.use(passport.initialize());
-
-
 
 app.post("/secret", passport.authenticate('jwt', { session : false }), function(req, res){
    
