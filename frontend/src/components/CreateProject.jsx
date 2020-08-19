@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { API_URL } from '../Constants'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 class CreateProject extends Component {
 
@@ -139,26 +139,21 @@ class CreateProject extends Component {
                                 </div>
 
                             </div>
-                            <div className="row" >
+                            <div className="row col-sm-12 d-flex justify-content-around" >
 
-                                <div className="col-sm-12 col-md-12">
-                                    <div className="form-group d-flex justify-content-around row">
+                                <div className="col-sm-3">
+                                    <input type="submit" className="form-control btn btn-danger" />
 
-                                        <div className="col-sm-3">
-                                            <input type="submit" className="form-control btn btn-danger" />
+                                </div>
+                                <div className="col-sm-3">
+                                    <button class="btn btn-success w-100" onClick={e => this.props.history.push('/teacherdashboard')}>Go to Dashboard</button>
 
-                                        </div>
-                                        <div className="col-sm-3">
-                                            <Link to="/teacherdashboard"><button class="btn btn-success">Go to Dashboard</button></Link>
-
-                                        </div>
-                                    </div>
                                 </div>
 
-
-                                {this.state.showSuccessMessage && <div className="alert alert-warning">{this.state.status}</div>}
-
                             </div>
+
+
+                            {this.state.showSuccessMessage && <div className="alert alert-warning  col-sm-8 mx-auto my-3">{this.state.status}</div>}
                         </form>
 
                     </div>
@@ -169,4 +164,4 @@ class CreateProject extends Component {
 
 }
 
-export default CreateProject
+export default withRouter(CreateProject)

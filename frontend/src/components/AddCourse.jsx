@@ -62,11 +62,9 @@ class AddCourse extends Component {
 
     render() {
         return (
-            <div className="container" class="leftPadding180">
-                <br />
-                <div class="" style={{ "padding-left": "30px", backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
+            <div class="leftPadding180 container my-4">
+                <div class="p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
                     <div>
-                        <br />
                         <h4>Add Course</h4>
                         <form onSubmit={this.submitSignUp}>
                             <div className="row" >
@@ -124,31 +122,17 @@ class AddCourse extends Component {
                                 </div>
 
                             </div>
-                            <div className="row" >
 
 
-                                <div className="row" >
+                            <div className="row col-sm-12 d-flex justify-content-around" >
 
-                                    <div className="col-sm-12 col-md-12">
-                                        <div className="form-group">
-
-                                            <br />
-                                            <input type="submit" className="form-control btn btn-danger" />
-                                            <br />
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <Link to="/teacherdashboard"><button class="btn btn-success">Go to Dashboard</button></Link>
-
-                                    &nbsp;&nbsp;
-
-
-                                    {this.state.showSuccessMessage && <div className="alert alert-warning">{this.state.status}</div>}
-                                    <br />
-
-                                </div>
+                                <input type="submit" className="form-control btn btn-danger col-sm-3" />
+                                <button class="btn btn-success col-sm-3" onClick={e => this.props.history.push('/teacherdashboard')}>Go to Dashboard</button>
 
                             </div>
+
+                            {this.state.showSuccessMessage && <div className="alert alert-warning col-sm-8 mx-auto my-3">{this.state.status}</div>}
+
                         </form>
 
                     </div>
