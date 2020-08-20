@@ -21,14 +21,20 @@ var passport = require("passport");
 
 require('./api/auth/auth');
 
-mongoose.connect('mongodb+srv://rishabh53:' +
-process.env.MONGO_PASSWORD+ 
-'@cluster0-dvu2r.mongodb.net/energytracker?retryWrites=true',
+// mongoose.connect('mongodb+srv://rishabh53:' +
+// process.env.MONGO_PASSWORD+ 
+// '@cluster0-dvu2r.mongodb.net/energytracker?retryWrites=true',
+
+mongoose.connect('mongodb+srv://greenninja:' +
+process.env.MONGO_PASSWORD+
+'@cluster0-jdisv.mongodb.net/'+process.env.MONGO_COLLECTION+'?retryWrites=true',
 {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }
-).then(data => console.log("MOngo Connected!"));
+).then(data => console.log("Mongo Connected!"));
+
+
 
 mongoose.set('useCreateIndex', true)
 app.use(morgan('dev'));

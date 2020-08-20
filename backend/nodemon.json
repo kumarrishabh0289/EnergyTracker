@@ -1,5 +1,6 @@
 {
     "env":{
-        "MONGO_PASSWORD": "rishu123."
+        "MONGO_PASSWORD": "greenninja",
+        "MONGO_COLLECTION":"energytracker"
     }
 }
