@@ -56,7 +56,7 @@ class ViewUsage extends Component {
                     <Tabs defaultActiveKey="usage" id="uncontrolled-tab-example">
                         <Tab eventKey="usage" title="Usage">
                             {
-                                sessionStorage.getItem("role") == "Student" ? "" : <Form.Group controlId="formBasicCheckbox">
+                                sessionStorage.getItem("role") == "student" ? "" : <Form.Group controlId="formBasicCheckbox">
                                     <Form.Check type="checkbox" label="Show Student Names" onChange={e => {
 
                                         this.setState({ showNames: !this.state.showNames })

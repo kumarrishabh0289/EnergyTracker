@@ -72,7 +72,7 @@ class StudentDashboard extends Component {
     render() {
 
 
-        if (sessionStorage.role === 'Student') {
+        if (sessionStorage.role === 'student') {
             return (
                 <Fragment>
                     <Modal show={this.state.courseModal} onHide={this.hideAddModal} centered>

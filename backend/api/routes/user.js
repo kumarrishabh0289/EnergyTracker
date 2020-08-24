@@ -100,7 +100,7 @@ router.post('/greenninjalogin', function (req, res) {
                                         const role = new Role({
                                             _id: new mongoose.Types.ObjectId(),
                                             email: results[0].username,
-                                            role: results[0].role
+                                            role: results[0].role.toLowerCase()
 
                                         });
                                         role
@@ -115,7 +115,7 @@ router.post('/greenninjalogin', function (req, res) {
                                         res.status(200).json({
                                             username: results[0].username,
                                             name: results[0].first_name + " " + results[0].last_name,
-                                            role: results[0].role,
+                                            role: results[0].role.toLowerCase(),
                                             jwt: 'Bearer ' + token
                                         });
 

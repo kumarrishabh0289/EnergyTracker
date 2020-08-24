@@ -47,7 +47,7 @@ class FrontPage extends Component {
                 console.log("response", response)
                 AuthenticationForApiService.registerSuccessfulLogin(this.state.username, response.data.jwt, response.data.name)
                 sessionStorage.setItem("role", response.data.role)
-                if (response.data.role === "Student") {
+                if (response.data.role === "student") {
                     this.props.history.push(`/studentdashboard`)
                 }
                 else if (response.data.role === "teacher") {
