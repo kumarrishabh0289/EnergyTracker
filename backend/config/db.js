@@ -6,22 +6,10 @@ var pool = mysql.createPool({
   acquireTimeout: 120000,
   connectTimeout: 20000,
 
-//   host: process.env.RDS_HOSTNAME, //host where mysql server is running
-//   user: process.env.RDS_USERNAME, //user for the mysql application
-//   password: process.env.RDS_PASSWORD, //password for the mysql application
-//   database: process.env.RDS_DATABASE,
-
-  host: "newtestdb.cwaes4yvw6x4.us-east-2.rds.amazonaws.com",
-  user: "green",
-  password: "greenninja",
-  database: "greenninja_new",
-
-  // host : 'aa1w1g6jkjiehb9.cwaes4yvw6x4.us-east-2.rds.amazonaws.com',
-  // user : 'greenninjaRds',
-  // password : '_MfGUs[7.WH47Xs',
-  // database : 'greenninja_new',
-  // database : 'ngss_gn_main',
-
+  host: process.env.RDS_HOSTNAME, //host where mysql server is running
+  user: process.env.RDS_USERNAME, //user for the mysql application
+  password: process.env.RDS_PASSWORD, //password for the mysql application
+  database: process.env.RDS_DATABASE,
   port: process.env.RDS_PORT 
 });
 

@@ -1,6 +1,14 @@
 {
     "env":{
         "MONGO_PASSWORD": "greenninja",
-        "MONGO_COLLECTION":"energytracker"
+        "MONGO_COLLECTION":"energytracker",
+        "RDS_HOSTNAME":"newtestdb.cwaes4yvw6x4.us-east-2.rds.amazonaws.com",
+        "RDS_USERNAME":"green",
+        "RDS_PASSWORD":"greenninja",
+        "RDS_DATABASE":"greenninja_new",
+        "RDS_PORT":3306
+
+
     }
 }
+
