@@ -78,7 +78,7 @@ class CreateProject extends Component {
 
                                 <div className="col-sm-12 col-md-12">
 
-                                    Course: {sessionStorage.coursename}<br />
+                                    Class: {sessionStorage.coursename}<br />
                                     Faculty:  {sessionStorage.name}<br />
                                     <br />
 
@@ -117,7 +117,7 @@ class CreateProject extends Component {
                                 <div className="col-sm-12 col-md-12">
 
                                     <div className="form-group">
-                                        <label ><h6>conservation Start Date</h6></label>
+                                        <label ><h6>Conservation Start Date</h6></label>
                                         <input type="date" className="form-control" name="ConservationStartDate" id="ConservationStartDate" placeholder="Conservation Start Date" required value={this.state.ConservationStartDate} onChange={this.handleChange} />
 
                                     </div>

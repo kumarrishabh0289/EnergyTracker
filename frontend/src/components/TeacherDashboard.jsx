@@ -37,7 +37,7 @@ class TeacherDashboard extends Component {
                 }
                 if (response.status === 201) {
                     this.setState({
-                        status: "No Courses Assigned"
+                        status: "No Class Assigned"
                     });
                 }
 
@@ -94,7 +94,7 @@ class TeacherDashboard extends Component {
 
         if (sessionStorage.role === 'teacher') {
             return (
-                <div class="container pt-4">
+                <div class="container py-4">
 
 
                     <div class="body-div card p-4 opacity-2">
@@ -106,7 +106,7 @@ class TeacherDashboard extends Component {
                             <p>Teacher ID: {sessionStorage.authenticatedUser}</p>
                             <p>{this.state.status}</p>
                         </div>
-                        <div class="card-columns row">
+                        <div class="row my-3">
                             {
                                 this.state.course.map(course => {
                                     return (
@@ -118,7 +118,7 @@ class TeacherDashboard extends Component {
 
                         </div>
 
-                        {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success">Create new Course</button></Link>)}
+                        {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success">Create new Class</button></Link>)}
                     </div>
 
                 </div>

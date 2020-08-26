@@ -65,7 +65,7 @@ class AddCourse extends Component {
             <div class="leftPadding180 container my-4">
                 <div class="p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
                     <div>
-                        <h4>Add Course</h4>
+                        <h4>Add Class</h4>
                         <form onSubmit={this.submitSignUp}>
                             <div className="row" >
 
@@ -84,8 +84,8 @@ class AddCourse extends Component {
                                 <div className="col-sm-12 col-md-12">
 
                                     <div className="form-group">
-                                        <label htmlFor="where"><h6>Course Name</h6></label>
-                                        <input type="text" className="form-control" name="name" id="name" placeholder="Course Name" required value={this.state.name} onChange={this.handleChange} />
+                                        <label htmlFor="where"><h6>Class Name</h6></label>
+                                        <input type="text" className="form-control" name="name" id="name" placeholder="Class Name" required value={this.state.name} onChange={this.handleChange} />
 
                                     </div>
 

@@ -112,7 +112,7 @@ class StudentDashboard extends Component {
                                             this.state.courses.map(course => {
                                                 return <CourseCard key={course.course_id._id} course={course.course_id} />;
                                             }) :
-                                            "Not Registered in any course"
+                                            "Not Registered in any class"
                                     }
                                 </div>
 

@@ -34,7 +34,7 @@ class CourseCard extends Component {
                                         sessionStorage.getItem('role') == "student" ? "" :
                                             <tr>
                                                 <th>Add Code</th>
-                                                <td>{this.props.course._id}</td>
+                                                <td>{this.props.course.addCode}</td>
                                             </tr>
                                     }
                                 </tbody>
@@ -47,7 +47,7 @@ class CourseCard extends Component {
                 {
                     sessionStorage.getItem('role') == "student" ? "" :
                         <div className="card-footer">
-                            <button onClick={() => this.GoToCourse(this.props.course)} className="btn btn-danger">Go To Course</button><br />
+                            <button onClick={() => this.GoToCourse(this.props.course)} className="btn btn-danger">Go To Class</button><br />
                         </div>
                 }
 
