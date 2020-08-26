@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import ReactHighcharts from 'react-highcharts';
+import "../styles/Statistics.css";
 
 class Statistics extends Component {
     state = {}
@@ -107,7 +108,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Your Electricity</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Baseline Average</th>
@@ -129,7 +130,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Your Class Electricity</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Baseline Average</th>
@@ -151,7 +152,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Weekly Classroom Electricity Average</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Week No.</th>
@@ -181,7 +182,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Your Natural Gas</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Baseline Average</th>
@@ -202,7 +203,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Your Class Natural Gas</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Baseline Average</th>
@@ -224,7 +225,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Weekly Classroom Natural Gas Average</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Week No.</th>
@@ -254,7 +255,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Your Carbon Emission</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Baseline Average</th>
@@ -275,7 +276,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Your Class Carbon Emission</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Baseline Average</th>
@@ -297,7 +298,7 @@ class Statistics extends Component {
                         <Card className="my-3">
                             <Card.Header>Weekly Classroom Carbon Emission Average</Card.Header>
                             <Card.Body>
-                                <Table bordered>
+                                <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>Week No.</th>
