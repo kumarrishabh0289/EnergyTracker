@@ -27,26 +27,26 @@ router.get('/', (req, res, next) => {
 router.get('/getStudentList', (req, res) => {
     const course_id = req.query.course_id;
 
-    
-    console.log("course_id",course_id)
-    
+
+    console.log("course_id", course_id)
+
 
     Enroll.find({ course_id: course_id })
         .exec()
         .then(doc => {
-        console.log("From database",doc);
-        if (doc.length>0){
-            res.status(200).json(doc);
-        }
-        else {
-            res.status(201).json({message:"not a valid course_id"});
-        }
-        
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({error:err});
-    })
+            console.log("From database", doc);
+            if (doc.length > 0) {
+                res.status(200).json(doc);
+            }
+            else {
+                res.status(201).json({ message: "not a valid course_id" });
+            }
+
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: err });
+        })
 
 });
 
@@ -185,34 +185,39 @@ router.post('/', async (req, res) => {
     console.log("ENROLL!");
 
     try {
-        const currEnrollment = await Enroll.findOne({ course_id: req.body.course_id, student: req.body.student });
+        const oneCourse = await Course.findOne({ addCode: req.body.addCode });
+
+        if (!oneCourse)
+            return res.status(400).json({ message: "Invalid Add Code" });        
+
+        const currEnrollment = await Enroll.findOne({ course_id: oneCourse._id, student: req.body.student });
 
         if (currEnrollment) {
-            res.status(201).json({ message: "Student Already Enrolled" });
+            return res.status(400).json({ message: "Student Already Enrolled" });
         }
-        else {
-            const newEnroll = new Enroll({
-                course_id: req.body.course_id,
-                student: req.body.student
-            });
 
-            const result = await newEnroll.save();
+        const newEnroll = new Enroll({
+            course_id: oneCourse._id,
+            student: req.body.student
+        });
 
-            const course = await Enroll.populate(newEnroll, "course_id");
+        const result = await newEnroll.save();
 
-            let courseProjects = await Project.find({ course_id: course.course_id._id });
+        const course = await Enroll.populate(newEnroll, "course_id");
 
-            for (let project of courseProjects) {
+        let courseProjects = await Project.find({ course_id: course.course_id._id });
 
-                const entries = getDaysArray(new Date(project.StartDate), new Date(project.EndDate), project._id, course.course_id._id, req.body.student);;
+        for (let project of courseProjects) {
 
-                const usageRecords = await Usage.insertMany(entries);
+            const entries = getDaysArray(new Date(project.StartDate), new Date(project.EndDate), project._id, course.course_id._id, req.body.student);;
 
-            }
-
-            res.send({courseProjects, course});
+            const usageRecords = await Usage.insertMany(entries);
 
         }
+
+        res.send({ courseProjects, course });
+
+
 
     } catch (error) {
         console.log(error);

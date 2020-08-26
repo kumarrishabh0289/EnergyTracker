@@ -47,7 +47,7 @@ class ViewUsage extends Component {
         const remainingDays = totalDays - dateDifference;
 
         return (
-            <div className="edit-wrapper card mt-4 col-sm-11 mx-auto p-3">
+            <div className="edit-wrapper card my-4 col-sm-11 mx-auto p-3">
                 <h2 className="mb-4">Usage Details </h2>
 
                 <h4 className="mb-5">Project: {selfData.length && selfData[0].project.name}</h4>

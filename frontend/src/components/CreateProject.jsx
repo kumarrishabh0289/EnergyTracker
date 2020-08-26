@@ -70,8 +70,8 @@ class CreateProject extends Component {
     render() {
         return (
             <div className="container p-3" >
-                <div class="" style={{ "padding-left": "30px", backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
-                    <div className="py-4">
+                <div class="p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
+                    <div className="">
                         <h4>Add Project</h4>
                         <form onSubmit={this.submitSignUp}>
                             <div className="row" >

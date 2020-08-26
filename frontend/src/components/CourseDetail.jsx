@@ -60,7 +60,7 @@ class CourseDetail extends Component {
                                 <Col sm={6}>
                                     <Nav variant="pills" className="flex-row">
                                         <Nav.Item>
-                                            <Nav.Link eventKey="first">Project Details</Nav.Link>
+                                            <Nav.Link eventKey="first">Projects List</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link eventKey="second">Enrolled Students</Nav.Link>

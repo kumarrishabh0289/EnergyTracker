@@ -11,6 +11,7 @@ import {
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import CourseCard from './CourseCard';
 
 class StudentDashboard extends Component {
@@ -20,7 +21,9 @@ class StudentDashboard extends Component {
         this.state = {
             courses: [],
             projects: [],
-            courseModal: false
+            courseModal: false,
+            showAlert: false,
+            errorMsg: ""
         };
     }
 
@@ -44,7 +47,7 @@ class StudentDashboard extends Component {
         this.hideAddModal();
         axios.post(`${API_URL}/enroll`, {
             student: sessionStorage.authenticatedUser,
-            course_id: this.state.addCode
+            addCode: this.state.addCode
         }).then(data => {
             this.setState({
                 courses: [...this.state.courses, data.data.course],
@@ -52,7 +55,7 @@ class StudentDashboard extends Component {
             })
         }).catch(error => {
             if (error.response)
-                alert(error.response.data.error);
+                this.setState({ errorMsg: error.response.data.message, showAlert: true });
         });
 
     }
@@ -96,6 +99,14 @@ class StudentDashboard extends Component {
                     </Modal>
 
                     <div className="container dashboard-wrapper card">
+                        {
+                            this.state.showAlert ? <Alert variant="danger" onClose={() => this.setState({ showAlert: false })} dismissible>
+                                <Alert.Heading>Error</Alert.Heading>
+                                <p>
+                                    {this.state.errorMsg}
+                                </p>
+                            </Alert> : ""
+                        }
                         <div className="body-div">
                             <h2>Student Dashboard </h2>
                             <h5>Welcome, {sessionStorage.name}</h5>
