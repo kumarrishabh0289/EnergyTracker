@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const shortid = require('shortid');
 
 const courseSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -9,7 +8,7 @@ const courseSchema = mongoose.Schema({
     term: String,
     addCode: {
         'type': String,
-        'default': shortid.generate
+        'default': Math.floor(100000 + Math.random() * 900000)
     }
 });
 
