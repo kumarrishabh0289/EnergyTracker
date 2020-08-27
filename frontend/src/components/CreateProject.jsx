@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { API_URL } from '../Constants'
 import { Link, withRouter } from 'react-router-dom'
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 class CreateProject extends Component {
 
@@ -67,6 +70,13 @@ class CreateProject extends Component {
         })
     }
 
+
+    handleDate = (type, event) => {
+        this.setState({
+            [type]: event
+        })
+    }
+
     render() {
         return (
             <div className="container p-3" >
@@ -104,8 +114,14 @@ class CreateProject extends Component {
 
                                     <div className="form-group">
                                         <label><h6>Start Date</h6></label>
-                                        <input type="date" className="form-control" name="StartDate" id="StartDate" placeholder="Start Date" required value={this.state.StartDate} onChange={this.handleChange} />
 
+                                        <div>
+                                            <DatePicker
+                                                selected={this.state.StartDate}
+                                                onChange={e => this.handleDate("StartDate", e)}
+                                            />
+
+                                        </div>
                                     </div>
 
                                 </div>
@@ -118,8 +134,13 @@ class CreateProject extends Component {
 
                                     <div className="form-group">
                                         <label ><h6>Conservation Start Date</h6></label>
-                                        <input type="date" className="form-control" name="ConservationStartDate" id="ConservationStartDate" placeholder="Conservation Start Date" required value={this.state.ConservationStartDate} onChange={this.handleChange} />
+                                        <div>
+                                            <DatePicker
+                                                selected={this.state.ConservationStartDate}
+                                                onChange={e => this.handleDate("ConservationStartDate", e)}
+                                            />
 
+                                        </div>
                                     </div>
 
                                 </div>
@@ -132,8 +153,12 @@ class CreateProject extends Component {
 
                                     <div className="form-group">
                                         <label ><h6>End Date</h6></label>
-                                        <input type="date" className="form-control" name="EndDate" id="EndDate" placeholder="End Date" required value={this.state.EndDate} onChange={this.handleChange} />
-
+                                        <div>
+                                            <DatePicker
+                                                selected={this.state.EndDate}
+                                                onChange={e => this.handleDate("EndDate", e)}
+                                            />
+                                        </div>
                                     </div>
 
                                 </div>

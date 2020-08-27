@@ -4,6 +4,9 @@ import { API_URL } from '../Constants'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 class ProjectDetail extends Component {
     constructor(props) {
@@ -39,18 +42,11 @@ class ProjectDetail extends Component {
         this.setState({
             editModal: true,
             projectname,
-            StartDate: this.fixDates(StartDate),
-            ConservationStartDate: this.fixDates(ConservationStartDate),
-            EndDate: this.fixDates(EndDate)
+            StartDate: new Date(StartDate),
+            ConservationStartDate: new Date(ConservationStartDate),
+            EndDate: new Date(EndDate)
         })
 
-
-    }
-
-    fixDates = (date) => {
-        let dateArr = new Date(date).toLocaleDateString().split("/");
-
-        return `${dateArr[2]}-${dateArr[0].length > 1 ? dateArr[0] : 0 + dateArr[0]}-${dateArr[1].length > 1 ? dateArr[1] : 0 + dateArr[1]}`;
     }
 
     loadCourse() {
@@ -125,6 +121,13 @@ class ProjectDetail extends Component {
         })
     }
 
+
+    handleDate = (type, event) => {
+        this.setState({
+            [type]: event
+        })
+    }
+
     editModal = () => {
         return <Modal
             size="lg"
@@ -169,11 +172,17 @@ class ProjectDetail extends Component {
                                 </div>
                                 <div className="row" >
 
-                                    <div className="col-sm-12 col-md-12">
+                                    <div className="col-sm-8 col-md-8">
 
                                         <div className="form-group">
                                             <label><h6>Start Date</h6></label>
-                                            <input type="date" className="form-control" name="StartDate" id="StartDate" placeholder="Start Date" required value={this.state.StartDate} onChange={this.handleChange} />
+                                            {/* <input type="date" className="form-control" name="StartDate" id="StartDate" placeholder="Start Date" required value={this.state.StartDate} onChange={this.handleChange} /> */}
+                                            <div>
+                                                <DatePicker
+                                                    selected={this.state.StartDate}
+                                                    onChange={e => this.handleDate("StartDate", e)}
+                                                />
+                                            </div>
 
                                         </div>
 
@@ -183,12 +192,17 @@ class ProjectDetail extends Component {
 
                                 <div className="row" >
 
-                                    <div className="col-sm-12 col-md-12">
+                                    <div className="col-sm-8 col-md-8">
 
                                         <div className="form-group">
                                             <label ><h6>Conservation Start Date</h6></label>
-                                            <input type="date" className="form-control" name="ConservationStartDate" id="ConservationStartDate" placeholder="Conservation Start Date" required value={this.state.ConservationStartDate} onChange={this.handleChange} />
-
+                                            {/* <input type="date" className="form-control" name="ConservationStartDate" id="ConservationStartDate" placeholder="Conservation Start Date" required value={this.state.ConservationStartDate} onChange={this.handleChange} /> */}
+                                            <div>
+                                                <DatePicker
+                                                    selected={this.state.ConservationStartDate}
+                                                    onChange={e => this.handleDate("ConservationStartDate", e)}
+                                                />
+                                            </div>
                                         </div>
 
                                     </div>
@@ -197,18 +211,24 @@ class ProjectDetail extends Component {
 
                                 <div className="row" >
 
-                                    <div className="col-sm-12 col-md-12">
+                                    <div className="col-sm-8 col-md-8">
 
                                         <div className="form-group">
                                             <label ><h6>End Date</h6></label>
-                                            <input type="date" className="form-control" name="EndDate" id="EndDate" placeholder="End Date" required value={this.state.EndDate} onChange={this.handleChange} />
+                                            {/* <input type="date" className="form-control" name="EndDate" id="EndDate" placeholder="End Date" required value={this.state.EndDate} onChange={this.handleChange} /> */}
+                                            <div>
+                                                <DatePicker
+                                                    selected={this.state.EndDate}
+                                                    onChange={e => this.handleDate("EndDate", e)}
+                                                />
+                                            </div>
 
                                         </div>
 
                                     </div>
 
                                 </div>
-                                <div className="row col-sm-12 d-flex justify-content-around" >
+                                <div className="row col-sm-12 d-flex justify-content-center" >
 
                                     <div className="col-sm-3">
                                         <input type="submit" className="form-control btn btn-danger" />
@@ -264,7 +284,7 @@ class ProjectDetail extends Component {
                                         var EndDate = new Date(project.EndDate)
                                         EndDate = EndDate.toLocaleDateString()
                                         return (
-                                            <div class="card bg-info text-white col-sm-5 mx-4">
+                                            <div class="card bg-info text-white col-sm-5 m-3">
                                                 <div class="card-header">
                                                     {project.name}
                                                 </div>
