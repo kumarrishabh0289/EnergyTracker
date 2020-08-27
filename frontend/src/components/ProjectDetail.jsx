@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { API_URL } from '../Constants'
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 
 class ProjectDetail extends Component {
@@ -12,7 +14,16 @@ class ProjectDetail extends Component {
 
             project: [],
 
-            status: ""
+            status: "",
+            editModal: false,
+            department: "",
+            term: "",
+            showSuccessMessage: false,
+            status: "",
+            StartDate: "",
+            ConservationStartDate: "",
+            EndDate: "",
+            projectname: ""
 
 
         }
@@ -21,6 +32,25 @@ class ProjectDetail extends Component {
 
     componentDidMount() {
         this.loadCourse();
+    }
+
+    loadProject = ({ projectname, StartDate, ConservationStartDate, EndDate }) => {
+
+        this.setState({
+            editModal: true,
+            projectname,
+            StartDate: this.fixDates(StartDate),
+            ConservationStartDate: this.fixDates(ConservationStartDate),
+            EndDate: this.fixDates(EndDate)
+        })
+
+
+    }
+
+    fixDates = (date) => {
+        let dateArr = new Date(date).toLocaleDateString().split("/");
+
+        return `${dateArr[2]}-${dateArr[0].length > 1 ? dateArr[0] : 0 + dateArr[0]}-${dateArr[1].length > 1 ? dateArr[1] : 0 + dateArr[1]}`;
     }
 
     loadCourse() {
@@ -89,6 +119,114 @@ class ProjectDetail extends Component {
     }
 
 
+    handleChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+
+    editModal = () => {
+        return <Modal
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+            show={this.state.editModal} onHide={() => this.setState({ editModal: false })}
+        >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Edit Project
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div className="container" >
+                    <div class="" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
+                        <div className="">
+                            <form onSubmit={this.submitSignUp}>
+                                <div className="row" >
+
+                                    <div className="col-sm-12 col-md-12">
+
+                                        Class: {sessionStorage.coursename}<br />
+                                    Faculty:  {sessionStorage.name}<br />
+                                        <br />
+
+                                    </div>
+
+                                </div>
+                                <div className="row" >
+
+                                    <div className="col-sm-12 col-md-12">
+
+                                        <div className="form-group">
+                                            <label><h6>Project Name: </h6></label>
+                                            <label className="mx-3">{this.state.projectname}</label>
+                                            {/* <input type="text" className="form-control" name="projectname" id="projectname" placeholder="Project Name" required value={this.state.projectname} onChange={this.handleChange} /> */}
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div className="row" >
+
+                                    <div className="col-sm-12 col-md-12">
+
+                                        <div className="form-group">
+                                            <label><h6>Start Date</h6></label>
+                                            <input type="date" className="form-control" name="StartDate" id="StartDate" placeholder="Start Date" required value={this.state.StartDate} onChange={this.handleChange} />
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="row" >
+
+                                    <div className="col-sm-12 col-md-12">
+
+                                        <div className="form-group">
+                                            <label ><h6>Conservation Start Date</h6></label>
+                                            <input type="date" className="form-control" name="ConservationStartDate" id="ConservationStartDate" placeholder="Conservation Start Date" required value={this.state.ConservationStartDate} onChange={this.handleChange} />
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="row" >
+
+                                    <div className="col-sm-12 col-md-12">
+
+                                        <div className="form-group">
+                                            <label ><h6>End Date</h6></label>
+                                            <input type="date" className="form-control" name="EndDate" id="EndDate" placeholder="End Date" required value={this.state.EndDate} onChange={this.handleChange} />
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div className="row col-sm-12 d-flex justify-content-around" >
+
+                                    <div className="col-sm-3">
+                                        <input type="submit" className="form-control btn btn-danger" />
+
+                                    </div>
+
+                                </div>
+
+
+                                {this.state.showSuccessMessage && <div className="alert alert-warning  col-sm-8 mx-auto my-3">{this.state.status}</div>}
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </Modal.Body>
+        </Modal >
+    }
 
 
     GoToCourse = (course) => {
@@ -106,7 +244,7 @@ class ProjectDetail extends Component {
         if (sessionStorage.role === 'teacher') {
             return (
                 <div class="container">
-
+                    {this.editModal()}
 
                     <div class="body-div py-3">
 
@@ -156,7 +294,7 @@ class ProjectDetail extends Component {
                                                 <div class="card-footer d-flex justify-content-between p-2">
                                                     <button onClick={() => this.GoToCourse(project)} class="btn btn-danger">View Usage</button>
                                                     <button onClick={() => this.editUsage(project)} class="btn btn-primary">Edit Usage</button>
-                                                    {/* <button onClick={() => this.editProject(project)} class="btn btn-success">Edit Project</button> */}
+                                                    <button onClick={() => { this.loadProject(project) }} class="btn btn-success">Edit Project</button>
                                                 </div>
 
 
