@@ -133,6 +133,17 @@ class ProjectDetail extends Component {
     editProject = (e) => {
 
         e.preventDefault();
+
+        if (!(this.state.StartDate < this.state.ConservationStartDate && this.state.StartDate < this.state.EndDate)) {
+            this.setState({ showError: true, status: "Start date cannot be greater than conservation date or end date!" });
+            return;
+        } else if (!(this.state.ConservationStartDate > this.state.StartDate && this.state.ConservationStartDate < this.state.EndDate)) {
+            this.setState({ showError: true, status: "Conservation date cannot be greater than end date or lesser than start date!" });
+            return;
+        } else if (!(this.state.EndDate > this.state.StartDate && this.state.EndDate > this.state.ConservationStartDate)) {
+            this.setState({ showError: true, status: "End date cannot be lesser than start date or conservation date!" });
+            return;
+        }
         const data = {
             StartDate: this.state.StartDate,
             ConservationStartDate: this.state.ConservationStartDate,
@@ -150,11 +161,11 @@ class ProjectDetail extends Component {
                 if (response.status === 201) {
 
                     console.log(response.data);
-                    this.setState({ showSuccessMessage: true, status: response.data.message })
+                    this.setState({ showSuccessMessage: true, status: response.data.message, showError: false })
                     this.loadCourse();
                 } else {
                     console.log(response.data.error);
-                    this.setState({ showSuccessMessage: true, status: response.data.message })
+                    this.setState({ showSuccessMessage: true, status: response.data.message, showError: false })
                 }
             }).catch(() => {
                 this.setState({ showSuccessMessage: false })
@@ -167,7 +178,7 @@ class ProjectDetail extends Component {
             size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            show={this.state.editModal} onHide={() => this.setState({ editModal: false, showSuccessMessage: false })}
+            show={this.state.editModal} onHide={() => this.setState({ editModal: false, showSuccessMessage: false, showError: false })}
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -273,6 +284,7 @@ class ProjectDetail extends Component {
 
 
                                 {this.state.showSuccessMessage && <div className="alert alert-warning  col-sm-8 mx-auto my-3">{this.state.status}</div>}
+                                {this.state.showError && <div className="alert alert-danger  col-sm-8 mx-auto my-3">{this.state.status}</div>}
                             </form>
 
                         </div>
