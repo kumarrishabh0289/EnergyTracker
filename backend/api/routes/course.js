@@ -59,7 +59,7 @@ router.post('/', (req, res, next) => {
         faculty_email: req.body.faculty_email,
         department: req.body.department,
         term: req.body.term,
-
+        addCode: Math.floor(100000 + Math.random() * 900000)
     });
     course
         .save()

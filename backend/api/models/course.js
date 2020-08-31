@@ -6,10 +6,7 @@ const courseSchema = mongoose.Schema({
     faculty_email: String,
     department: String,
     term: String,
-    addCode: {
-        'type': String,
-        'default': Math.floor(100000 + Math.random() * 900000)
-    }
+    addCode: { type: String, unique: true }
 });
 
 module.exports = mongoose.model('Course', courseSchema);

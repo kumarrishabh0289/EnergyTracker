@@ -11,7 +11,7 @@ class CourseCard extends Component {
     }
 
     render() {
-        return (<div className=" col-sm-4">
+        return (<div className=" col-sm-4 my-3">
             <div className="card bg-info text-white">
                 <div className="card-header">
                     {this.props.course.name}
