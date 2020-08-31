@@ -172,21 +172,27 @@ router.post('/updateProject', async (req, res) => {
             const deleteEntries = await Usage.deleteMany({ project: currProject._id, date: { $gt: updatedProject.EndDate } });
         } else {
             const enrolledStudents = await Enroll.find({ course_id: currProject.course_id });
-            let oldDate = new Date(currProject.EndDate);
-            oldDate.setDate(oldDate.getDate() + 1);
+            let oldDate;
 
             for (const enroll of enrolledStudents) {
+                oldDate = new Date(currProject.EndDate);
+                oldDate.setDate(oldDate.getDate() + 1);
+                console.log('oldDate students', oldDate)
                 const entries = getDaysArray(oldDate, new Date(updatedProject.EndDate), updatedProject._id, updatedProject.course_id, enroll.student);
+
 
                 const usageRecords = await Usage.insertMany(entries);
             }
-
+            oldDate = new Date(currProject.EndDate);
+            oldDate.setDate(oldDate.getDate() + 1);
+            console.log('oldDate self', oldDate)
             const selfEntries = getDaysArray(oldDate, new Date(updatedProject.EndDate), updatedProject._id, updatedProject.course_id, req.body.faculty_email);
+
 
             const selfRecords = await Usage.insertMany(selfEntries);
         }
 
-        res.status(201).send("Success!");
+        res.status(201).send({ message: "Project updated successfully!" });
 
     } catch (error) {
         console.log(err);
