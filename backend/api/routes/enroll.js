@@ -34,7 +34,7 @@ router.get('/getStudentList', (req, res) => {
     Enroll.find({ course_id: course_id })
         .exec()
         .then(doc => {
-            console.log("From database", doc);
+            
             if (doc.length > 0) {
                 res.status(200).json(doc);
             }

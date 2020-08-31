@@ -28,7 +28,7 @@ router.get('/', (req, res, next) => {
     Mail.find({ to: to })
         .exec()
         .then(doc => {
-            console.log("From database", doc);
+            
             if (doc) {
                 res.status(200).json(doc);
             }
@@ -49,7 +49,7 @@ router.get('/from', (req, res, next) => {
     Mail.find({ from: from })
         .exec()
         .then(doc => {
-            console.log("From database", doc);
+            
             if (doc) {
                 res.status(200).json(doc);
             }

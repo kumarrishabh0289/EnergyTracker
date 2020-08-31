@@ -26,7 +26,7 @@ router.get('/email', (req, res, next)=>{
     Profile.findOne({ email: email })
         .exec()
         .then(doc => {
-        console.log("From database",doc);
+        
         if (doc){
             res.status(200).json(doc);
         }

@@ -24,7 +24,7 @@ router.get('/course', (req, res, next) => {
     Permission.find({ course_id: course_id })
         .exec()
         .then(doc => {
-            console.log("From database", doc);
+            
             if (doc) {
                 res.status(200).json(doc);
             }
@@ -45,7 +45,7 @@ router.post('/', (req, res, next) => {
     Permission.findOne().sort({ permission_id: 'desc', _id: -1 }).limit(1)
         .exec()
         .then(doc => {
-            console.log("From database", doc);
+            
             if (doc) {
                 var permission_id = doc.permission_id;
                 permission_id = parseInt(permission_id);

@@ -18,7 +18,7 @@ router.post('/login', (req, res, next) => {
     User.findOne({ email: req.body.username })
         .exec()
         .then(doc => {
-            console.log("From database", doc);
+            
 
             if (doc.password === mystr && doc.role === req.body.role) {
 
@@ -332,7 +332,7 @@ router.get('/:userId', (req, res, next) => {
     User.findOne({ email: email })
         .exec()
         .then(doc => {
-            console.log("From database", doc);
+            
             if (doc) {
                 res.status(200).json(doc);
             }

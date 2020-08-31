@@ -26,7 +26,8 @@ class ProjectDetail extends Component {
             StartDate: "",
             ConservationStartDate: "",
             EndDate: "",
-            projectname: ""
+            projectname: "",
+            projectId: ""
 
 
         }
@@ -37,14 +38,15 @@ class ProjectDetail extends Component {
         this.loadCourse();
     }
 
-    loadProject = ({ projectname, StartDate, ConservationStartDate, EndDate }) => {
+    loadProject = ({ projectname, StartDate, ConservationStartDate, EndDate, _id }) => {
 
         this.setState({
             editModal: true,
             projectname,
             StartDate: new Date(StartDate),
             ConservationStartDate: new Date(ConservationStartDate),
-            EndDate: new Date(EndDate)
+            EndDate: new Date(EndDate),
+            projectId: _id
         })
 
     }
@@ -128,6 +130,37 @@ class ProjectDetail extends Component {
         })
     }
 
+    editProject = (e) => {
+
+        e.preventDefault();
+        const data = {
+            StartDate: this.state.StartDate,
+            ConservationStartDate: this.state.ConservationStartDate,
+            EndDate: this.state.EndDate,
+            id: this.state.projectId,
+            faculty_email: sessionStorage.getItem("authenticatedUser")
+        }
+        console.log("data is", data)
+
+        axios.defaults.withCredentials = true;
+        //make a post request with the user data
+        axios.post(API_URL + '/course/updateProject', data)
+            .then((response) => {
+                console.log("Status Code : ", response.status);
+                if (response.status === 201) {
+
+                    console.log(response.data);
+                    this.setState({ showSuccessMessage: true, status: response.data.message })
+                } else {
+                    console.log(response.data.error);
+                    this.setState({ showSuccessMessage: true, status: response.data.message })
+                }
+            }).catch(() => {
+                this.setState({ showSuccessMessage: false })
+
+            })
+    }
+
     editModal = () => {
         return <Modal
             size="lg"
@@ -144,7 +177,7 @@ class ProjectDetail extends Component {
                 <div className="container" >
                     <div class="" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
                         <div className="">
-                            <form onSubmit={this.submitSignUp}>
+                            <form onSubmit={this.editProject}>
                                 <div className="row" >
 
                                     <div className="col-sm-12 col-md-12">
