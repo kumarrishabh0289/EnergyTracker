@@ -151,6 +151,7 @@ class ProjectDetail extends Component {
 
                     console.log(response.data);
                     this.setState({ showSuccessMessage: true, status: response.data.message })
+                    this.loadCourse();
                 } else {
                     console.log(response.data.error);
                     this.setState({ showSuccessMessage: true, status: response.data.message })
@@ -163,7 +164,7 @@ class ProjectDetail extends Component {
 
     editModal = () => {
         return <Modal
-            size="lg"
+            size="md"
             aria-labelledby="contained-modal-title-vcenter"
             centered
             show={this.state.editModal} onHide={() => this.setState({ editModal: false, showSuccessMessage: false })}
