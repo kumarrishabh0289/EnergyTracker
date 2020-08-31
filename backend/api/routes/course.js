@@ -177,7 +177,6 @@ router.post('/updateProject', async (req, res) => {
             for (const enroll of enrolledStudents) {
                 oldDate = new Date(currProject.EndDate);
                 oldDate.setDate(oldDate.getDate() + 1);
-                console.log('oldDate students', oldDate)
                 const entries = getDaysArray(oldDate, new Date(updatedProject.EndDate), updatedProject._id, updatedProject.course_id, enroll.student);
 
 
@@ -185,7 +184,6 @@ router.post('/updateProject', async (req, res) => {
             }
             oldDate = new Date(currProject.EndDate);
             oldDate.setDate(oldDate.getDate() + 1);
-            console.log('oldDate self', oldDate)
             const selfEntries = getDaysArray(oldDate, new Date(updatedProject.EndDate), updatedProject._id, updatedProject.course_id, req.body.faculty_email);
 
 

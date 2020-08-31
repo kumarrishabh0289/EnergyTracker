@@ -166,7 +166,7 @@ class ProjectDetail extends Component {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            show={this.state.editModal} onHide={() => this.setState({ editModal: false })}
+            show={this.state.editModal} onHide={() => this.setState({ editModal: false, showSuccessMessage: false })}
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">

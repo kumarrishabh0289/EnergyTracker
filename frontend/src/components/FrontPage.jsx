@@ -58,8 +58,8 @@ class FrontPage extends Component {
                 }
 
             }).catch(() => {
-                // this.setState({ showSuccessMessage: false })
-                // this.setState({ hasLoginFailed: true })
+                this.setState({ showSuccessMessage: false })
+                this.setState({ hasLoginFailed: true })
             })
 
     }
@@ -200,8 +200,8 @@ class FrontPage extends Component {
                                         </div>
                                     </div>
                                     <br />
-                                    {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
-                                    {this.state.showSuccessMessage && <div className="alert alert-warning">Login Successful</div>}
+                                    {this.state.hasLoginFailed && <div className="alert alert-danger col-sm-4 mx-auto">Invalid Credentials</div>}
+                                    {this.state.showSuccessMessage && <div className="alert alert-success col-sm-4 mx-auto">Login Successful</div>}
                                     <br />
 
                                 </div>
