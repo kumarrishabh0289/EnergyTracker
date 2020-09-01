@@ -33,6 +33,19 @@ class CreateProject extends Component {
 
 
         e.preventDefault();
+
+
+        if (!(this.state.StartDate < this.state.ConservationStartDate && this.state.StartDate < this.state.EndDate)) {
+            this.setState({ showError: true, status: "Start date cannot be greater than conservation date or end date!" });
+            return;
+        } else if (!(this.state.ConservationStartDate > this.state.StartDate && this.state.ConservationStartDate < this.state.EndDate)) {
+            this.setState({ showError: true, status: "Conservation date cannot be greater than end date or lesser than start date!" });
+            return;
+        } else if (!(this.state.EndDate > this.state.StartDate && this.state.EndDate > this.state.ConservationStartDate)) {
+            this.setState({ showError: true, status: "End date cannot be lesser than start date or conservation date!" });
+            return;
+        }
+
         const data = {
             name: this.state.projectname,
             course_id: sessionStorage.courseid,
