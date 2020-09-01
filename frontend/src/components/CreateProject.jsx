@@ -65,12 +65,14 @@ class CreateProject extends Component {
                 if (response.status === 201) {
 
                     console.log(response.data);
-                    this.setState({ showSuccessMessage: true, status: response.data.message })
+                    // this.props.updateList();
+                    this.setState({ showSuccessMessage: true, status: response.data.message, showError: false })
                 } else {
                     console.log(response.data.error);
-                    this.setState({ showSuccessMessage: true, status: response.data.message })
+                    this.setState({ showSuccessMessage: true, status: response.data.message, showError: false })
                 }
-            }).catch(() => {
+            }).catch((err) => {
+                console.log('err', err)
                 this.setState({ showSuccessMessage: false })
 
             })
@@ -192,6 +194,7 @@ class CreateProject extends Component {
 
 
                             {this.state.showSuccessMessage && <div className="alert alert-warning  col-sm-8 mx-auto my-3">{this.state.status}</div>}
+                            {this.state.showError && <div className="alert alert-danger  col-sm-8 mx-auto my-3">{this.state.status}</div>}
                         </form>
 
                     </div>
