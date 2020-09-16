@@ -30,13 +30,13 @@ router.get('/getAllUsage/:project_id', async (req, res) => {
         const selfUsage = await Usage.find({ project: req.params.project_id, user_id: req.query.user }).populate('project').sort('date').lean();
 
         for (let use of selfUsage)
-            use["carbon"] = use.electricity == '' && use.gas == '' ? '' : use.electricity * 0.524 + use.gas * 13.446;
+            use["carbon"] = use.electricity == '' && use.gas == '' ? '' : (use.electricity * 0.524 + use.gas * 13.446).toFixed(1);
 
         const usages = await Usage.find({ project: req.params.project_id, user_id: { $ne: req.query.user } }).populate('project').sort({ user_id: 1, date: 1 }).lean();
 
         for (let usage of usages) {
 
-            const carbon = usage.electricity == '' && usage.gas == '' ? '' : usage.electricity * 0.524 + usage.gas * 13.446;
+            const carbon = usage.electricity == '' && usage.gas == '' ? '' : (usage.electricity * 0.524 + usage.gas * 13.446).toFixed(1);
 
             if (!response[usage.user_id]) {
                 response[usage.user_id] = [];
@@ -99,7 +99,7 @@ let calculateAverage = (param, selfUsage, response) => {
         return (r[i] || 0) + +b[param] + +selfUsage[i][param];
     }), []);
 
-    return count.map((val, index) => { return { date: selfUsage[index].date, val: (sum[index] / val).toFixed(2) } });
+    return count.map((val, index) => { return { date: selfUsage[index].date, val: (sum[index] / val).toFixed(1) } });
 
 }
 
@@ -176,19 +176,19 @@ let calcClassSection = (classUsage, selfUsage) => {
     return {
         class: {
             "electricity": {
-                baseAvg: +(electricity[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
-                conserveAvg: +(electricity[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
-                percentChange: +((electricity[1] / (conservationDays * (classUsage.length + 1)) - electricity[0] / (baseDays * (classUsage.length + 1))) * 100 / (electricity[0] / (baseDays * (classUsage.length + 1)))).toFixed(2) || 0
+                baseAvg: +(electricity[0] / (baseDays * (classUsage.length + 1))).toFixed(1),
+                conserveAvg: +(electricity[1] / (conservationDays * (classUsage.length + 1))).toFixed(1),
+                percentChange: +((electricity[1] / (conservationDays * (classUsage.length + 1)) - electricity[0] / (baseDays * (classUsage.length + 1))) * 100 / (electricity[0] / (baseDays * (classUsage.length + 1)))).toFixed(1) || 0
             },
             "gas": {
-                baseAvg: +(gas[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
-                conserveAvg: +(gas[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
-                percentChange: +((gas[1] / (conservationDays * (classUsage.length + 1)) - gas[0] / (baseDays * (classUsage.length + 1))) * 100 / (gas[0] / (baseDays * (classUsage.length + 1)))).toFixed(2) || 0
+                baseAvg: +(gas[0] / (baseDays * (classUsage.length + 1))).toFixed(1),
+                conserveAvg: +(gas[1] / (conservationDays * (classUsage.length + 1))).toFixed(1),
+                percentChange: +((gas[1] / (conservationDays * (classUsage.length + 1)) - gas[0] / (baseDays * (classUsage.length + 1))) * 100 / (gas[0] / (baseDays * (classUsage.length + 1)))).toFixed(1) || 0
             },
             "carbon": {
-                baseAvg: +(carbon[0] / (baseDays * (classUsage.length + 1))).toFixed(2),
-                conserveAvg: +(carbon[1] / (conservationDays * (classUsage.length + 1))).toFixed(2),
-                percentChange: +((carbon[1] / (conservationDays * (classUsage.length + 1)) - carbon[0] / (baseDays * (classUsage.length + 1))) * 100 / (carbon[0] / (baseDays * (classUsage.length + 1)))).toFixed(2) || 0
+                baseAvg: +(carbon[0] / (baseDays * (classUsage.length + 1))).toFixed(1),
+                conserveAvg: +(carbon[1] / (conservationDays * (classUsage.length + 1))).toFixed(1),
+                percentChange: +((carbon[1] / (conservationDays * (classUsage.length + 1)) - carbon[0] / (baseDays * (classUsage.length + 1))) * 100 / (carbon[0] / (baseDays * (classUsage.length + 1)))).toFixed(1) || 0
             }
         },
         perc: studentPercent
@@ -208,7 +208,7 @@ let calcWeeklyAverage = (averages) => {
         max = Math.max(max, value);
 
         if ((index + 1) % 7 == 0 || (index + 1 == averages.length)) {
-            returnArr.push({average: +(sum / 7).toFixed(2), min, max});
+            returnArr.push({average: +(sum / 7).toFixed(1), min, max});
             sum = 0;
 
             if (!(index + 1 == averages.length)) {
@@ -229,7 +229,7 @@ let calcSelfWeekly = (param, selfAverage) => {
         sum += average[param] ? +average[param] : 0;
 
         if ((index + 1) % 7 == 0 || (index + 1 == selfAverage.length)) {
-            returnArr.push(+(sum / 7).toFixed(2));
+            returnArr.push(+(sum / 7).toFixed(1));
             sum = 0;
         }
     });
@@ -254,9 +254,9 @@ let calcSelfSection = (param, selfUsage) => {
     });
     
     return {
-        baseAvg: +(baseSum / baseDays).toFixed(2),
-        conserveAvg: +(conservationSum / conservationDays).toFixed(2),
-        percentChange: +((conservationSum / conservationDays - baseSum / baseDays) * 100 / (baseSum / baseDays)).toFixed(2) || 0
+        baseAvg: +(baseSum / baseDays).toFixed(1),
+        conserveAvg: +(conservationSum / conservationDays).toFixed(1),
+        percentChange: +((conservationSum / conservationDays - baseSum / baseDays) * 100 / (baseSum / baseDays)).toFixed(1) || 0
     }
 
 };

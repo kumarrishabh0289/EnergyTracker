@@ -135,7 +135,7 @@ class ProjectDetail extends Component {
         e.preventDefault();
 
         if (!(this.state.StartDate < this.state.ConservationStartDate && this.state.StartDate < this.state.EndDate)) {
-            this.setState({ showError: true, status: "Start date cannot be greater than conservation date or end date!" });
+            this.setState({ showError: true, status: "Start date cannot be greater or equal than conservation date or end date!" });
             return;
         } else if (!(this.state.ConservationStartDate > this.state.StartDate && this.state.ConservationStartDate < this.state.EndDate)) {
             this.setState({ showError: true, status: "Conservation date cannot be greater than end date or lesser than start date!" });

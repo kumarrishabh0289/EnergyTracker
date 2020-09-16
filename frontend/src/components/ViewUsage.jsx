@@ -9,6 +9,8 @@ import Tab from 'react-bootstrap/Tab';
 import ChartsWrapper from './ChartsWrapper';
 import CarbonEmission from './CarbonEmission';
 import Statistics from './Statistics';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/esm/Button';
 
 class ViewUsage extends Component {
     state = {
@@ -39,6 +41,7 @@ class ViewUsage extends Component {
     };
 
     render() {
+        console.log("asdasd", this.props);
         const selfData = this.state.selfData;
 
         const dateDifference = selfData.length && (new Date(selfData[0].project.ConservationStartDate) - new Date(selfData[0].project.StartDate)) / (1000 * 3600 * 24);
@@ -48,9 +51,18 @@ class ViewUsage extends Component {
 
         return (
             <div className="edit-wrapper card my-4 col-sm-11 mx-auto p-3">
-                <h2 className="mb-4">Usage Details </h2>
+                <div className="d-flex justify-content-between">
+                    <div className="left">
+                        <h2 className="mb-4">Usage Details </h2>
 
-                <h4 className="mb-5">Project: {selfData.length && selfData[0].project.name}</h4>
+                        <h4 className="mb-5">Project: {selfData.length && selfData[0].project.name}</h4>
+
+                    </div>
+
+                    <div className="right">
+                        <Button variant="outline-success" onClick={e => window.history.back()}>&lt; Go back</Button>
+                    </div>
+                </div>
 
                 <div className="tab-container p-3">
                     <Tabs defaultActiveKey="usage" id="uncontrolled-tab-example">
