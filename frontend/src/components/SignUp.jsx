@@ -30,7 +30,7 @@ class SignUp extends Component {
 
     submitSignUp = (e) => {
         console.log("submit login called")
-    
+
         //prevent page from refresh
         e.preventDefault();
         const data = {
@@ -48,7 +48,7 @@ class SignUp extends Component {
                     sessionStorage.setItem("role", response.data.role)
                     console.log(response.data);
                     this.setState({
-                        
+
                         signup_status: response.data.message,
                         showSuccessMessage: true
 
@@ -71,18 +71,16 @@ class SignUp extends Component {
     render() {
         return (
             <div>
-                <div className="container-fluid">
-                    <br />
-                    <br />
+                <div className="container-fluid p-5">
                     <div className="row" >
                         <div className="col-sm-1 col-md-1"></div>
 
-                        <div className="col-sm-5 col-md-5" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
+                        <div className="col-sm-5 col-md-5 p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
 
                             <h3>
                                 Sign Up  {!(sessionStorage.getItem("role") === null) && <div>Via Google But Role is Not Assigned.</div>}
                             </h3>
-                            {!(sessionStorage.getItem("role") === null) && <p>Your Account is Not with Us. If you are Student then please check details and click on Submit. <br/><font color="red">If you are teacher then please register yourself at https://app.greenninja.org/registration </font><br/>Unintended Users please logout from top right</p>}
+                            {!(sessionStorage.getItem("role") === null) && <p>Your Account is Not with Us. If you are Student then please check details and click on Submit. <br /><font color="red">If you are teacher then please register yourself at <a href="https://app.greenninja.org/registration" target="_blank">https://app.greenninja.org/registration</a></font><br />Unintended Users please logout from top right</p>}
                             <form onSubmit={this.submitSignUp}>
                                 <div className="row" >
 
@@ -90,8 +88,8 @@ class SignUp extends Component {
                                         <br />
                                         <div className="form-group">
                                             <label htmlFor="where"><h5>Email ID</h5></label>
-                                                <p>{sessionStorage.authenticatedUser}</p>
-                                           
+                                            <p>{sessionStorage.authenticatedUser}</p>
+
                                         </div>
 
                                     </div>
@@ -115,7 +113,7 @@ class SignUp extends Component {
                                         <div className="form-group">
                                             <label htmlFor="Role"><h5>Role</h5></label>
                                             <p>{this.state.role}</p>
-                                                      </div>
+                                        </div>
 
                                     </div>
                                     <div className="col-sm-1 col-md-1">
@@ -123,7 +121,7 @@ class SignUp extends Component {
                                     </div>
 
                                 </div>
-                                                         
+
 
 
                                 <div className="row" >
@@ -138,9 +136,8 @@ class SignUp extends Component {
                                         </div>
                                     </div>
 
-                                    <br />
-                                    {this.state.hasFailed && <div className="alert alert-warning">User Updation Failed Check console for More Info.</div>}
-                                    {this.state.showSuccessMessage && <div className="alert alert-warning">User Updated Successfully</div>}
+                                    {this.state.hasFailed && <div className="alert alert-warning col-sm-4 mx-auto"><center>User Updation Failed Check console for More Info.</center></div>}
+                                    {this.state.showSuccessMessage && <div className="alert alert-warning col-sm-4 mx-auto"><center>User Updated Successfully</center></div>}
                                     <br />
 
                                 </div>
