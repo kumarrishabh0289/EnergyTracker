@@ -132,6 +132,21 @@ var getDaysArray = function (start, end, project_id, course_id, student) {
     return returnArr;
 };
 
+router.delete('/deleteProject/:projectId', async (req, res) => {
+
+    try {
+
+        const results = await Project.findByIdAndDelete(req.params.projectId);
+
+        const usageResults = await Usage.deleteMany({ project: req.params.projectId });
+
+        res.status(200).send({ message: "Project Deleted Successfully! "})
+
+    } catch (error) {
+        res.status(500).send({ error })
+    }
+
+});
 
 router.post('/updateProject', async (req, res) => {
     console.log("req", req.body);

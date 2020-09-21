@@ -7,6 +7,9 @@ import axios from 'axios';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Alert from 'react-bootstrap/Alert'
 
 class ProjectDetail extends Component {
     constructor(props) {
@@ -27,7 +30,9 @@ class ProjectDetail extends Component {
             ConservationStartDate: "",
             EndDate: "",
             projectname: "",
-            projectId: ""
+            projectId: "",
+            deleteModal: false,
+            showDeleteSuccess: false
 
 
         }
@@ -294,6 +299,43 @@ class ProjectDetail extends Component {
         </Modal >
     }
 
+    deleteModal = () => {
+        return <Modal centered show={this.state.deleteModal} onHide={() => this.setState({ deleteModal: false })}>
+            <Modal.Header closeButton>
+                <Modal.Title>Delete Project</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <p>Are you sure you want to delete this project? This cannot be undone</p>
+
+                <p><center>Project: {this.state.projectname}</center></p>
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Button variant="secondary">No</Button>
+                <Button variant="primary" onClick={this.deleteProject}>Confirm</Button>
+            </Modal.Footer>
+        </Modal>
+    }
+
+    deleteProject = async (e) => {
+        e.preventDefault();
+
+        axios.defaults.withCredentials = true;
+
+        try {
+
+            const results = await axios.delete(API_URL + '/course/deleteProject/' + this.state.projectId);
+
+            this.loadCourse();
+
+            this.setState({ deleteModal: false, projectname: "", projectId: "", showDeleteSuccess: true });
+
+        } catch (error) {
+            alert(error);
+        }
+    }
+
 
     GoToCourse = (course) => {
         this.props.history.push(`/viewUsage/${course._id}`)
@@ -311,7 +353,7 @@ class ProjectDetail extends Component {
             return (
                 <div class="container">
                     {this.editModal()}
-
+                    {this.deleteModal()}
                     <div class="body-div py-3">
 
                         <div className="col-sm-12 p-3" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
@@ -320,6 +362,9 @@ class ProjectDetail extends Component {
 
 
                             <p>{this.state.status}</p>
+                            {this.state.showDeleteSuccess ? <Alert variant="danger" dismissible onClose={() => this.setState({ showDeleteSuccess: false })} >
+                                Project Deleted Successfully!
+                                </Alert> : ""}
                             <div class="col-sm-12 row">
                                 {
                                     this.state.project.map(project => {
@@ -331,8 +376,10 @@ class ProjectDetail extends Component {
                                         EndDate = EndDate.toLocaleDateString()
                                         return (
                                             <div class="card bg-info text-white col-sm-5 m-3">
-                                                <div class="card-header">
+                                                <div class="card-header d-flex justify-content-between align-items-center px-0">
                                                     {project.name}
+
+                                                    <Button variant="danger" onClick={e => this.setState({ deleteModal: true, projectId: project._id, projectname: project.name })}><FontAwesomeIcon icon={faTrashAlt} /></Button>
                                                 </div>
                                                 <div class="card-body ">
                                                     <p class="card-text">
