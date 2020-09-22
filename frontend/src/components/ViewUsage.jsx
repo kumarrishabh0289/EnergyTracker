@@ -11,6 +11,8 @@ import CarbonEmission from './CarbonEmission';
 import Statistics from './Statistics';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/esm/Button';
+import { faArrowLeft, faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class ViewUsage extends Component {
     state = {
@@ -60,7 +62,7 @@ class ViewUsage extends Component {
                     </div>
 
                     <div className="right">
-                        <Button variant="outline-success" onClick={e => window.history.back()}>&lt; Go back</Button>
+                        <Button variant="outline-success" onClick={e => window.history.back()}><FontAwesomeIcon icon={faArrowLeft} /> Go back</Button>
                     </div>
                 </div>
 

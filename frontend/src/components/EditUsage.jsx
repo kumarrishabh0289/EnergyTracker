@@ -3,6 +3,8 @@ import Axios from 'axios';
 import { API_URL } from '../Constants';
 import "../styles/Usage.css";
 import Button from 'react-bootstrap/Button';
+import { faArrowLeft, faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class EditUsage extends Component {
     state = {
@@ -51,9 +53,21 @@ class EditUsage extends Component {
 
         return (
             <div className="edit-wrapper card mt-4 col-sm-11 mx-auto p-3">
-                <h2 className="mb-4">Usage Details </h2>
+                <div className="d-flex justify-content-between">
+                    <div className="left">
+                        <h2 className="mb-4">Usage Details </h2>
 
-                <h4 className="mb-5">Project: {this.state.usageData[0] && this.state.usageData[0].project.name}</h4>
+                        <h4 className="mb-5">Project: {this.state.usageData[0] && this.state.usageData[0].project.name}</h4>
+
+                    </div>
+
+
+
+                    <div className="right">
+                        <Button variant="outline-success" onClick={e => window.history.back()}><FontAwesomeIcon icon={faArrowLeft} /> Go back</Button>
+                    </div>
+
+                </div>
 
                 <div className="table-container">
                     <table className="usage-table table table-bordered">
