@@ -22,15 +22,14 @@ class CarbonEmission extends Component {
                 <Charts data={this.props.data} param="carbon" />
 
 
-                <div className="table-container">
-                    {
-                        sessionStorage.getItem("role") == "student" ? "" : <Form.Group controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Show Student Names" onChange={e => {
+                {
+                    sessionStorage.getItem("role") == "student" ? "" :
+                        <Form.Check type="checkbox" label="Show Student Names" id="studentName" className="d-flex" onChange={e => {
 
-                                this.setState({ showNames: !this.state.showNames })
-                            }} />
-                        </Form.Group>
-                    }
+                            this.setState({ showNames: !this.state.showNames })
+                        }} />
+                }
+                <div className="table-container">
 
                     <div className="table-container mb-4">
                         <Alert className="m-0" variant="success">Your Usage </Alert>
