@@ -38,7 +38,12 @@ class Statistics extends Component {
                 }
             },
             "legend": {
-                "enabled": true
+                "enabled": true,
+                useHTML: true,
+                symbolWidth: 0,
+                labelFormatter: function () {
+                    return '<div class="d-flex align-items-center mx-3 chart-legend"><input type="checkbox" class="mx-2" ' + (this.visible ? 'checked ><span>' : '><span>') + this.name + '</span></div>'
+                }
             },
             "tooltip": {
                 "formatter": function () {
@@ -80,7 +85,12 @@ class Statistics extends Component {
                 }
             },
             "legend": {
-                "enabled": true
+                "enabled": true,
+                useHTML: true,
+                symbolWidth: 0,
+                labelFormatter: function () {
+                    return '<div class="d-flex align-items-center mx-3 chart-legend"><input type="checkbox" class="mx-2" ' + (this.visible ? 'checked ><span>' : '><span>') + this.name + '</span></div>'
+                }
             },
             "tooltip": {
                 "formatter": function () {

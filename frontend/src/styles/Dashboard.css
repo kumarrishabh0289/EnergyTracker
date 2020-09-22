@@ -19,3 +19,12 @@
 .dashboard-wrapper .row-header .btn-success *{    
     margin-right: 0.5rem;
 }
+
+.chart-legend {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+g.highcharts-legend-item.highcharts-column-series {
+    display: none;
+}
