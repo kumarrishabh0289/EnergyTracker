@@ -127,7 +127,7 @@ let calcClassSection = (classUsage, selfUsage) => {
 
     const firstUsage = classUsage[0][0];
     const baseDays = (new Date(firstUsage.project.ConservationStartDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24);
-    const totalDays = ((new Date(firstUsage.project.EndDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24));
+    const totalDays = (((new Date(firstUsage.project.EndDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24)) + 1);
     const conservationDays = totalDays - baseDays;
 
     let electricity = [0, 0],
@@ -239,7 +239,7 @@ let calcSelfWeekly = (param, selfAverage) => {
 
 let calcSelfSection = (param, selfUsage) => {
     const baseDays = selfUsage.length && (new Date(selfUsage[0].project.ConservationStartDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24);
-    const totalDays = selfUsage.length && ((new Date(selfUsage[0].project.EndDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24));
+    const totalDays = selfUsage.length && (((new Date(selfUsage[0].project.EndDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24) + 1));
     const conservationDays = totalDays - baseDays;
 
     let baseSum = 0, conservationSum = 0;

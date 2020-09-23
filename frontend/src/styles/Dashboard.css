@@ -28,3 +28,34 @@
 g.highcharts-legend-item.highcharts-column-series {
     display: none;
 }
+
+.card.class-card {
+    background-color: #C2C4C5;
+}
+
+.card.class-card .card-btn{
+    background-color: #89C440;
+    border-color: #89C440;
+    color: white;
+}
+
+header nav .nav-link {
+    border: solid 1px #C2C4C5;
+    border-radius: 8px;
+}
+
+header nav .nav-link:hover {
+    background-color: #C2C4C5;
+    color: white !important;
+}
+
+.btn.btn-success {
+    background-color: #89C440;
+    border-color: #89C440;
+}
+
+.btn.btn-success:hover {
+    background-color: #fff;
+    border-color: #89C440;
+    color: #89C440;
+}

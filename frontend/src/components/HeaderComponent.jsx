@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import AuthenticationForApiService from './AuthenticationForApiService.js'
+import AuthenticationForApiService from './AuthenticationForApiService.js';
+import "./../styles/Dashboard.css";
 
 
 class HeaderComponent extends Component {

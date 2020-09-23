@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { API_URL } from '../Constants'
 import axios from 'axios';
 import CourseCard from './CourseCard';
+import { faPlus, faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class TeacherDashboard extends Component {
     constructor(props) {
@@ -99,12 +101,17 @@ class TeacherDashboard extends Component {
 
                     <div class="body-div card p-4 opacity-2">
 
-                        <div className="col-sm-5 col-md-5" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
+                        <div className="col-sm-12 d-flex align-items-center justify-content-between" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
 
-                            <h3>Teacher's Dashboard </h3>
-                            <h5>Welcome, {sessionStorage.name}</h5>
-                            <p>Teacher ID: {sessionStorage.authenticatedUser}</p>
-                            <p>{this.state.status}</p>
+                            <div className="left">
+                                <h3>Teacher's Dashboard </h3>
+                                <h5>Welcome, {sessionStorage.name}</h5>
+                                <p>Teacher ID: {sessionStorage.authenticatedUser}</p>
+                                <p>{this.state.status}</p>
+                            </div>
+                            <div className="right">
+                                {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success"><FontAwesomeIcon icon={faPlus} className="mr-2" />Create new Class</button></Link>)}
+                            </div>
                         </div>
                         <div class="row my-3">
                             {
@@ -118,7 +125,6 @@ class TeacherDashboard extends Component {
 
                         </div>
 
-                        {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success">Create new Class</button></Link>)}
                     </div>
 
                 </div>

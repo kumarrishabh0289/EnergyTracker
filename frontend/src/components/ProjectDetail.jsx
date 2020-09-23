@@ -312,7 +312,7 @@ class ProjectDetail extends Component {
             </Modal.Body>
 
             <Modal.Footer>
-                <Button variant="secondary">No</Button>
+                <Button variant="secondary" onClick={() => this.setState({ deleteModal: false })}>No</Button>
                 <Button variant="primary" onClick={this.deleteProject}>Confirm</Button>
             </Modal.Footer>
         </Modal>
@@ -375,11 +375,11 @@ class ProjectDetail extends Component {
                                         var EndDate = new Date(project.EndDate)
                                         EndDate = EndDate.toLocaleDateString()
                                         return (
-                                            <div class="card bg-info text-white col-sm-5 m-3">
+                                            <div class="card class-card col-sm-5 m-3">
                                                 <div class="card-header d-flex justify-content-between align-items-center px-0">
                                                     {project.name}
 
-                                                    <Button variant="danger" onClick={e => this.setState({ deleteModal: true, projectId: project._id, projectname: project.name })}><FontAwesomeIcon icon={faTrashAlt} /></Button>
+                                                    <Button variant="outline-danger" onClick={e => this.setState({ deleteModal: true, projectId: project._id, projectname: project.name })}><FontAwesomeIcon icon={faTrashAlt} /></Button>
                                                 </div>
                                                 <div class="card-body ">
                                                     <p class="card-text">
@@ -405,9 +405,9 @@ class ProjectDetail extends Component {
                                                     </p>
                                                 </div>
                                                 <div class="card-footer d-flex justify-content-between p-2">
-                                                    <button onClick={() => this.GoToCourse(project)} class="btn btn-danger">View Usage</button>
-                                                    <button onClick={() => this.editUsage(project)} class="btn btn-primary">Edit Usage</button>
-                                                    <button onClick={() => { this.loadProject(project) }} class="btn btn-success">Edit Project</button>
+                                                    <button onClick={() => this.GoToCourse(project)} class="btn card-btn">View Usage</button>
+                                                    <button onClick={() => this.editUsage(project)} class="btn card-btn">Edit Usage</button>
+                                                    <button onClick={() => { this.loadProject(project) }} class="btn card-btn">Edit Project</button>
                                                 </div>
 
 

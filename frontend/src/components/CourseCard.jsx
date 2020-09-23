@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import "./../styles/Dashboard.css";
 
 class CourseCard extends Component {
     state = {}
@@ -12,8 +13,8 @@ class CourseCard extends Component {
 
     render() {
         return (<div className=" col-sm-4 my-3">
-            <div className="card bg-info text-white">
-                <div className="card-header">
+            <div className="card class-card">
+                <div className="card-header font-weight-bold">
                     {this.props.course.name}
                 </div>
                 <div className="card-body ">
@@ -47,7 +48,7 @@ class CourseCard extends Component {
                 {
                     sessionStorage.getItem('role') == "student" ? "" :
                         <div className="card-footer">
-                            <button onClick={() => this.GoToCourse(this.props.course)} className="btn btn-danger">Go To Class</button><br />
+                            <button onClick={() => this.GoToCourse(this.props.course)} className="btn btn-danger card-btn">Go To Class</button><br />
                         </div>
                 }
 
