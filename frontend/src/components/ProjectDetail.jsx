@@ -375,8 +375,8 @@ class ProjectDetail extends Component {
                                         var EndDate = new Date(project.EndDate)
                                         EndDate = EndDate.toLocaleDateString()
                                         return (
-                                            <div class="card class-card col-sm-5 m-3">
-                                                <div class="card-header d-flex justify-content-between align-items-center px-0">
+                                            <div class="card class-card col-sm-5 m-3 p-0">
+                                                <div class="card-header d-flex justify-content-between align-items-center">
                                                     {project.name}
 
                                                     <Button variant="outline-danger" onClick={e => this.setState({ deleteModal: true, projectId: project._id, projectname: project.name })}><FontAwesomeIcon icon={faTrashAlt} /></Button>
@@ -404,7 +404,7 @@ class ProjectDetail extends Component {
 
                                                     </p>
                                                 </div>
-                                                <div class="card-footer d-flex justify-content-between p-2">
+                                                <div class="d-flex justify-content-between p-3 px-4">
                                                     <button onClick={() => this.GoToCourse(project)} class="btn card-btn">View Usage</button>
                                                     <button onClick={() => this.editUsage(project)} class="btn card-btn">Edit Usage</button>
                                                     <button onClick={() => { this.loadProject(project) }} class="btn card-btn">Edit Project</button>
