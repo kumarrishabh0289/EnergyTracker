@@ -5,11 +5,13 @@ import "../styles/Usage.css";
 import Button from 'react-bootstrap/Button';
 import { faArrowLeft, faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Alert from 'react-bootstrap/esm/Alert';
 
 class EditUsage extends Component {
     state = {
         usageData: [],
-        labelData: ["Date", "Electricity (kWh)", "Gas (therms)"]
+        labelData: ["Date", "Electricity (kWh)", "Gas (therms)"],
+        isInvalid: false
     };
 
     componentDidMount = () => {
@@ -24,7 +26,7 @@ class EditUsage extends Component {
     onChange = (e, field, index) => {
         let data = this.state.usageData;
 
-        data[index][field] = +e.target.value;
+        data[index][field] = e.target.value;
 
         this.setState({
             usageData: data
@@ -37,14 +39,23 @@ class EditUsage extends Component {
 
         for (let usage of this.state.usageData) {
             const { _id, electricity, gas } = usage;
+
+            if (!(this.isValueValid(electricity) && this.isValueValid(gas))) {
+                this.setState({ isInvalid: true })
+                return;
+            }
+
             data.push({ _id, electricity, gas });
         }
 
         Axios.post(`${API_URL}/usage/updateUsage`, data).then(response => {
             alert('Usages Updated');
+            this.setState({ isInvalid: false })
         });
 
     };
+
+    isValueValid = val => val.match(/^\d*\.?\d+$/g) || val == "";
 
     render() {
         const dateDifference = this.state.usageData[0] && (new Date(this.state.usageData[0].project.ConservationStartDate) - new Date(this.state.usageData[0].project.StartDate)) / (1000 * 3600 * 24);
@@ -70,6 +81,7 @@ class EditUsage extends Component {
                 </div>
 
                 <div className="table-container">
+                    {this.state.isInvalid ? <Alert variant="danger" className="mb-4 col-sm-4 mx-auto">Invalid values entered! Please enter number values</Alert> : ""}
                     <table className="usage-table table table-bordered">
                         <thead>
                             <tr>
@@ -93,7 +105,7 @@ class EditUsage extends Component {
                                                     let date = new Date(usage["date"]);
                                                     text = date.toLocaleString('default', { month: 'short' }) + " " + date.getDate();
                                                 } else {
-                                                    text = <input type="number" value={usage[data]} onChange={e => this.onChange(e, data, index2)} />
+                                                    text = <input type="text" value={usage[data]} onChange={e => this.onChange(e, data, index2)} />
                                                 }
 
                                                 return <td className={index == 0 && (index2 < dateDifference ? "row-yellow" : "row-green") || ""} key={usage._id}>{text}</td>
