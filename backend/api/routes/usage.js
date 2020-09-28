@@ -127,13 +127,13 @@ let calcClassSection = (classUsage, selfUsage) => {
 
     const firstUsage = classUsage[0][0];
     const baseDays = (new Date(firstUsage.project.ConservationStartDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24);
-    const totalDays = (((new Date(firstUsage.project.EndDate) - new Date(firstUsage.project.StartDate)) / (1000 * 3600 * 24)) + 1);
-    const conservationDays = totalDays - baseDays;
-
     let electricity = [0, 0],
         gas = [0, 0],
         carbon = [0, 0],
-        studentPercent = [0,0,0];
+        studentPercent = [0,0,0],
+        electricityDayArr = [0, 0],
+        gasDayArr = [0, 0],
+        carbonDayArr = [0, 0];
 
     classUsage.forEach(student => {
         let studentBase = 0, studentConserve = 0, perc;
@@ -144,12 +144,18 @@ let calcClassSection = (classUsage, selfUsage) => {
                 gas[0] += +usage["gas"];
                 carbon[0] += +usage["carbon"];
                 studentBase += +usage["carbon"];
+                electricityDayArr[0] += usage["electricity"] != "" ? 1 : 0;
+                gasDayArr[0] += usage["gas"] != "" ? 1 : 0;
+                carbonDayArr[0] += usage["carbon"] != "" ? 1 : 0;
             }
             else {
                 electricity[1] += +usage["electricity"];
                 gas[1] += +usage["gas"];
                 carbon[1] += +usage["carbon"];
                 studentConserve += +usage["carbon"];
+                electricityDayArr[1] += usage["electricity"] != "" ? 1 : 0;
+                gasDayArr[1] += usage["gas"] != "" ? 1 : 0;
+                carbonDayArr[1] += usage["carbon"] != "" ? 1 : 0;
             }
         });
 
@@ -165,30 +171,36 @@ let calcClassSection = (classUsage, selfUsage) => {
             electricity[0] += +usage["electricity"];
             gas[0] += +usage["gas"];
             carbon[0] += +usage["carbon"];
+            electricityDayArr[0] += usage["electricity"] != "" ? 1 : 0;
+            gasDayArr[0] += usage["gas"] != "" ? 1 : 0;
+            carbonDayArr[0] += usage["carbon"] != "" ? 1 : 0;
         }
         else {
             electricity[1] += +usage["electricity"];
             gas[1] += +usage["gas"];
             carbon[1] += +usage["carbon"];
+            electricityDayArr[1] += usage["electricity"] != "" ? 1 : 0;
+            gasDayArr[1] += usage["gas"] != "" ? 1 : 0;
+            carbonDayArr[1] += usage["carbon"] != "" ? 1 : 0;
         }
     });
 
     return {
         class: {
             "electricity": {
-                baseAvg: +(electricity[0] / (baseDays * (classUsage.length + 1))).toFixed(1),
-                conserveAvg: +(electricity[1] / (conservationDays * (classUsage.length + 1))).toFixed(1),
-                percentChange: +((electricity[1] / (conservationDays * (classUsage.length + 1)) - electricity[0] / (baseDays * (classUsage.length + 1))) * 100 / (electricity[0] / (baseDays * (classUsage.length + 1)))).toFixed(1) || 0
+                baseAvg: +(electricity[0] / electricityDayArr[0]).toFixed(1) || 0,
+                conserveAvg: +(electricity[1] / electricityDayArr[1]).toFixed(1) || 0,
+                percentChange: +((electricity[1] / electricityDayArr[1] - electricity[0] / electricityDayArr[0]) * 100 / (electricity[0] / electricityDayArr[0])).toFixed(1) || 0
             },
             "gas": {
-                baseAvg: +(gas[0] / (baseDays * (classUsage.length + 1))).toFixed(1),
-                conserveAvg: +(gas[1] / (conservationDays * (classUsage.length + 1))).toFixed(1),
-                percentChange: +((gas[1] / (conservationDays * (classUsage.length + 1)) - gas[0] / (baseDays * (classUsage.length + 1))) * 100 / (gas[0] / (baseDays * (classUsage.length + 1)))).toFixed(1) || 0
+                baseAvg: +(gas[0] / gasDayArr[0]).toFixed(1) || 0,
+                conserveAvg: +(gas[1] / gasDayArr[1]).toFixed(1) || 0,
+                percentChange: +((gas[1] / gasDayArr[1] - gas[0] / gasDayArr[0]) * 100 / (gas[0] / gasDayArr[0])).toFixed(1) || 0
             },
             "carbon": {
-                baseAvg: +(carbon[0] / (baseDays * (classUsage.length + 1))).toFixed(1),
-                conserveAvg: +(carbon[1] / (conservationDays * (classUsage.length + 1))).toFixed(1),
-                percentChange: +((carbon[1] / (conservationDays * (classUsage.length + 1)) - carbon[0] / (baseDays * (classUsage.length + 1))) * 100 / (carbon[0] / (baseDays * (classUsage.length + 1)))).toFixed(1) || 0
+                baseAvg: +(carbon[0] / carbonDayArr[0]).toFixed(1) || 0,
+                conserveAvg: +(carbon[1] / carbonDayArr[1]).toFixed(1) || 0,
+                percentChange: +((carbon[1] / carbonDayArr[1] - carbon[0] / carbonDayArr[0]) * 100 / (carbon[0] / carbonDayArr[0])).toFixed(1) || 0
             }
         },
         perc: studentPercent
@@ -239,24 +251,26 @@ let calcSelfWeekly = (param, selfAverage) => {
 
 let calcSelfSection = (param, selfUsage) => {
     const baseDays = selfUsage.length && (new Date(selfUsage[0].project.ConservationStartDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24);
-    const totalDays = selfUsage.length && (((new Date(selfUsage[0].project.EndDate) - new Date(selfUsage[0].project.StartDate)) / (1000 * 3600 * 24) + 1));
-    const conservationDays = totalDays - baseDays;
 
-    let baseSum = 0, conservationSum = 0;
+    let baseSum = 0, conservationSum = 0, baseCount = 0, conservationCount = 0;
 
     selfUsage.forEach((usage, index) => {
 
-        if (index < baseDays)
+        if (index < baseDays) {
             baseSum += +usage[param];
-        else
+            baseCount += usage[param] != "" ? 1 : 0;
+        }
+        else {
             conservationSum += +usage[param];
+            conservationCount += usage[param] != "" ? 1 : 0;
+        }
 
     });
     
     return {
-        baseAvg: +(baseSum / baseDays).toFixed(1),
-        conserveAvg: +(conservationSum / conservationDays).toFixed(1),
-        percentChange: +((conservationSum / conservationDays - baseSum / baseDays) * 100 / (baseSum / baseDays)).toFixed(1) || 0
+        baseAvg: +(baseSum / baseCount).toFixed(1) || 0,
+        conserveAvg: +(conservationSum / conservationCount).toFixed(1) || 0,
+        percentChange: +((conservationSum / conservationCount - baseSum / baseCount) * 100 / (baseSum / baseCount)).toFixed(1) || 0
     }
 
 };
