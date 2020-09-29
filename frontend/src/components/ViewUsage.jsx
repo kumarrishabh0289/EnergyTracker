@@ -10,7 +10,7 @@ import ChartsWrapper from './ChartsWrapper';
 import CarbonEmission from './CarbonEmission';
 import Statistics from './Statistics';
 import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/Button';
 import { faArrowLeft, faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

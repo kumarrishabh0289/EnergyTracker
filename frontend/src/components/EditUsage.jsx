@@ -5,7 +5,7 @@ import "../styles/Usage.css";
 import Button from 'react-bootstrap/Button';
 import { faArrowLeft, faTrash, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Alert from 'react-bootstrap/esm/Alert';
+import Alert from 'react-bootstrap/Alert';
 
 class EditUsage extends Component {
     state = {
