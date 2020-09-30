@@ -39,3 +39,15 @@
     transform: rotate(360deg);
   }
 }
+
+.front-page-wrapper .nav-tabs {
+  padding: 0 1.5rem;
+}
+
+.front-page-wrapper .nav-tabs a {
+  color: white;
+  background-color: #a7a7a7;
+  font-weight: 700;
+  min-width: 17%;
+  text-align: center;
+}

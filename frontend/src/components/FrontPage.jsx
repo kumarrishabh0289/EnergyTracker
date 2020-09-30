@@ -6,6 +6,8 @@ import AuthenticationForApiService from './AuthenticationForApiService.js'
 import axios from 'axios'
 import GoogleLogin from 'react-google-login'
 import { API_URL } from '../Constants'
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
 
 class FrontPage extends Component {
@@ -130,76 +132,86 @@ class FrontPage extends Component {
 
     render() {
         return (
-            <div>
-                <div className="container-fluid p-5 col-sm-10">
+            <div className="front-page-wrapper">
 
-                    <div className="col-sm-7 col-md-7 p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
-                        <h3>
-                            Teacher Login
+                <div className="container-fluid p-5 col-sm-7 col-md-7 p-4">
+
+                    <Tabs defaultActiveKey="student" id="uncontrolled-tab-example">
+                        <Tab eventKey="student" title="Student Login">
+                            <div className="p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
+                                <h3 className="mb-4">Student Login</h3>
+
+
+                                <GoogleLogin
+                                    className="col-sm-3"
+                                    clientId="1098648163742-0vqng25hq6mi6ql1qgdkjg00prhpi7os.apps.googleusercontent.com"
+                                    buttonText="Login"
+                                    onSuccess={this.responseGoogle}
+                                    onFailure={this.responseGoogle}
+                                    cookiePolicy={'single_host_origin'}
+                                >
+
+                                    <span> Login with Google</span>
+                                </GoogleLogin>
+                            </div>
+
+                        </Tab>
+
+                        <Tab eventKey="teacher" title="Teacher Login">
+                            <div className="p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
+                                <h3>
+                                    Teacher Login
                             </h3>
-                        <p>(Please use the same login credentials as your Green Ninja Curriculum account)</p>
-                        <form>
+                                <p>(Please use the same login credentials as your Green Ninja Curriculum account)</p>
+                                <form>
 
-                            <div className="row" >
+                                    <div className="row" >
 
 
 
-                                <div className="col-sm-6 col-md-6">
+                                        <div className="col-sm-6 col-md-6">
 
-                                    <div className="form-group">
-                                        <label htmlFor="where"><h5>User Name</h5></label>
-                                        <input type="text" className="form-control" name="username" value={this.state.username} onChange={this.handleChange} />
+                                            <div className="form-group">
+                                                <label htmlFor="where"><h5>User Name</h5></label>
+                                                <input type="text" className="form-control" name="username" value={this.state.username} onChange={this.handleChange} />
+
+                                            </div>
+
+                                        </div>
+                                        <div className="col-sm-6 col-md-6">
+
+                                            <div className="form-group">
+                                                <label htmlFor="where"><h5>Password</h5></label>
+                                                <input type="password" className="form-control" name="password" value={this.state.password} onChange={this.handleChange} />
+
+                                            </div>
+                                        </div>
 
                                     </div>
 
-                                </div>
-                                <div className="col-sm-6 col-md-6">
 
-                                    <div className="form-group">
-                                        <label htmlFor="where"><h5>Password</h5></label>
-                                        <input type="password" className="form-control" name="password" value={this.state.password} onChange={this.handleChange} />
+
+                                    <div className="row" >
+
+                                        <div className="col-sm-12 col-md-12">
+                                            <div className="form-group">
+
+
+                                                <button className="btn btn-success mb-3" onClick={this.loginClicked}>Login</button>
+                                                <p>If you don't have a login, please register yourself at <a href="https://app.greenninja.org/registration" target="_blank">https://app.greenninja.org/registration</a></p>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        {this.state.hasLoginFailed && <div className="alert alert-danger col-sm-4 mx-auto"><center>Invalid Credentials</center></div>}
+                                        {this.state.showSuccessMessage && <div className="alert alert-success col-sm-4 mx-auto"><center>Login Successful</center></div>}
 
                                     </div>
-                                </div>
-
+                                </form>
                             </div>
 
+                        </Tab>
 
-
-                            <div className="row" >
-
-                                <div className="col-sm-12 col-md-12">
-                                    <div className="form-group">
-
-
-                                        <button className="btn btn-success mb-3" onClick={this.loginClicked}>Login</button>
-                                        <p>If you don't have a login, please register yourself at <a href="https://app.greenninja.org/registration" target="_blank">https://app.greenninja.org/registration</a></p>
-                                    </div>
-                                </div>
-                                <br />
-                                {this.state.hasLoginFailed && <div className="alert alert-danger col-sm-4 mx-auto"><center>Invalid Credentials</center></div>}
-                                {this.state.showSuccessMessage && <div className="alert alert-success col-sm-4 mx-auto"><center>Login Successful</center></div>}
-
-                            </div>
-                        </form>
-                    </div>
-
-                    <div className="col-sm-7 card p-4 mt-5" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=90)", borderRadius: '10px' }}>
-                        <h3 className="mb-4">Student Login</h3>
-
-
-                        <GoogleLogin
-                            className="col-sm-3"
-                            clientId="1098648163742-0vqng25hq6mi6ql1qgdkjg00prhpi7os.apps.googleusercontent.com"
-                            buttonText="Login"
-                            onSuccess={this.responseGoogle}
-                            onFailure={this.responseGoogle}
-                            cookiePolicy={'single_host_origin'}
-                        >
-
-                            <span> Login with Google</span>
-                        </GoogleLogin>
-                    </div>
+                    </Tabs>
 
 
                 </div>
