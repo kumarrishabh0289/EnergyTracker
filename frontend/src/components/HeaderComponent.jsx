@@ -22,7 +22,7 @@ class HeaderComponent extends Component {
         return (
             <header>
                 <nav className="navbar navbar-expand-md bg-light navbar-light ">
-                    <div className="d-flex align-items-center"><img src="/logo.png" height="50" width="120" alt="logo"></img> <b><a className="navbar-brand" >Green Ninja Energy Tracker</a></b></div>
+                    <div className="d-flex align-items-center"><img src="/logo.png" height="50" width="120" alt="logo"></img> <b><a className="navbar-brand" >Energy Tracker</a></b></div>
                     <ul className="navbar-nav">
                         {student && <li><Link className="nav-link" to="/studentdashboard">Student Dashboard</Link></li>}
                         {teacher && <li><Link className="nav-link" to="/teacherdashboard">Teacher Dashboard</Link></li>}

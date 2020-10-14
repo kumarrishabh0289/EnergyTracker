@@ -15,7 +15,7 @@ class CourseCard extends Component {
         return (<div className=" col-sm-4 my-3">
             <div className="card class-card">
                 <div className="card-header font-weight-bold">
-                    {this.props.course.name}
+                    Class Name:  {this.props.course.name}
                 </div>
                 <div className="card-body ">
                     <div className="card-text">
@@ -23,10 +23,10 @@ class CourseCard extends Component {
                         <div className="table-responsive">
                             <table className="table">
                                 <tbody>
-                                    <tr>
+                                    {/* <tr>
                                         <th>Department</th>
                                         <td>{this.props.course.department}</td>
-                                    </tr>
+                                    </tr> */}
                                     <tr>
                                         <th>Term </th>
                                         <td>{this.props.course.term}</td>

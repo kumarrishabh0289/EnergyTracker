@@ -192,7 +192,7 @@ class ProjectDetail extends Component {
             </Modal.Header>
             <Modal.Body>
                 <div className="container" >
-                    <div class="" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
+                    <div class="" style={{ backgroundColor: "white", opacity: 1, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
                         <div className="">
                             <form onSubmit={this.editProject}>
                                 <div className="row" >
@@ -200,7 +200,7 @@ class ProjectDetail extends Component {
                                     <div className="col-sm-12 col-md-12">
 
                                         Class: {sessionStorage.coursename}<br />
-                                    Faculty:  {sessionStorage.name}<br />
+                                        Faculty:  {sessionStorage.name}<br />
                                         <br />
 
                                     </div>
@@ -338,6 +338,7 @@ class ProjectDetail extends Component {
 
 
     GoToCourse = (course) => {
+        sessionStorage.setItem("projectId",course._id)
         this.props.history.push(`/viewUsage/${course._id}`)
     }
 
@@ -406,7 +407,7 @@ class ProjectDetail extends Component {
                                                 </div>
                                                 <div class="d-flex justify-content-between p-3 px-4">
                                                     <button onClick={() => this.GoToCourse(project)} class="btn card-btn">View Usage</button>
-                                                    <button onClick={() => this.editUsage(project)} class="btn card-btn">Edit Usage</button>
+                                                    {/* <button onClick={() => this.editUsage(project)} class="btn card-btn">Edit Usage</button> */}
                                                     <button onClick={() => { this.loadProject(project) }} class="btn card-btn">Edit Project</button>
                                                 </div>
 

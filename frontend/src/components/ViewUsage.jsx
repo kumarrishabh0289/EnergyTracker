@@ -42,6 +42,11 @@ class ViewUsage extends Component {
 
     };
 
+    editUsage = (course) => {
+        var project_id = sessionStorage.projectId
+        this.props.history.push(`/editUsage/${project_id}`)
+    }
+
     render() {
         console.log("asdasd", this.props);
         const selfData = this.state.selfData;
@@ -58,12 +63,13 @@ class ViewUsage extends Component {
                         <h2 className="mb-4">Usage Details </h2>
 
                         <h4 className="mb-5">Project: {selfData.length && selfData[0].project.name}</h4>
+                        <Button variant="outline-success" onClick={e => window.history.back()}><FontAwesomeIcon icon={faArrowLeft} /> Go Back to Project</Button>
 
                     </div>
 
-                    <div className="right">
-                        <Button variant="outline-success" onClick={e => window.history.back()}><FontAwesomeIcon icon={faArrowLeft} /> Go back</Button>
-                    </div>
+                    {/* <div className="right">
+                        
+                    </div> */}
                 </div>
 
                 <div className="tab-container p-3">
@@ -79,7 +85,7 @@ class ViewUsage extends Component {
                             }
 
                             <div className="table-container mb-4">
-                                <Alert className="m-0" variant="success">Your Usage </Alert>
+                                <Alert className="m-0" variant="success">Your Usage &nbsp;&nbsp;&nbsp;<button onClick={() => this.editUsage()} class="btn card-btn">Edit Usage</button></Alert>
                                 <table className="usage-table table table-bordered">
                                     <thead>
                                         <tr>

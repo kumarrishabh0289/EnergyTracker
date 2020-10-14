@@ -106,11 +106,11 @@ class TeacherDashboard extends Component {
                             <div className="left">
                                 <h3>Teacher's Dashboard </h3>
                                 <h5>Welcome, {sessionStorage.name}</h5>
-                                <p>Teacher ID: {sessionStorage.authenticatedUser}</p>
+                                {/* <p>Teacher ID: {sessionStorage.authenticatedUser}</p> */}
                                 <p>{this.state.status}</p>
                             </div>
                             <div className="right">
-                                {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success"><FontAwesomeIcon icon={faPlus} className="mr-2" />Create new Class</button></Link>)}
+                                {sessionStorage.role === 'teacher' && (<Link to="/addcourse"><button class="btn btn-success"><FontAwesomeIcon icon={faPlus} className="mr-2" />Create New Class</button></Link>)}
                             </div>
                         </div>
                         <div class="row my-3">

@@ -51,7 +51,7 @@ class CourseDetail extends Component {
 
         return (
             <div className="container pt-4">
-                <div className="p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
+                <div className="p-4" style={{ backgroundColor: "white", opacity: 1, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
                     <h3>&nbsp;&nbsp; Class: {sessionStorage.coursename}</h3>
 
                     <div className="container mt-4">
@@ -59,15 +59,16 @@ class CourseDetail extends Component {
                             <Row>
                                 <Col sm={6}>
                                     <Nav variant="pills" className="flex-row">
+                                    <Nav.Item>
+                                            <Nav.Link eventKey="third">Create Project</Nav.Link>
+                                        </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link eventKey="first">Projects List</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link eventKey="second">Enrolled Students</Nav.Link>
                                         </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="third">Create Project</Nav.Link>
-                                        </Nav.Item>
+                                       
                                     </Nav>
                                 </Col>
                             </Row>

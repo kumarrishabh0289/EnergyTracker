@@ -95,7 +95,7 @@ class CreateProject extends Component {
     render() {
         return (
             <div className="container p-3" >
-                <div class="p-4" style={{ backgroundColor: "white", opacity: .9, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
+                <div class="p-4" style={{ backgroundColor: "white", opacity: 1, filter: "Alpha(opacity=50)", borderRadius: '10px' }}>
                     <div className="">
                         <h4>Add Project</h4>
                         <form onSubmit={this.submitSignUp}>
@@ -104,7 +104,7 @@ class CreateProject extends Component {
                                 <div className="col-sm-12 col-md-12">
 
                                     Class: {sessionStorage.coursename}<br />
-                                    Faculty:  {sessionStorage.name}<br />
+                                    {/* Faculty:  {sessionStorage.name}<br /> */}
                                     <br />
 
                                 </div>
@@ -128,7 +128,7 @@ class CreateProject extends Component {
                                 <div className="col-sm-12 col-md-12">
 
                                     <div className="form-group">
-                                        <label><h6>Start Date</h6></label>
+                                        <label><h6>Start of Baseline Period</h6></label>
 
                                         <div>
                                             <DatePicker
@@ -148,7 +148,7 @@ class CreateProject extends Component {
                                 <div className="col-sm-12 col-md-12">
 
                                     <div className="form-group">
-                                        <label ><h6>Conservation Start Date</h6></label>
+                                        <label ><h6>Start of Conservation Period</h6></label>
                                         <div>
                                             <DatePicker
                                                 selected={this.state.ConservationStartDate}
@@ -167,7 +167,7 @@ class CreateProject extends Component {
                                 <div className="col-sm-12 col-md-12">
 
                                     <div className="form-group">
-                                        <label ><h6>End Date</h6></label>
+                                        <label ><h6>End of Conservation Period</h6></label>
                                         <div>
                                             <DatePicker
                                                 selected={this.state.EndDate}
