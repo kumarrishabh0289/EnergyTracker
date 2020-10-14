@@ -388,15 +388,15 @@ class ProjectDetail extends Component {
                                                         <div class="table-responsive">
                                                             <table class="table">
                                                                 <tr>
-                                                                    <th>Start Date</th>
+                                                                    <th>Start of Baseline Period</th>
                                                                     <td>{StartDate}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>Conservation Start Date </th>
+                                                                    <th>Start of Conservation Period</th>
                                                                     <td>{ConservationStartDate}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>End Date</th>
+                                                                    <th>End of Conservation Period</th>
                                                                     <td>{EndDate}</td>
                                                                 </tr>
 
