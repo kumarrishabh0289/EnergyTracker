@@ -27,6 +27,7 @@ class ViewUsage extends Component {
     };
 
     componentDidMount = () => {
+        sessionStorage.setItem(projectId,this.props.match.params.projectId)
 
         Axios.get(`${API_URL}/usage/getAllUsage/${this.props.match.params.projectId}?user=${sessionStorage.authenticatedUser}`).then(response => {
             console.log(response);
@@ -42,7 +43,7 @@ class ViewUsage extends Component {
 
     };
 
-    editUsage = (course) => {
+    editUsage = () => {
         var project_id = sessionStorage.projectId
         this.props.history.push(`/editUsage/${project_id}`)
     }
