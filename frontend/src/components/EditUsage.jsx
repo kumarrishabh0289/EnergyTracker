@@ -55,7 +55,9 @@ class EditUsage extends Component {
 
     };
 
-    isValueValid = val => val.match(/^\d*\.?\d+$/g) || val == "";
+    //isValueValid = val => val.match(/^\d*\.?\d+$/g) || val == "";
+    isValueValid = val => val.match(/^[-+]?\d*\.?\d+$/g) || val == "";
+
 
     render() {
         const dateDifference = this.state.usageData[0] && (new Date(this.state.usageData[0].project.ConservationStartDate) - new Date(this.state.usageData[0].project.StartDate)) / (1000 * 3600 * 24);
