@@ -188,19 +188,19 @@ let calcClassSection = (classUsage, selfUsage) => {
     return {
         class: {
             "electricity": {
-                baseAvg: +(electricity[0] / electricityDayArr[0]).toFixed(1) || 0,
-                conserveAvg: +(electricity[1] / electricityDayArr[1]).toFixed(1) || 0,
-                percentChange: +((electricity[1] / electricityDayArr[1] - electricity[0] / electricityDayArr[0]) * 100 / (electricity[0] / electricityDayArr[0])).toFixed(1) || 0
+                baseAvg: +(electricity[0] / electricityDayArr[0]).toFixed(2) || 0,
+                conserveAvg: +(electricity[1] / electricityDayArr[1]).toFixed(2) || 0,
+                percentChange: +((electricity[1] / electricityDayArr[1] - electricity[0] / electricityDayArr[0]) * 100 / (electricity[0] / electricityDayArr[0])).toFixed(2) || 0
             },
             "gas": {
-                baseAvg: +(gas[0] / gasDayArr[0]).toFixed(1) || 0,
-                conserveAvg: +(gas[1] / gasDayArr[1]).toFixed(1) || 0,
+                baseAvg: +(gas[0] / gasDayArr[0]).toFixed(2) || 0,
+                conserveAvg: +(gas[1] / gasDayArr[1]).toFixed(2) || 0,
                 percentChange: +((gas[1] / gasDayArr[1] - gas[0] / gasDayArr[0]) * 100 / (gas[0] / gasDayArr[0])).toFixed(1) || 0
             },
             "carbon": {
-                baseAvg: +(carbon[0] / carbonDayArr[0]).toFixed(1) || 0,
-                conserveAvg: +(carbon[1] / carbonDayArr[1]).toFixed(1) || 0,
-                percentChange: +((carbon[1] / carbonDayArr[1] - carbon[0] / carbonDayArr[0]) * 100 / (carbon[0] / carbonDayArr[0])).toFixed(1) || 0
+                baseAvg: +(carbon[0] / carbonDayArr[0]).toFixed(2) || 0,
+                conserveAvg: +(carbon[1] / carbonDayArr[1]).toFixed(2) || 0,
+                percentChange: +((carbon[1] / carbonDayArr[1] - carbon[0] / carbonDayArr[0]) * 100 / (carbon[0] / carbonDayArr[0])).toFixed(2) || 0
             }
         },
         perc: studentPercent
